@@ -24,23 +24,46 @@ namespace DataStructuresIntro
     }
 
     //continue making changes to make a doubly linked list
-
+    class EnumeratorObject<T>
+    {
+        public int Count;
+        int count = -1;
+        public DoublyLinkedListNode<T> CurrentItem;
+        public DoublyLinkedListNode<T> Head;
+        public EnumeratorObject(int count, DoublyLinkedListNode<T> head)
+        {
+            Count = count;
+            Head = head;
+            if (head != null)
+            {
+                CurrentItem = head.Previous;
+            } //fix CurrentItem = null error
+            //ask about interfaces (IEnumerable)
+        }
+        public bool MoveToNextItem()
+        {
+            CurrentItem = CurrentItem.Next;
+            count++;
+            if (count >= Count)
+            {
+                return false;
+            }
+            else return true;
+        }
+    }
     class DoublyLinkedList<T>
     {
         public DoublyLinkedListNode<T> Head;
         public int Count { get; private set; }
 
-        public void Display()
+        //Enumerator helper object/class
+        public EnumeratorObject<T> GetEnumerator()
         {
-            DoublyLinkedListNode<T> Pointer = Head;
-            while (Pointer != Head.Previous)
-            {
-                Console.WriteLine(Pointer.Value);
-            }
+            return new EnumeratorObject<T>(Count, Head);
         }
         public void AddFirst(T value)
         {
-            DoublyLinkedListNode<T> newNode = new DoublyLinkedListNode<T>(value, Head, Head.Previous);
+            DoublyLinkedListNode<T> newNode = new DoublyLinkedListNode<T>(value, Head, null);
             if (Head == null)
             {
                 Head = newNode;
@@ -48,6 +71,7 @@ namespace DataStructuresIntro
             }
             else
             {
+                newNode.Previous = Head.Previous;
                 newNode.Previous.Next = newNode;
                 newNode.Next.Previous = newNode;
                 Head = newNode;
@@ -56,7 +80,7 @@ namespace DataStructuresIntro
         }
         public void AddLast(T value)
         {
-            DoublyLinkedListNode<T> newNode = new DoublyLinkedListNode<T>(value, Head, Head.Previous);
+            DoublyLinkedListNode<T> newNode = new DoublyLinkedListNode<T>(value, null, null);
             if (Head == null)
             {
                 Head = newNode;
@@ -64,6 +88,8 @@ namespace DataStructuresIntro
             }
             else
             {
+                newNode.Next = Head;
+                newNode.Previous = Head.Previous;
                 newNode.Previous.Next = newNode;
                 newNode.Next.Previous = newNode;
             }
@@ -95,7 +121,7 @@ namespace DataStructuresIntro
 
             if (!Contains(node)) throw new ArgumentException("Node not contained in list");
 
-            DoublyLinkedListNode<T> newNode = new DoublyLinkedListNode<T>(value, node, node.Previous);
+            DoublyLinkedListNode<T> newNode = new DoublyLinkedListNode<T>(value, node.Next, node);
             newNode.Previous.Next = newNode;
             newNode.Next.Previous = newNode;
             Count++;
@@ -134,16 +160,18 @@ namespace DataStructuresIntro
         }
         public bool Remove(T value)
         {
+            int count = 0;
             DoublyLinkedListNode<T> Pointer = Head;
             if (Count == 0) return false;
 
             while (!Pointer.Value.Equals(value))
             {
-                if (Pointer == Head) return false;
+                if (count > Count) return false;
                 Pointer = Pointer.Next;
+                count++;
             }
 
-            Pointer.Previous = Pointer.Next;
+            Pointer.Previous.Next = Pointer.Next;
             Pointer.Next.Previous = Pointer.Previous;
             Count--;
             return true;
@@ -177,11 +205,13 @@ namespace DataStructuresIntro
 
         public DoublyLinkedListNode<T> Search(T value)
         {
+            int count = 0;
             DoublyLinkedListNode<T> Pointer = Head;
             while (!Pointer.Value.Equals(value))
             {
-                if (Pointer.Next == null) return null;
+                if (count > Count) throw new ArgumentException("Value you are looking for is not contained in this list");
                 Pointer = Pointer.Next;
+                count++;
             }
             return Pointer;
         }
