@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace DataStructuresIntro
 {
+    //https://sharplab.io/#v2:C4LgTgrgdgNAJiA1AHwAICYCMBYAUKgBgAJVMAWAbj0JMwDoBhAewBsWBTAY2AEsmoAzlXzFSdADI8oAR2F4pwdmABmAQ07siASQaqoAcXbAAchAC2AIyV4A3niIOiCooZPmrYABQBKYQF88eShFFXVNLQAJVQFTSyUiEG1dAyNYj1tHIntHZzT4mwBzIwoA3FLA3AUlNQ1tKIEAFQB3JjywAQSkvVc222yHZ1cAeWAACyU2n38K6nQiAGVgMCkCiNY4eMTI6LaYOujm1vclAT7cTNJicZY4ReWoAuFM/qdg/ZjjsDo2ogBeAD4XKlPlMKs9zo5UABmBZLFZrG5KTyXIjXW5wh7eP6AsY8AR0NF3FZ/VHsG5Eh5yCEOaGvYBAtxxLzeF52amZEgAdjpdAACqp2uxPISMQVfC9yuzaYMjCNxmBJiz2WyOZDuSL7gUJOwHmMno5SpKMNpggiNmBOtsPky9qQoQAeBT/M6ZZwRMlwLTBfUOF7St4/AFEd03L3AH1ZKUwsNmpHONFhrFBkOet6/Umh70vP3RgCiUHMSlUwCYYEdwUBrnzhbAxdLPlZLwu3Kg7CaRGrZiLJa8uIE4vZpXBmS0ne7pdoULoVYLXdrPYbyqbaqIrfbY/n9b7A8yQ8cObpDMVjfZzeDHrDEb3vqjJDmG7rFq2D575eAzqXp/3X4GbwEwGLTR0wICMR1NdZ4gABwFHVwzBVUSBhZwGAgMAwFgohCmKIgBGKa8OSYCwACsuHpUdZ3HL4ULQjCg2o9Csx/SMEMQjsKM3LwYwgi0FFjMAlRYlUWMcaCGPpdNeO40CEPo2iiFE2C6BTS9hIQ+DVUlFjaQsJhWCIABZJgADd2GMdgAA9gEXQTVOE5dVR4ZQiE8f9AL+dNMCxVBuTUFhcOk1V7I5VzFEQRAAo5byiCWCB2AoWyOSC/DhwQ2lUDIIgACV2Fwqyk0BEKgKIECgqCtKMoAETxSCmFwnxMPww0ZlwCo0rmBhMOai5MAANhIDLeXuRkPHtBpAU8BonEUMwsSaeVNEmrZ6l2d5DjaU5Py0zAAE5PB4abp2BJkfB3A11LvOYTxYyR/zfQEFA6dM13qmwAFY9kwAgPveoh0C+37Xr8CKgq4xELVGbiSTXE1gD4zxOVOwKmIpVZIZ0iwobbWFNThgAidAAA5cd8BLvyC5RS3YdRRk8IyBSm9gzFeVFuIEhChNU0hdv2xnEY5ZLvxYin0Op5y6Z46bmYetnVQ54Sub26a+d3IKUtUiU8D8IA=
+    // ^enumeration & interface demo
+
     class DoublyLinkedListNode<T>
     {
         public T Value;
@@ -22,9 +25,7 @@ namespace DataStructuresIntro
             Previous = previous;
         }
     }
-
-    //continue making changes to make a doubly linked list
-    class EnumeratorObject<T>
+    class EnumeratorObject<T> where T : IEnumerator<T>
     {
         public int Count;
         int count = -1;
@@ -37,11 +38,13 @@ namespace DataStructuresIntro
             if (head != null)
             {
                 CurrentItem = head.Previous;
-            } //fix CurrentItem = null error
+            }
             //ask about interfaces (IEnumerable)
+            //implement interfaces (IEnumerable) into linked list
         }
         public bool MoveToNextItem()
         {
+            if (CurrentItem == null) return false;
             CurrentItem = CurrentItem.Next;
             count++;
             if (count >= Count)
@@ -57,7 +60,7 @@ namespace DataStructuresIntro
         public int Count { get; private set; }
 
         //Enumerator helper object/class
-        public EnumeratorObject<T> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             return new EnumeratorObject<T>(Count, Head);
         }
