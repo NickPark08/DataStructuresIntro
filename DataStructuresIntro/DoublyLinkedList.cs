@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -15,9 +16,10 @@ namespace DataStructuresIntro
         public T Value;
         public DoublyLinkedListNode<T> Next;
         public DoublyLinkedListNode<T> Previous;
+        public T Current => Value;
 
         //public DoublyLinkedList<T> Owner;
-             
+
         public DoublyLinkedListNode(T value, DoublyLinkedListNode<T> next, DoublyLinkedListNode<T> previous)
         {
             Value = value;
@@ -25,36 +27,36 @@ namespace DataStructuresIntro
             Previous = previous;
         }
     }
-    class EnumeratorObject<T> where T : IEnumerator<T>
-    {
-        public int Count;
-        int count = -1;
-        public DoublyLinkedListNode<T> CurrentItem;
-        public DoublyLinkedListNode<T> Head;
-        public EnumeratorObject(int count, DoublyLinkedListNode<T> head)
-        {
-            Count = count;
-            Head = head;
-            if (head != null)
-            {
-                CurrentItem = head.Previous;
-            }
-            //ask about interfaces (IEnumerable)
-            //implement interfaces (IEnumerable) into linked list
-        }
-        public bool MoveToNextItem()
-        {
-            if (CurrentItem == null) return false;
-            CurrentItem = CurrentItem.Next;
-            count++;
-            if (count >= Count)
-            {
-                return false;
-            }
-            else return true;
-        }
-    }
-    class DoublyLinkedList<T>
+    //class EnumeratorObject<T> where T : IEnumerator<T>
+    //{
+    //    public int Count;
+    //    int count = -1;
+    //    public DoublyLinkedListNode<T> CurrentItem;
+    //    public DoublyLinkedListNode<T> Head;
+    //    public EnumeratorObject(int count, DoublyLinkedListNode<T> head)
+    //    {
+    //        Count = count;
+    //        Head = head;
+    //        if (head != null)
+    //        {
+    //            CurrentItem = head.Previous;
+    //        }
+    //        //ask about interfaces (IEnumerable)
+    //        //implement interfaces (IEnumerable) into linked list
+    //    }
+    //    public bool MoveToNextItem()
+    //    {
+    //        if (CurrentItem == null) return false;
+    //        CurrentItem = CurrentItem.Next;
+    //        count++;
+    //        if (count >= Count)
+    //        {
+    //            return false;
+    //        }
+    //        else return true;
+    //    }
+    //}
+    class DoublyLinkedList<T> : IEnumerable<T> //where T : IEnumerator<T>
     {
         public DoublyLinkedListNode<T> Head;
         public int Count { get; private set; }
@@ -62,7 +64,20 @@ namespace DataStructuresIntro
         //Enumerator helper object/class
         public IEnumerator<T> GetEnumerator()
         {
-            return new EnumeratorObject<T>(Count, Head);
+            DoublyLinkedListNode<T> Pointer = Head;
+            if (Head != null)
+            {
+                while (Pointer.Next != Head)
+                {
+                    yield return Pointer.Value;
+                    Pointer = Pointer.Next;
+                }
+                yield return Pointer.Value;
+            }
+        }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
         public void AddFirst(T value)
         {
