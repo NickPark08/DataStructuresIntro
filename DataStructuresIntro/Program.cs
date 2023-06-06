@@ -7,15 +7,27 @@ class Program
     public static void Main()
     {
         DoublyLinkedList<int> list = new DoublyLinkedList<int>();
+        ArrayStack<int> stack = new ArrayStack<int>(3);
+        stack.Push(1);
+        stack.Push(2);
+        stack.Push(3);
+        stack.Push(4);
 
-        list.AddLast(1);
-        list.AddLast(4);
-        list.AddLast(3);
-        list.AddLast(2);
-        list.AddLast(1);
-        list.AddLast(2);
-        list.AddLast(7);
-        DoublyLinkedListNode<int> test = list.Search(3);
+        foreach (int value in stack)
+        {
+            Console.WriteLine(value);
+        }
+        Console.WriteLine();
+
+        Console.WriteLine(stack.Pop());
+        Console.WriteLine(stack.Peek());
+
+        Console.WriteLine();
+        foreach (int value in stack)
+        {
+            Console.WriteLine(value);
+        }
+
 
         //get enumerator
 
@@ -25,17 +37,15 @@ class Program
         //    Console.WriteLine(enumerator.CurrentItem.Value);
         //}
 
-        foreach (int value in list)
-        {
-            Console.WriteLine(value);
-        }
+        //foreach (int value in list)
+        //{
+        //    Console.WriteLine(value);
+        //}
 
-        Console.WriteLine(list.IsEmpty());
-        Console.WriteLine();
-        list.AddAfter(101, test);
-        foreach (int value in list)
-        {
-            Console.WriteLine(value);
-        }
+        //foreach (int value in list)
+        //{
+        //    Console.WriteLine(value);
+        //}
+
     }
 }
