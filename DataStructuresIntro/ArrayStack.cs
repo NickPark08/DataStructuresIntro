@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataStructuresIntro
 {
-    class ArrayStack<T> : IEnumerable<T>
+    class ArrayStack<T>
     {
         public int Capacity;
         public int Count { get; private set; }
@@ -33,7 +33,6 @@ namespace DataStructuresIntro
                 Count++;
             }
         }
-
         public T Pop()
         {
             T value = stackArray[Count-1];
@@ -53,20 +52,6 @@ namespace DataStructuresIntro
                 tempArray[i] = stackArray[i];
             }
             stackArray = tempArray;
-        }
-
-        //edit enumerator so it displays only items pushed (not the 0s)
-        public IEnumerator<T> GetEnumerator()
-        {
-            for(int i = 0; i > Count; i++)
-            {
-                yield return stackArray[Count - i - 1];
-            }
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }
