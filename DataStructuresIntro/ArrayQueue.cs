@@ -25,11 +25,29 @@ namespace DataStructuresIntro
         private void Resize(int size)
         {
             T[] tempArray = new T[size];
-            for (int i = 0; i < array.Length; i++)
+            int j = 0;
+
+            int lastItem = array.Length;
+            if (tail > head)
             {
-                tempArray[i] = array[i];
+                lastItem = tail;
+            }
+            for (int i = head; i < lastItem; i++)
+            {
+                tempArray[j] = array[i];
+                j++;
+            }
+            if (lastItem == array.Length)
+            {
+                for (int i = 0; i < tail; i++)
+                {
+                    tempArray[j] = array[i];
+                    j++;
+                }
             }
             array = tempArray;
+            tail = Count;
+            head = 0;
         }
 
         public void Enqueue(T value)
@@ -37,7 +55,6 @@ namespace DataStructuresIntro
             if (tail == head)
             {
                 Resize(array.Length * 2);
-                tail = Count;
             }
 
             array[tail] = value;
@@ -46,17 +63,29 @@ namespace DataStructuresIntro
         }
         public T Dequeue() //test dequeue and simplifying the array
         {
-            if (Count / 4 <= array.Length)
+            if(Count == 0) throw new InvalidOperationException("Queue is empty");
+            
+            if (Count <= array.Length / 4)
             {
                 Resize(array.Length / 2);
             }
+
             T value = array[head];
-            head += 1;
+            if (head != array.Length - 1)
+            {
+                head += 1;
+            }
+            else
+            {
+                head = 0;
+            }
             Count--;
             return value;
         }
         public T Peek()
         {
+            if(Count == 0) throw new InvalidOperationException("Queue is empty");
+            
             return array[head];
         }
     }
