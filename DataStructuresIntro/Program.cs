@@ -6,40 +6,27 @@ class Program
 {
     public static void Main()
     {
-        ArrayQueue<int> queue = new ArrayQueue<int>(2);
+        BinarySearchTree<int> tree = new BinarySearchTree<int>();
 
-        queue.Enqueue(1);
-        queue.Enqueue(2);
-        queue.Enqueue(3);
-        queue.Enqueue(4);
-        queue.Enqueue(5);
-        queue.Enqueue(6);
-        queue.Enqueue(7);
-        queue.Enqueue(8);
-        queue.Enqueue(9);
-        queue.Enqueue(10);
+        tree.Insert(6);
+        tree.Insert(5);
+        tree.Insert(0);
+        tree.Insert(1);
+        tree.Insert(2);
+        tree.Insert(3);
+        tree.Insert(4);
 
-        for (int i = 0; i < 7; i++)
-        {
-            Console.WriteLine(queue.Dequeue());
-        }
-        Console.WriteLine(queue.Peek());
+        //fix bugs with deleting the root (don't allow deletion if there is no root/tree to begin with)
 
-        queue.Enqueue(11);
-        queue.Enqueue(12);
-        queue.Enqueue(13);
-        queue.Enqueue(14);
-        queue.Enqueue(15);
+        Console.WriteLine(tree.Minimum());
+        Console.WriteLine(tree.Maximum());
+        Console.WriteLine();
 
-        for (int i = 0; i < 10; i++)
-        {
-            Console.WriteLine(queue.Dequeue());
-            queue.Enqueue(48);
-        }
+        Console.WriteLine(tree.Delete(6));
+        Console.WriteLine(tree.Delete(0));
 
-        for (int i = 0; i < 13; i++)
-        {
-            Console.WriteLine(queue.Dequeue());
-        }
+        Console.WriteLine();
+        Console.WriteLine(tree.Minimum());
+        Console.WriteLine(tree.Maximum());
     }
 }
