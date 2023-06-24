@@ -26,6 +26,25 @@ namespace DataStructuresIntro
         BinaryTreeNode<T> Root;
         public int Count { get; private set; }
 
+        public List<T> PreOrder()
+        {
+            //continue on PreOrder traversal
+            Stack<T> stack = new Stack<T>();
+            Queue<T> queue = new Queue<T>();
+            BinaryTreeNode<T> currentNode = Root;
+            stack.Push(currentNode.Value);
+            while(stack.Count != 0)
+            {
+                currentNode = currentNode.LeftChild;
+                stack.Push(currentNode.Value);
+            }
+
+        }
+
+
+
+
+
         public bool IsLeftChild(BinaryTreeNode<T> child)
         {
             if (child.Parent.RightChild == child) return false;
@@ -41,6 +60,7 @@ namespace DataStructuresIntro
         public BinaryTreeNode<T> Search(T value)
         {
             BinaryTreeNode<T> currentNode = Root;
+            if (Root == null) throw new ArgumentException("Tree is empty");
             while (true)
             {
                 if (currentNode.Value.Equals(value))
@@ -65,6 +85,7 @@ namespace DataStructuresIntro
         public T Minimum()
         {
             BinaryTreeNode<T> currentNode = Root;
+            if (Root == null) throw new ArgumentException("Tree is empty");
             while (currentNode.LeftChild != null)
             {
                 currentNode = currentNode.LeftChild;
@@ -74,6 +95,7 @@ namespace DataStructuresIntro
         public T Maximum()
         {
             BinaryTreeNode<T> currentNode = Root;
+            if (Root == null) throw new ArgumentException("Tree is empty");
             while (currentNode.RightChild != null)
             {
                 currentNode = currentNode.RightChild;
@@ -127,24 +149,36 @@ namespace DataStructuresIntro
                     {
                         currentNode = currentNode.RightChild;
                     }
-                    currentNode.RightChild = newNode;
-                    newNode.Parent = currentNode;
-                    Count++;
+                    if (value.CompareTo(currentNode.Value) > 0)
+                    {
+                        currentNode.RightChild = newNode;
+                        newNode.Parent = currentNode;
+                        Count++;
+                        break;
+                    }
+                    else
+                    {
+                        currentNode.LeftChild = newNode;
+                        newNode.Parent = currentNode;
+                        Count++;
+                        break;
+                    }
                 }
             }
         }
         public bool Delete(T value)
         {
             BinaryTreeNode<T> deletion = Search(value);
-            if (deletion == null) return false;
+            if (deletion == null || Root == null) return false;
 
+            //0 children
             if (deletion.LeftChild == null && deletion.RightChild == null)
             {
-                if(deletion == Root)
+                if (deletion == Root)
                 {
-                    deletion.LeftChild.Parent = null;
+                    Root = null;
                 }
-                else if(IsRightChild(deletion))
+                else if (IsRightChild(deletion))
                 {
                     deletion.Parent.RightChild = null;
                 }
@@ -155,59 +189,74 @@ namespace DataStructuresIntro
                 return true;
             }
 
-            if(deletion == Root)
+            //1 child
+            if (deletion == Root)
             {
-                Root = null;
+                if (deletion.RightChild != null && deletion.LeftChild == null)
+                {
+                    Root = deletion.RightChild;
+                    return true;
+                }
+                else if (deletion.RightChild == null && deletion.LeftChild != null)
+                {
+                    Root = deletion.LeftChild;
+                    return true;
+                }
             }
-            else if (IsRightChild(deletion))
+            else if (deletion.RightChild == null && deletion.LeftChild != null)
             {
-                //1 child
-                if (deletion.RightChild == null && deletion.LeftChild != null)
+                if (IsRightChild(deletion))
                 {
                     deletion.Parent.RightChild = deletion.LeftChild;
                     deletion.LeftChild.Parent = deletion.Parent;
                     return true;
                 }
-                else if (deletion.RightChild != null && deletion.LeftChild == null)
-                {
-                    deletion.Parent.RightChild = deletion.RightChild;
-                    deletion.RightChild.Parent = deletion.Parent;
-                    return true;
-                }
-            }
-            else if(IsLeftChild(deletion))
-            {
-                //one child
-                if(deletion.RightChild == null && deletion.LeftChild != null)
+                if (IsLeftChild(deletion))
                 {
                     deletion.Parent.LeftChild = deletion.LeftChild;
                     deletion.LeftChild.Parent = deletion.Parent;
                     return true;
                 }
-                else if(deletion.RightChild != null && deletion.LeftChild == null)
+            }
+            else if (deletion.RightChild != null && deletion.LeftChild == null)
+            {
+                if (IsRightChild(deletion))
+                {
+                    deletion.Parent.RightChild = deletion.RightChild;
+                    deletion.RightChild.Parent = deletion.Parent;
+                    return true;
+                }
+
+                else if (IsLeftChild(deletion))
                 {
                     deletion.Parent.LeftChild = deletion.RightChild;
                     deletion.RightChild.Parent = deletion.Parent;
                     return true;
                 }
             }
-            if(deletion.RightChild != null && deletion.LeftChild != null)
+            //2 children
+            if (deletion.RightChild != null && deletion.LeftChild != null)
             {
                 BinaryTreeNode<T> currentNode = deletion.LeftChild;
-                while(currentNode.RightChild != null)
+                while (currentNode.RightChild != null)
                 {
                     currentNode = currentNode.RightChild;
                 }
                 deletion.Value = currentNode.Value;
-                if(currentNode.LeftChild != null)
+                if (currentNode.LeftChild != null)
                 {
                     currentNode.Parent.RightChild = currentNode.LeftChild;
                     currentNode.LeftChild.Parent = currentNode.Parent;
                     return true;
                 }
-                else
+                else if (IsRightChild(currentNode))
                 {
                     currentNode.Parent.RightChild = null;
+                    return true;
+                }
+                else if (IsLeftChild(currentNode))
+                {
+                    currentNode.Parent.LeftChild = null;
                     return true;
                 }
             }
