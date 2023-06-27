@@ -26,21 +26,59 @@ namespace DataStructuresIntro
         BinaryTreeNode<T> Root;
         public int Count { get; private set; }
 
-        public List<T> PreOrder()
+        public Queue<T> PreOrder()
         {
             //continue on PreOrder traversal
-            Stack<T> stack = new Stack<T>();
+            Stack<BinaryTreeNode<T>> stack = new Stack<BinaryTreeNode<T>>();
             Queue<T> queue = new Queue<T>();
-            BinaryTreeNode<T> currentNode = Root;
-            stack.Push(currentNode.Value);
-            while(stack.Count != 0)
+
+            stack.Push(Root);
+            while (stack.Count > 0)
             {
-                currentNode = currentNode.LeftChild;
-                stack.Push(currentNode.Value);
+                BinaryTreeNode<T> currentNode;
+                currentNode = stack.Pop();
+
+                queue.Enqueue(currentNode.Value);
+
+                if (currentNode.RightChild != null)
+                {
+                    stack.Push(currentNode.RightChild);
+                }
+                if (currentNode.LeftChild != null)
+                {
+                    stack.Push(currentNode.LeftChild);
+                }
             }
-
+            return queue;
         }
+        public Queue<T> InOrder()
+        {
+            Stack<BinaryTreeNode<T>> stack = new Stack<BinaryTreeNode<T>>();
+            Queue<T> queue = new Queue<T>();
 
+            BinaryTreeNode<T> currentNode = Root;
+            //stack.Push(Root);
+
+            while(stack.Count > 0 || currentNode != null)
+            {
+                if(currentNode != null)
+                {
+                    stack.Push(currentNode);
+                    currentNode = currentNode.LeftChild;
+                }
+                else
+                {
+                    currentNode = stack.Pop();
+                    queue.Enqueue(currentNode.Value);
+                    currentNode = currentNode.RightChild;
+                }
+            }
+            return queue;
+        }
+        public Stack<T> PostOrder()
+        {
+            //basically a PreOrder but starting on the right, then using stack to reverse the order
+        }
 
 
 

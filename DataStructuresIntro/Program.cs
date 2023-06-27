@@ -17,21 +17,10 @@ class Program
         tree.Insert(10);
         tree.Insert(9);
 
-        Console.WriteLine(tree.Minimum());
-        Console.WriteLine(tree.Maximum());
-        Console.WriteLine();
-
-        Console.WriteLine(tree.Delete(2));
-        Console.WriteLine(tree.Delete(4));
-        Console.WriteLine(tree.Delete(10));
-        Console.WriteLine(tree.Delete(9));
-        Console.WriteLine(tree.Delete(7));
-        Console.WriteLine(tree.Delete(6));
-        Console.WriteLine(tree.Delete(5));
-        Console.WriteLine(tree.Delete(3));
-
-        Console.WriteLine();
-        Console.WriteLine(tree.Minimum());
-        Console.WriteLine(tree.Maximum());
+        Queue<int> Traversal = tree.InOrder();
+        foreach(int val in Traversal)
+        {
+            Console.WriteLine(val);
+        }
     }
 }
