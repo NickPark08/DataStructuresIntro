@@ -59,9 +59,9 @@ namespace DataStructuresIntro
             BinaryTreeNode<T> currentNode = Root;
             //stack.Push(Root);
 
-            while(stack.Count > 0 || currentNode != null)
+            while (stack.Count > 0 || currentNode != null)
             {
-                if(currentNode != null)
+                if (currentNode != null)
                 {
                     stack.Push(currentNode);
                     currentNode = currentNode.LeftChild;
@@ -78,8 +78,51 @@ namespace DataStructuresIntro
         public Stack<T> PostOrder()
         {
             //basically a PreOrder but starting on the right, then using stack to reverse the order
-        }
+            Stack<BinaryTreeNode<T>> traversal = new Stack<BinaryTreeNode<T>>();
+            Stack<T> stack = new Stack<T>();
 
+            traversal.Push(Root);
+            while (traversal.Count > 0)
+            {
+                BinaryTreeNode<T> node;
+                node = traversal.Pop();
+
+                stack.Push(node.Value);
+
+                if (node.LeftChild != null)
+                {
+                    traversal.Push(node.LeftChild);
+                }
+                if (node.RightChild != null)
+                {
+                    traversal.Push(node.RightChild);
+                }
+            }
+            return stack;
+        }
+        public Queue<T> BreadthFirst()
+        {
+            Queue<BinaryTreeNode<T>> traversal = new Queue<BinaryTreeNode<T>>();
+            Queue<T> queue = new Queue<T>();
+
+            traversal.Enqueue(Root);
+            while(traversal.Count > 0)
+            {
+                BinaryTreeNode<T> node;
+                node = traversal.Dequeue();
+
+                queue.Enqueue(node.Value);
+                if(node.LeftChild != null)
+                {
+                    traversal.Enqueue(node.LeftChild);
+                }
+                if(node.RightChild != null)
+                {
+                    traversal.Enqueue(node.RightChild);
+                }
+            }
+            return queue;  
+        }
 
 
 
