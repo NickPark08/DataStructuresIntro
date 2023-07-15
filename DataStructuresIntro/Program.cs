@@ -6,7 +6,13 @@ class Program
 {
     public static void Main()
     {
-        Recursion recursion = new Recursion();
-        recursion.IncreasingTriangle();
+        Recursion<int> recursion= new Recursion<int>();
+        List<int> list = new List<int>() { 5, 1, 123, 7, 32};
+        recursion.MergeSort(list);
+
+        foreach(int num in list)
+        {
+            Console.WriteLine(num); 
+        }
     }
 }

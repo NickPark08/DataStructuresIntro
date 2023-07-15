@@ -7,7 +7,7 @@ using System.Transactions;
 
 namespace DataStructuresIntro
 {
-    class Recursion<T>
+    class Recursion<T> where T : IComparable
     {
         public int Countdown(int startNum, int endNum)
         {
@@ -68,41 +68,46 @@ namespace DataStructuresIntro
             Console.WriteLine(triangle);
             return IncreasingTriangle(spaces - 1, stars + 2);
         }
-
-        //confused on if function is void? 
-        //working on making all sublists
         public List<T> MergeSort(List<T> list)
         {
-            if (list.Count >= 2)
+            if (list.Count < 2)
             {
-                List<T> list1 = new List<T>();
-                List<T> list2 = new List<T>();
+                return list;
+            }
 
-                for (int i = 0; i < list.Count / 2; i++)
-                {
-                    list1.Add(list[i]);
-                }
-                for (int i = list.Count / 2; i < list.Count; i++)
-                {
-                    list2.Add(list[i]);
-                }
+            List<T> list1 = new List<T>();
+            List<T> list2 = new List<T>();
 
-                if (list1.Count >= 2)
+            for (int i = 0; i < list.Count / 2; i++)
+            {
+                list1.Add(list[i]);
+            }
+            for (int i = list.Count / 2; i < list.Count; i++)
+            {
+                list2.Add(list[i]);
+            }
+            MergeSort(list1);
+            MergeSort(list2);
+
+            return Merge(list1, list2, list);
+        }
+        //fix sorting list
+        private List<T> Merge(List<T> list1, List<T> list2, List<T> sortedList)
+        {
+            for(int i = 0, j = 0; i < list1.Count && j < list2.Count;)
+            {
+                if (list1[i].CompareTo(list2[j]) < 0)
                 {
-                    return MergeSort(list1);
+                    sortedList.Add(list1[i]);
+                    i++;
                 }
-                if (list2.Count >= 2)
+                else if (list2[j].CompareTo(list1[i]) < 0)
                 {
-                    return MergeSort(list2);
+                    sortedList.Add(list2[j]);
+                    j++;
                 }
             }
-            else return list;
-
-        }
-
-        public void Merge()
-        {
-
+            return sortedList;
         }
     }
 }
