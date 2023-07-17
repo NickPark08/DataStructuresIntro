@@ -86,15 +86,15 @@ namespace DataStructuresIntro
             {
                 list2.Add(list[i]);
             }
-            MergeSort(list1);
-            MergeSort(list2);
 
-            return Merge(list1, list2, list);
+            return Merge(MergeSort(list1), MergeSort(list2));
         }
         //fix sorting list
-        private List<T> Merge(List<T> list1, List<T> list2, List<T> sortedList)
+        private List<T> Merge(List<T> list1, List<T> list2)
         {
-            for(int i = 0, j = 0; i < list1.Count && j < list2.Count;)
+            List<T> sortedList = new List<T>();
+
+            for (int i = 0, j = 0; i < list1.Count && j < list2.Count;)
             {
                 if (list1[i].CompareTo(list2[j]) < 0)
                 {

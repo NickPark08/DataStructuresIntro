@@ -8,7 +8,8 @@ class Program
     {
         Recursion<int> recursion= new Recursion<int>();
         List<int> list = new List<int>() { 5, 1, 123, 7, 32};
-        recursion.MergeSort(list);
+
+        list = recursion.MergeSort(list);
 
         foreach(int num in list)
         {
