@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -78,19 +79,22 @@ namespace DataStructuresIntro
             List<T> list1 = new List<T>();
             List<T> list2 = new List<T>();
 
-            for (int i = 0; i < list.Count / 2; i++)
+            for (int i = 0; i < list.Count; i++)
             {
-                list1.Add(list[i]);
-            }
-            for (int i = list.Count / 2; i < list.Count; i++)
-            {
-                list2.Add(list[i]);
+                if (i < list.Count / 2)
+                {
+                    list1.Add(list[i]);
+                }
+                else
+                {
+                    list2.Add(list[i]);
+                }
             }
 
             return Merge(MergeSort(list1), MergeSort(list2));
         }
         //fix sorting list
-        private List<T> Merge(List<T> list1, List<T> list2)
+        private static List<T> Merge(List<T> list1, List<T> list2)
         {
             List<T> sortedList = new List<T>();
 
