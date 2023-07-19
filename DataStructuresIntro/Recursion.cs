@@ -8,7 +8,7 @@ using System.Transactions;
 
 namespace DataStructuresIntro
 {
-    class Recursion<T> where T : IComparable
+    class Recursion
     {
         public int Countdown(int startNum, int endNum)
         {
@@ -68,50 +68,6 @@ namespace DataStructuresIntro
 
             Console.WriteLine(triangle);
             return IncreasingTriangle(spaces - 1, stars + 2);
-        }
-        public List<T> MergeSort(List<T> list)
-        {
-            if (list.Count < 2)
-            {
-                return list;
-            }
-
-            List<T> list1 = new List<T>();
-            List<T> list2 = new List<T>();
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (i < list.Count / 2)
-                {
-                    list1.Add(list[i]);
-                }
-                else
-                {
-                    list2.Add(list[i]);
-                }
-            }
-
-            return Merge(MergeSort(list1), MergeSort(list2));
-        }
-        //fix sorting list
-        private static List<T> Merge(List<T> list1, List<T> list2)
-        {
-            List<T> sortedList = new List<T>();
-
-            for (int i = 0, j = 0; i < list1.Count && j < list2.Count;)
-            {
-                if (list1[i].CompareTo(list2[j]) < 0)
-                {
-                    sortedList.Add(list1[i]);
-                    i++;
-                }
-                else if (list2[j].CompareTo(list1[i]) < 0)
-                {
-                    sortedList.Add(list2[j]);
-                    j++;
-                }
-            }
-            return sortedList;
         }
     }
 }

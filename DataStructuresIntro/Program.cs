@@ -6,10 +6,10 @@ class Program
 {
     public static void Main()
     {
-        Recursion<int> recursion= new Recursion<int>();
-        List<int> list = new List<int>() { 5, 1, 123, 7, 32}; 
+        RecursiveSorts<int> sorts= new RecursiveSorts<int>();
+        List<int> list = new List<int>() { 1, 2, 3, 4, 6 }; 
 
-        list = recursion.MergeSort(list);
+        list = sorts.MergeSort(list);
 
         foreach(int num in list)
         {
