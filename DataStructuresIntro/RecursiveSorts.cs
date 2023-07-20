@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -81,11 +82,69 @@ namespace DataStructuresIntro
             return sortedList;
         }
 
+        //QUICK SORT (Lomuto Partition)
+        public void QuickSortLomuto(T[] array, int left, int right)
+        {
+            if (left >= right) return;
+
+            int pivot = LomutoPartition(array, left, right);
+            QuickSortLomuto(array, left, pivot - 1);
+            QuickSortLomuto(array, pivot + 1, right);
+        }
+        private static int LomutoPartition(T[] array, int left, int right)
+        {
+            int wall = left - 1;
+            int pivot = right;
+
+            for(int i = left; i < right; i++)
+            {
+                if (array[i].CompareTo(array[pivot]) < 0)
+                {
+                    wall++;
+                    T temp = array[i];
+                    array[i] = array[wall];
+                    array[wall] = temp;
+                }
+            }
+            T temp2 = array[pivot];
+            array[pivot] = array[wall + 1];
+            array[wall + 1] = temp2;
+
+            return wall + 1;
+        }
+
         //QUICK SORT (Hoare Partition)
 
-        public T[] QuickSort()
+        public void QuickSortHoare(T[] array, int left, int right)
         {
+            if (left >= right) return;
 
+            int pivot = HoarePartition(array, left, right);
+            QuickSortHoare(array, left, pivot);
+            QuickSortHoare(array, pivot + 1, right);
+            
+        }
+        private static int HoarePartition(T[] array, int left, int right)
+        {
+            T pivot = array[left];
+            while (true)
+            {
+                while (array[left].CompareTo(pivot) < 0)
+                {
+                    left++;
+                }
+                while (array[right].CompareTo(pivot) > 0)
+                {
+                    right--;
+                }
+
+                T temp = array[left];
+                array[left] = array[right];
+                array[right] = temp;
+
+                if (left >= right) return right;
+            }
         }
     }
 }
+
