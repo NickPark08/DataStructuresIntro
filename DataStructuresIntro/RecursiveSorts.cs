@@ -96,7 +96,7 @@ namespace DataStructuresIntro
             int wall = left - 1;
             int pivot = right;
 
-            for(int i = left; i < right; i++)
+            for (int i = left; i < right; i++)
             {
                 if (array[i].CompareTo(array[pivot]) < 0)
                 {
@@ -122,25 +122,55 @@ namespace DataStructuresIntro
             int pivot = HoarePartition(array, left, right);
             QuickSortHoare(array, left, pivot);
             QuickSortHoare(array, pivot + 1, right);
-            
+
         }
         private static int HoarePartition(T[] array, int left, int right)
         {
-            T pivot = array[left];
+            int pivot = left;
+           /* while (true)
+            {
+                
+                bool found = false;
+                for (int i = left + 1; i < right; i++)
+                {
+                    if (array[i].Equals(array[pivot]))
+                    {
+                        found = true;
+                    }
+                }
+                if (found) break;
+            }*/
+
             while (true)
             {
-                while (array[left].CompareTo(pivot) < 0)
+                //if (array[left].Equals(array[right]))
+                //{
+                //    return left;
+                //}
+                while (left != pivot && array[left].CompareTo(array[pivot]) <= 0)
                 {
                     left++;
                 }
-                while (array[right].CompareTo(pivot) > 0)
+                while (right != pivot && array[right].CompareTo(array[pivot]) >= 0)
                 {
                     right--;
+                }
+
+                int tempIndex = pivot;
+
+                if (pivot == left)
+                {
+                    tempIndex = right;
+                }
+                else if (pivot == right)
+                {
+                    tempIndex = left;
                 }
 
                 T temp = array[left];
                 array[left] = array[right];
                 array[right] = temp;
+                pivot = tempIndex;
 
                 if (left >= right) return right;
             }
