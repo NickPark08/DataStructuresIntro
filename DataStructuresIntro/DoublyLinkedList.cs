@@ -27,35 +27,7 @@ namespace DataStructuresIntro
             Previous = previous;
         }
     }
-    //class EnumeratorObject<T> where T : IEnumerator<T>
-    //{
-    //    public int Count;
-    //    int count = -1;
-    //    public DoublyLinkedListNode<T> CurrentItem;
-    //    public DoublyLinkedListNode<T> Head;
-    //    public EnumeratorObject(int count, DoublyLinkedListNode<T> head)
-    //    {
-    //        Count = count;
-    //        Head = head;
-    //        if (head != null)
-    //        {
-    //            CurrentItem = head.Previous;
-    //        }
-    //        //ask about interfaces (IEnumerable)
-    //        //implement interfaces (IEnumerable) into linked list
-    //    }
-    //    public bool MoveToNextItem()
-    //    {
-    //        if (CurrentItem == null) return false;
-    //        CurrentItem = CurrentItem.Next;
-    //        count++;
-    //        if (count >= Count)
-    //        {
-    //            return false;
-    //        }
-    //        else return true;
-    //    }
-    //}
+
     class DoublyLinkedList<T> : IEnumerable<T> //where T : IEnumerator<T>
     {
         public DoublyLinkedListNode<T> Head;
