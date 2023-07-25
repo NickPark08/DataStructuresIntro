@@ -57,7 +57,6 @@ namespace DataStructuresIntro
             Queue<T> queue = new Queue<T>();
 
             BinaryTreeNode<T> currentNode = Root;
-            //stack.Push(Root);
 
             while (stack.Count > 0 || currentNode != null)
             {
@@ -77,7 +76,6 @@ namespace DataStructuresIntro
         }
         public Stack<T> PostOrder()
         {
-            //basically a PreOrder but starting on the right, then using stack to reverse the order
             Stack<BinaryTreeNode<T>> traversal = new Stack<BinaryTreeNode<T>>();
             Stack<T> stack = new Stack<T>();
 
