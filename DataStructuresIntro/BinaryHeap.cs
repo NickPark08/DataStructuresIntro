@@ -45,11 +45,13 @@ namespace DataStructuresIntro
         public T Pop()
         {
             int popIndex = array.Length - 1;
+            T returnValue = array[0];
+
             T value = array[popIndex];
             array[0] = value;
             array[popIndex] = default(T);
             HeapifyDown(0);
-            return value;
+            return returnValue;
         }
         private void HeapifyUp(int index)
         {
@@ -71,12 +73,13 @@ namespace DataStructuresIntro
             if (index >= array.Length - 1) return;
 
             int mainChild;
-            int child1 = (index + 1) * 2;
-            int child2 = child1 - 1;
+
             //fix swapping down
 
             do
-            {
+            { 
+                int child1 = (index + 1) * 2;
+                int child2 = child1 - 1;
                 if (array[child1].CompareTo(array[index]) < 0 && array[child2].CompareTo(array[index]) < 0)
                 {
                     if (array[child1].CompareTo(array[child2]) < 0)
@@ -102,11 +105,10 @@ namespace DataStructuresIntro
                     T temp = array[index];
                     array[index] = array[mainChild];
                     array[mainChild] = temp;
-                    mainChild = index;
-                    index = (index + 1) * 2;
+                    index = mainChild;
                 }
-                
-            } while (array[mainChild].CompareTo(array[index]) < 0);
+
+            } while (array[mainChild].CompareTo(array[index]) <= 0 && (index + 1) * 2 < array.Length);
         }
     }
 }

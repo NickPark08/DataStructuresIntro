@@ -19,6 +19,7 @@ class Program
         heap.Insert(43);
         int test = heap.Pop();
         heap.Display();
+        Console.WriteLine();
         Console.WriteLine(test);
     }
 }
