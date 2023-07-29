@@ -7,19 +7,27 @@ class Program
     public static void Main()
     {
         BinaryHeap<int> heap = new BinaryHeap<int>();
-        heap.Insert(10);
-        heap.Insert(20);
-        heap.Insert(30);
-        heap.Insert(12);
-        heap.Insert(52);
-        heap.Insert(100);
-        heap.Insert(8);
-        heap.Insert(5);
-        heap.Insert(72);
-        heap.Insert(43);
-        int test = heap.Pop();
-        heap.Display();
-        Console.WriteLine();
-        Console.WriteLine(test);
+
+        List<int> list = new List<int>();
+        List<int> result = new List<int>();
+
+        Random rnd = new Random();
+        for(int i = 0; i < 21; i++)
+        {
+            list.Add(rnd.Next(-100, 100));
+        }
+        for(int i = 0; i < list.Count; i++)
+        {
+            heap.Insert(list[i]);
+        }
+        for (int i = 0; i < list.Count - 1; i++)
+        {
+            result.Add(heap.Pop());
+        }
+
+        for (int i = 0; i < result.Count; i++)
+        {
+            Console.WriteLine(result[i]);
+        }
     }
 }

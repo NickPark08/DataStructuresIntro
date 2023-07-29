@@ -15,6 +15,7 @@ namespace DataStructuresIntro
     class BinaryHeap<T> where T : IComparable<T>
     {
         T[] array = new T[5];
+        int Count = 0;
 
         public void Display()
         {
@@ -32,24 +33,29 @@ namespace DataStructuresIntro
                 {
                     array[i] = value;
                     HeapifyUp(i);
+                    Count++;
                     return;
                 }
                 index = i;
             }
             Array.Resize(ref array, array.Length * 2);
             array[index + 1] = value;
+            Count++;
             HeapifyUp(index + 1);
             return;
 
         }
         public T Pop()
-        {
-            int popIndex = array.Length - 1;
-            T returnValue = array[0];
+        { 
+            if(Count <= 0) return default(T);
 
-            T value = array[popIndex];
+            T value = array[Count - 1];
+            Count--;
+            T returnValue = array[0];
+            Array.Resize(ref array, Count);
+            if (array.Length == 0) return default(T);
+
             array[0] = value;
-            array[popIndex] = default(T);
             HeapifyDown(0);
             return returnValue;
         }
@@ -70,16 +76,28 @@ namespace DataStructuresIntro
 
         private void HeapifyDown(int index)
         {
-            if (index >= array.Length - 1) return;
+            if (index >= array.Length - 1 || array.Length <= 0) return;
 
             int mainChild;
 
-            //fix swapping down
-
             do
-            { 
-                int child1 = (index + 1) * 2;
-                int child2 = child1 - 1;
+            {
+                int child1;
+                int child2;
+                if (array.Length > 2)
+                {
+                    child1 = (index + 1) * 2;
+                    child2 = child1 - 1;
+                }
+                else if(array.Length == 2)
+                {
+                    mainChild = child1 = child2 = 1;
+                }
+                else
+                {
+                    return;
+                }
+
                 if (array[child1].CompareTo(array[index]) < 0 && array[child2].CompareTo(array[index]) < 0)
                 {
                     if (array[child1].CompareTo(array[child2]) < 0)
@@ -101,7 +119,7 @@ namespace DataStructuresIntro
                 }
 
                 if (array[mainChild].CompareTo(array[index]) < 0)
-                { 
+                {
                     T temp = array[index];
                     array[index] = array[mainChild];
                     array[mainChild] = temp;
