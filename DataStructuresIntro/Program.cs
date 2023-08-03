@@ -8,11 +8,11 @@ class Program
     {
         AVLTree<int> AVLTree = new AVLTree<int>();
 
-        AVLTree.Insert(10);
-        AVLTree.Insert(9);
-        AVLTree.Insert(8);
-        //AVLTree.Insert(7);
+        AVLTree.Insert(5);
+        AVLTree.Insert(3);
+        AVLTree.Insert(4);
 
         Console.WriteLine(AVLTree.Root.Value);
+        Console.WriteLine(AVLTree.Root.GetBalance());
     }
 }

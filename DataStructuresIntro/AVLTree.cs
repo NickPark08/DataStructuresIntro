@@ -60,6 +60,12 @@ namespace DataStructuresIntro
             }
             return Height;
         }
+        public bool HasLeftChild()
+        {
+            if (LeftChild == null) return false;
+
+            else return true;
+        }
     }
     class AVLTree<T> where T : IComparable<T>
     {
@@ -84,13 +90,37 @@ namespace DataStructuresIntro
 
             if (currentNode.GetBalance() > 1)
             {
-                //currentNode = currentNode.LeftChild;
-                return currentNode.RightChild;
+                AVLTreeNode<T> returnNode = currentNode.RightChild;
+                AVLTreeNode<T> leftChild = returnNode.LeftChild;
+                if (returnNode.HasLeftChild())
+                {
+                    leftChild = returnNode.LeftChild;
+                }
+                returnNode.LeftChild = currentNode;
+                currentNode.RightChild = leftChild;
+                //if()
+
+                return returnNode;
             }
             else if (currentNode.GetBalance() < -1)
             {
-                //currentNode = currentNode.RightChild;
-                return currentNode.LeftChild;
+                AVLTreeNode<T> returnNode = currentNode.LeftChild;
+                AVLTreeNode<T> rightChild = returnNode.RightChild;
+                if(!returnNode.HasLeftChild())
+                {
+                    rightChild = returnNode.RightChild;
+                }
+                returnNode.RightChild = currentNode;
+                currentNode.LeftChild = rightChild;
+                if(returnNode.GetBalance() > 1)
+                {
+                    returnNode.RightChild = rightChild;
+                    currentNode.LeftChild = null;
+                    rightChild.RightChild = currentNode;
+
+                }
+
+                return returnNode;
             }
 
             currentNode.GetHeight();
