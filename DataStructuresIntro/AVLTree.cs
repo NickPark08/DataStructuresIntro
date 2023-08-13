@@ -71,6 +71,13 @@ namespace DataStructuresIntro
     {
         public AVLTreeNode<T> Root;
 
+        public void RotateLeft(AVLTreeNode<T> node)
+        {
+            node.RightChild = node.RightChild.LeftChild;
+            node.RightChild.LeftChild = node;
+        }
+        //rotation left
+
         public Queue<T> PreOrder()
         {
             Stack<AVLTreeNode<T>> stack = new Stack<AVLTreeNode<T>>();
@@ -140,27 +147,23 @@ namespace DataStructuresIntro
             //problem with adding, when error happens left child has infinite loop with right of left
             if (currentNode.GetBalance() > 1)
             {
-                AVLTreeNode<T> returnNode = currentNode.RightChild;
-                AVLTreeNode<T> leftChild = returnNode.LeftChild;
-                if (returnNode.HasLeftChild())
+                //AVLTreeNode<T> returnNode = currentNode.RightChild;
+                //AVLTreeNode<T> leftChild = returnNode.LeftChild;
+                if(currentNode.RightChild.GetBalance() <= -1)
                 {
-                    leftChild = returnNode.LeftChild;
-                }
-                returnNode.LeftChild = currentNode;
-                currentNode.RightChild = leftChild;
-                if(returnNode.GetBalance() < 1)
-                {
-                    returnNode.LeftChild = leftChild;
-                    currentNode.RightChild = null;
+                    currentNode.RightChild = currentNode.RightChild.LeftChild;
+                    currentNode.RightChild.RightChild = currentNode.
+                    leftChild.RightChild = returnNode;
+                    returnNode.LeftChild = null;
                     leftChild.LeftChild = currentNode;
-                    AVLTreeNode<T> tempNode = returnNode;
-                    returnNode = leftChild;
-                    returnNode.LeftChild = currentNode;
-                    returnNode.RightChild = tempNode;
-                    tempNode.LeftChild = null;
                 }
+                currentNode.RightChild.LeftChild = currentNode;
 
-                return returnNode;
+                //returnNode.LeftChild = currentNode;
+                //currentNode.RightChild = leftChild;
+                returnNode.LeftChild.Height = returnNode.Height - 1;
+
+                return currentNode.RightChild;
             }
             else if (currentNode.GetBalance() < -1)
             {

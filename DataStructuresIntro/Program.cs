@@ -11,10 +11,10 @@ class Program
         AVLTree.Insert(5);
         AVLTree.Insert(17);
         AVLTree.Insert(7);
-        AVLTree.Insert(3);
-        AVLTree.Insert(4);
-        AVLTree.Insert(20);
-        AVLTree.Insert(22);
+        //AVLTree.Insert(3);
+        //AVLTree.Insert(4);
+        //AVLTree.Insert(20);
+        //AVLTree.Insert(22);
         Queue<int> queue = AVLTree.InOrder();
         foreach(int num in queue)
         {
