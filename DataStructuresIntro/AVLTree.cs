@@ -71,6 +71,55 @@ namespace DataStructuresIntro
     {
         public AVLTreeNode<T> Root;
 
+        public Queue<T> PreOrder()
+        {
+            Stack<AVLTreeNode<T>> stack = new Stack<AVLTreeNode<T>>();
+            Queue<T> queue = new Queue<T>();
+
+            stack.Push(Root);
+            while (stack.Count > 0)
+            {
+                AVLTreeNode<T> currentNode;
+                currentNode = stack.Pop();
+
+                queue.Enqueue(currentNode.Value);
+
+                if (currentNode.RightChild != null)
+                {
+                    stack.Push(currentNode.RightChild);
+                }
+                if (currentNode.LeftChild != null)
+                {
+                    stack.Push(currentNode.LeftChild);
+                }
+            }
+            return queue;
+        }
+
+        public Queue<T> InOrder()
+        {
+            Stack<AVLTreeNode<T>> stack = new Stack<AVLTreeNode<T>>();
+            Queue<T> queue = new Queue<T>();
+
+            AVLTreeNode<T> currentNode = Root;
+
+            while (stack.Count > 0 || currentNode != null)
+            {
+                if (currentNode != null)
+                {
+                    stack.Push(currentNode);
+                    currentNode = currentNode.LeftChild;
+                }
+                else
+                {
+                    currentNode = stack.Pop();
+                    queue.Enqueue(currentNode.Value);
+                    currentNode = currentNode.RightChild;
+                }
+            }
+            return queue;
+        }
+
         public void Insert(T value)
         {
             Root = Insert(value, Root);
@@ -88,6 +137,7 @@ namespace DataStructuresIntro
                 currentNode.RightChild = Insert(value, currentNode.RightChild);
             }
 
+            //problem with adding, when error happens left child has infinite loop with right of left
             if (currentNode.GetBalance() > 1)
             {
                 AVLTreeNode<T> returnNode = currentNode.RightChild;
@@ -98,7 +148,17 @@ namespace DataStructuresIntro
                 }
                 returnNode.LeftChild = currentNode;
                 currentNode.RightChild = leftChild;
-                //if()
+                if(returnNode.GetBalance() < 1)
+                {
+                    returnNode.LeftChild = leftChild;
+                    currentNode.RightChild = null;
+                    leftChild.LeftChild = currentNode;
+                    AVLTreeNode<T> tempNode = returnNode;
+                    returnNode = leftChild;
+                    returnNode.LeftChild = currentNode;
+                    returnNode.RightChild = tempNode;
+                    tempNode.LeftChild = null;
+                }
 
                 return returnNode;
             }
@@ -117,6 +177,11 @@ namespace DataStructuresIntro
                     returnNode.RightChild = rightChild;
                     currentNode.LeftChild = null;
                     rightChild.RightChild = currentNode;
+                    AVLTreeNode<T> tempNode = returnNode;
+                    returnNode = rightChild;
+                    returnNode.RightChild = currentNode;
+                    returnNode.LeftChild = tempNode;
+                    tempNode.RightChild = null;
 
                 }
 

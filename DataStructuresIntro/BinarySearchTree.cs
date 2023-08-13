@@ -28,7 +28,6 @@ namespace DataStructuresIntro
 
         public Queue<T> PreOrder()
         {
-            //continue on PreOrder traversal
             Stack<BinaryTreeNode<T>> stack = new Stack<BinaryTreeNode<T>>();
             Queue<T> queue = new Queue<T>();
 
