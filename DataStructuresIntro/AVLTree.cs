@@ -50,7 +50,9 @@ namespace DataStructuresIntro
         }
         public int GetHeight()
         {
-            if (LeftChild == null || (RightChild != null && LeftChild.Height < RightChild.Height))
+            if (LeftChild == null && RightChild == null) Height = 1;
+
+            else if (LeftChild == null || (RightChild != null && LeftChild.Height < RightChild.Height))
             {
                 Height = RightChild.Height + 1;
             }
@@ -71,12 +73,24 @@ namespace DataStructuresIntro
     {
         public AVLTreeNode<T> Root;
 
-        public void RotateLeft(AVLTreeNode<T> node)
+        public AVLTreeNode<T> RotateLeft(AVLTreeNode<T> node)
         {
+            var temp = node.RightChild;
             node.RightChild = node.RightChild.LeftChild;
-            node.RightChild.LeftChild = node;
+            temp.LeftChild = node;
+            node.GetHeight();
+            temp.GetHeight();
+            return temp;
         }
-        //rotation left
+        public AVLTreeNode<T> RotateRight(AVLTreeNode<T> node)
+        {
+            var temp = node.LeftChild;
+            node.LeftChild = node.LeftChild.RightChild;
+            temp.RightChild = node;
+            node.GetHeight();
+            temp.GetHeight();
+            return temp;
+        }
 
         public Queue<T> PreOrder()
         {
@@ -127,6 +141,29 @@ namespace DataStructuresIntro
             return queue;
         }
 
+        private AVLTreeNode<T> ReBalance(AVLTreeNode<T> currentNode)
+        {
+            if (currentNode.GetBalance() > 1)
+            {
+                if(currentNode.RightChild.GetBalance() <= -1)
+                {
+                    currentNode.RightChild = RotateRight(currentNode.RightChild);
+                }
+                return RotateLeft(currentNode);
+            }
+            else if (currentNode.GetBalance() < -1)
+            {
+                if(currentNode.LeftChild.GetBalance() >= 1)
+                {
+                    currentNode.LeftChild = RotateLeft(currentNode.LeftChild);
+                }
+                return RotateRight(currentNode);
+            }
+
+            currentNode.GetHeight();
+            return currentNode;
+        }
+
         public void Insert(T value)
         {
             Root = Insert(value, Root);
@@ -144,58 +181,16 @@ namespace DataStructuresIntro
                 currentNode.RightChild = Insert(value, currentNode.RightChild);
             }
 
-            //problem with adding, when error happens left child has infinite loop with right of left
-            if (currentNode.GetBalance() > 1)
-            {
-                //AVLTreeNode<T> returnNode = currentNode.RightChild;
-                //AVLTreeNode<T> leftChild = returnNode.LeftChild;
-                if(currentNode.RightChild.GetBalance() <= -1)
-                {
-                    currentNode.RightChild = currentNode.RightChild.LeftChild;
-                    currentNode.RightChild.RightChild = currentNode.
-                    leftChild.RightChild = returnNode;
-                    returnNode.LeftChild = null;
-                    leftChild.LeftChild = currentNode;
-                }
-                currentNode.RightChild.LeftChild = currentNode;
-
-                //returnNode.LeftChild = currentNode;
-                //currentNode.RightChild = leftChild;
-                returnNode.LeftChild.Height = returnNode.Height - 1;
-
-                return currentNode.RightChild;
-            }
-            else if (currentNode.GetBalance() < -1)
-            {
-                AVLTreeNode<T> returnNode = currentNode.LeftChild;
-                AVLTreeNode<T> rightChild = returnNode.RightChild;
-                if(!returnNode.HasLeftChild())
-                {
-                    rightChild = returnNode.RightChild;
-                }
-                returnNode.RightChild = currentNode;
-                currentNode.LeftChild = rightChild;
-                if(returnNode.GetBalance() > 1)
-                {
-                    returnNode.RightChild = rightChild;
-                    currentNode.LeftChild = null;
-                    rightChild.RightChild = currentNode;
-                    AVLTreeNode<T> tempNode = returnNode;
-                    returnNode = rightChild;
-                    returnNode.RightChild = currentNode;
-                    returnNode.LeftChild = tempNode;
-                    tempNode.RightChild = null;
-
-                }
-
-                return returnNode;
-            }
-
-            currentNode.GetHeight();
-            return currentNode;
+            return ReBalance(currentNode);
         }
 
-        //mac test commit 
+        public void Delete()
+        {
+
+        }
+
+
+
 
         //insertion reference
 
