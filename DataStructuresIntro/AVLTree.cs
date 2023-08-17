@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace DataStructuresIntro
 {
@@ -13,7 +14,7 @@ namespace DataStructuresIntro
         public AVLTreeNode<T> LeftChild;
         public AVLTreeNode<T> RightChild;
         public int Height;
-        public AVLTreeNode(T value, AVLTreeNode<T> leftChild, AVLTreeNode<T> rightChild, int height) 
+        public AVLTreeNode(T value, AVLTreeNode<T> leftChild, AVLTreeNode<T> rightChild, int height)
         {
             Value = value;
             LeftChild = leftChild;
@@ -41,9 +42,9 @@ namespace DataStructuresIntro
         {
             if (RightChild == null && LeftChild == null) return 0;
 
-            else if(LeftChild == null) return RightChild.Height - 0;
+            else if (LeftChild == null) return RightChild.Height - 0;
 
-            else if(RightChild == null)return 0 - LeftChild.Height;
+            else if (RightChild == null) return 0 - LeftChild.Height;
 
             else return RightChild.Height - LeftChild.Height;
 
@@ -145,7 +146,7 @@ namespace DataStructuresIntro
         {
             if (currentNode.GetBalance() > 1)
             {
-                if(currentNode.RightChild.GetBalance() <= -1)
+                if (currentNode.RightChild.GetBalance() <= -1)
                 {
                     currentNode.RightChild = RotateRight(currentNode.RightChild);
                 }
@@ -153,7 +154,7 @@ namespace DataStructuresIntro
             }
             else if (currentNode.GetBalance() < -1)
             {
-                if(currentNode.LeftChild.GetBalance() >= 1)
+                if (currentNode.LeftChild.GetBalance() >= 1)
                 {
                     currentNode.LeftChild = RotateLeft(currentNode.LeftChild);
                 }
@@ -172,21 +173,68 @@ namespace DataStructuresIntro
         {
             if (currentNode == null) return new(value);
 
-            if(value.CompareTo(currentNode.Value) < 0)
+            if (value.CompareTo(currentNode.Value) < 0)
             {
                 currentNode.LeftChild = Insert(value, currentNode.LeftChild);
             }
             else
-            {        
+            {
                 currentNode.RightChild = Insert(value, currentNode.RightChild);
             }
 
             return ReBalance(currentNode);
         }
 
-        public void Delete()
+        public void Delete(T value)
         {
+            Root = Delete(value, Root);
+        }
+        private AVLTreeNode<T> Delete(T value, AVLTreeNode<T> currentNode)
+        {
+            if (value.CompareTo(currentNode.Value) < 0)
+            {
+                currentNode.LeftChild = Delete(value, currentNode.LeftChild);
+            }
+            else if (value.CompareTo(currentNode.Value) > 0)
+            {
+                currentNode.RightChild = Delete(value, currentNode.RightChild);
+            }
 
+            else
+            {
+                if (currentNode.GetChildCount() == 0)
+                {
+                    return null;
+                }
+                else if (currentNode.GetChildCount() == 1)
+                {
+                    if (currentNode.HasLeftChild())
+                    {
+                        currentNode.LeftChild.GetHeight();
+                        return currentNode.LeftChild;
+                    }
+                    else
+                    {
+                        currentNode.RightChild.GetHeight();
+                        return currentNode.RightChild;
+                    }
+                }
+                else if (currentNode.GetChildCount() == 2)
+                {
+                    AVLTreeNode<T> temp = currentNode.LeftChild;
+                    while (temp.RightChild != null)
+                    {
+                        temp = temp.RightChild;
+                    }
+                    currentNode.Value = temp.Value;
+
+                    temp.GetHeight();
+                    return temp;
+                }
+
+            }
+            currentNode.GetBalance();
+            return ReBalance(currentNode);
         }
 
 
