@@ -40,6 +40,8 @@ namespace DataStructuresIntro
         }
         public int GetBalance()
         {
+        //    return (RightChild == null ? 0 : RightChild.Height) - (LeftChild == null ? 0 : LeftChild.Height); 
+
             if (RightChild == null && LeftChild == null) return 0;
 
             else if (LeftChild == null) return RightChild.Height - 0;
@@ -86,6 +88,7 @@ namespace DataStructuresIntro
         public AVLTreeNode<T> RotateRight(AVLTreeNode<T> node)
         {
             var temp = node.LeftChild;
+            node.RightChild = temp.RightChild;
             node.LeftChild = node.LeftChild.RightChild;
             temp.RightChild = node;
             node.GetHeight();
@@ -222,14 +225,20 @@ namespace DataStructuresIntro
                 else if (currentNode.GetChildCount() == 2)
                 {
                     AVLTreeNode<T> temp = currentNode.LeftChild;
-                    while (temp.RightChild != null)
+                    if (temp.RightChild != null)
                     {
-                        temp = temp.RightChild;
+                        temp.RightChild = ChildRecursion(temp.RightChild);
                     }
-                    currentNode.Value = temp.Value;
 
-                    temp.GetHeight();
-                    return temp;
+                    //get to very right child by recursion, then recurse back up to rebalance that nodes' parent (not currentNode.Left)
+
+
+                    currentNode.Value = temp.Value;
+                    currentNode.LeftChild.RightChild = temp.LeftChild;
+
+                    currentNode.GetHeight();
+                    ReBalance(currentNode.LeftChild);
+                    return currentNode;
                 }
 
             }
@@ -237,6 +246,10 @@ namespace DataStructuresIntro
             return ReBalance(currentNode);
         }
 
+        public AVLTreeNode<T> ChildRecursion(AVLTreeNode<T> currentNode)
+        {
+            return currentNode.RightChild;
+        }
 
 
 

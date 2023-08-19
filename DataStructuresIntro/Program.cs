@@ -18,11 +18,10 @@ class Program
         AVLTree.Insert(22);
         AVLTree.Insert(2);
         AVLTree.Insert(1);
-        AVLTree.Delete(2);
         AVLTree.Delete(7);
 
         ;
 
-  
+
     }
 }

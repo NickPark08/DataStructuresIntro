@@ -18,8 +18,6 @@ namespace DataStructuresIntro
         public DoublyLinkedListNode<T> Previous;
         public T Current => Value;
 
-        //public DoublyLinkedList<T> Owner;
-
         public DoublyLinkedListNode(T value, DoublyLinkedListNode<T> next, DoublyLinkedListNode<T> previous)
         {
             Value = value;
