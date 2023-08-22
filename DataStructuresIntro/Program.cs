@@ -18,7 +18,15 @@ class Program
         AVLTree.Insert(22);
         AVLTree.Insert(2);
         AVLTree.Insert(1);
+        AVLTree.Insert(6);
         AVLTree.Delete(7);
+        AVLTree.Insert(6);
+        AVLTree.Insert(6);
+        AVLTree.Insert(23);
+        AVLTree.Delete(6);
+        AVLTree.Delete(23);
+        AVLTree.Delete(6);
+        AVLTree.Delete(4);
 
         ;
 

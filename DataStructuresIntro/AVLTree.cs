@@ -75,6 +75,7 @@ namespace DataStructuresIntro
     class AVLTree<T> where T : IComparable<T>
     {
         public AVLTreeNode<T> Root;
+        public bool didRotate = false;
 
         public AVLTreeNode<T> RotateLeft(AVLTreeNode<T> node)
         {
@@ -83,16 +84,17 @@ namespace DataStructuresIntro
             temp.LeftChild = node;
             node.GetHeight();
             temp.GetHeight();
+            didRotate = true;
             return temp;
         }
         public AVLTreeNode<T> RotateRight(AVLTreeNode<T> node)
         {
             var temp = node.LeftChild;
-            node.RightChild = temp.RightChild;
-            node.LeftChild = node.LeftChild.RightChild;
+            node.LeftChild = temp.RightChild;
             temp.RightChild = node;
             node.GetHeight();
             temp.GetHeight();
+            didRotate = true;
             return temp;
         }
 
@@ -147,6 +149,7 @@ namespace DataStructuresIntro
 
         private AVLTreeNode<T> ReBalance(AVLTreeNode<T> currentNode)
         {
+            didRotate = false;
             if (currentNode.GetBalance() > 1)
             {
                 if (currentNode.RightChild.GetBalance() <= -1)
@@ -224,20 +227,29 @@ namespace DataStructuresIntro
                 }
                 else if (currentNode.GetChildCount() == 2)
                 {
-                    AVLTreeNode<T> temp = currentNode.LeftChild;
+                    AVLTreeNode<T> temp = ChildRecursion(currentNode.LeftChild);
+
                     if (temp.RightChild != null)
                     {
-                        temp.RightChild = ChildRecursion(temp.RightChild);
+                        currentNode.Value = temp.RightChild.Value;
+                        temp.RightChild = temp.RightChild.LeftChild;
+                    }
+                    else
+                    {
+                        currentNode.Value = temp.Value;
+                        currentNode.LeftChild = temp.LeftChild;
+                        //work on double delete case where currentNode.Left.Right is null
+                        //fixing and testing cases for deletion
                     }
 
-                    //get to very right child by recursion, then recurse back up to rebalance that nodes' parent (not currentNode.Left)
-
-
-                    currentNode.Value = temp.Value;
-                    currentNode.LeftChild.RightChild = temp.LeftChild;
-
+                    temp.GetBalance();
                     currentNode.GetHeight();
-                    ReBalance(currentNode.LeftChild);
+                    AVLTreeNode<T> rebalancedNode = ReBalance(temp);
+
+                    if (didRotate)
+                    {
+                        currentNode.LeftChild = rebalancedNode;
+                    }
                     return currentNode;
                 }
 
@@ -248,7 +260,14 @@ namespace DataStructuresIntro
 
         public AVLTreeNode<T> ChildRecursion(AVLTreeNode<T> currentNode)
         {
-            return currentNode.RightChild;
+            AVLTreeNode<T> temp = currentNode.RightChild;
+            if (currentNode == null || temp == null) return currentNode;
+
+            else if(temp.RightChild != null)
+            {
+                return ChildRecursion(currentNode.RightChild);
+            }
+            return currentNode;
         }
 
 
