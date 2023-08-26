@@ -76,11 +76,38 @@ namespace DataStructuresIntro
     {
         public AVLTreeNode<T> Root;
         public bool didRotate = false;
+        public bool hadRightChild = true;
 
+        //Traversal Functions
+
+        //private Queue<T> PreOrder
+        //public Queue<T> PreOrder()
+        //{
+        //    Stack<AVLTreeNode<T>> stack = new Stack<AVLTreeNode<T>>();
+        //    stack.Push(Root);
+
+        //    while(Root.LeftChild != null)
+        //    {
+        //        stack.Push(Root.LeftChild);
+        //    }
+        //}
+
+        private Queue<T> InOrder()
+        {
+            return InOrder(Root);
+        }
+        public Queue<T> InOrder(AVLTreeNode<T> root)
+        {
+            Stack<AVLTreeNode<T>> stack = new Stack<AVLTreeNode<T>>();
+
+        }
+
+
+        //Tree Functions
         public AVLTreeNode<T> RotateLeft(AVLTreeNode<T> node)
         {
             var temp = node.RightChild;
-            node.RightChild = node.RightChild.LeftChild;
+            node.RightChild = temp.LeftChild;
             temp.LeftChild = node;
             node.GetHeight();
             temp.GetHeight();
@@ -96,55 +123,6 @@ namespace DataStructuresIntro
             temp.GetHeight();
             didRotate = true;
             return temp;
-        }
-
-        public Queue<T> PreOrder()
-        {
-            Stack<AVLTreeNode<T>> stack = new Stack<AVLTreeNode<T>>();
-            Queue<T> queue = new Queue<T>();
-
-            stack.Push(Root);
-            while (stack.Count > 0)
-            {
-                AVLTreeNode<T> currentNode;
-                currentNode = stack.Pop();
-
-                queue.Enqueue(currentNode.Value);
-
-                if (currentNode.RightChild != null)
-                {
-                    stack.Push(currentNode.RightChild);
-                }
-                if (currentNode.LeftChild != null)
-                {
-                    stack.Push(currentNode.LeftChild);
-                }
-            }
-            return queue;
-        }
-
-        public Queue<T> InOrder()
-        {
-            Stack<AVLTreeNode<T>> stack = new Stack<AVLTreeNode<T>>();
-            Queue<T> queue = new Queue<T>();
-
-            AVLTreeNode<T> currentNode = Root;
-
-            while (stack.Count > 0 || currentNode != null)
-            {
-                if (currentNode != null)
-                {
-                    stack.Push(currentNode);
-                    currentNode = currentNode.LeftChild;
-                }
-                else
-                {
-                    currentNode = stack.Pop();
-                    queue.Enqueue(currentNode.Value);
-                    currentNode = currentNode.RightChild;
-                }
-            }
-            return queue;
         }
 
         private AVLTreeNode<T> ReBalance(AVLTreeNode<T> currentNode)
@@ -197,6 +175,8 @@ namespace DataStructuresIntro
         }
         private AVLTreeNode<T> Delete(T value, AVLTreeNode<T> currentNode)
         {
+            if (currentNode == null) return null;
+
             if (value.CompareTo(currentNode.Value) < 0)
             {
                 currentNode.LeftChild = Delete(value, currentNode.LeftChild);
@@ -227,6 +207,7 @@ namespace DataStructuresIntro
                 }
                 else if (currentNode.GetChildCount() == 2)
                 {
+                    AVLTreeNode<T> rightChild = currentNode.RightChild;
                     AVLTreeNode<T> temp = ChildRecursion(currentNode.LeftChild);
 
                     if (temp.RightChild != null)
@@ -238,14 +219,13 @@ namespace DataStructuresIntro
                     {
                         currentNode.Value = temp.Value;
                         currentNode.LeftChild = temp.LeftChild;
-                        //work on double delete case where currentNode.Left.Right is null
-                        //fixing and testing cases for deletion
                     }
 
                     temp.GetBalance();
                     currentNode.GetHeight();
+                    hadRightChild = false;
+                    currentNode = ReBalance(currentNode);
                     AVLTreeNode<T> rebalancedNode = ReBalance(temp);
-
                     if (didRotate)
                     {
                         currentNode.LeftChild = rebalancedNode;
