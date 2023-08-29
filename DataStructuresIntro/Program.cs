@@ -19,25 +19,11 @@ class Program
         AVLTree.Insert(2);
         AVLTree.Insert(1);
         AVLTree.Insert(6);
-        AVLTree.Delete(7);
-        AVLTree.Insert(6);
-        AVLTree.Insert(6);
-        AVLTree.Insert(23);
-        AVLTree.Delete(6);
-        AVLTree.Delete(23);
-        AVLTree.Delete(6);
-        AVLTree.Insert(0);
-        AVLTree.Insert(2);
-        AVLTree.Delete(3);
-        AVLTree.Delete(4);
-        AVLTree.Delete(2);
-        AVLTree.Delete(2);
-        AVLTree.Delete(5);
-        AVLTree.Delete(20);
-        AVLTree.Delete(17);
-        AVLTree.Delete(22);
-        AVLTree.Delete(6);
 
+        foreach(int num in AVLTree.PostOrder())
+        {
+            Console.WriteLine(num);
+        }
         ;
 
 

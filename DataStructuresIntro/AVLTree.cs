@@ -80,26 +80,58 @@ namespace DataStructuresIntro
 
         //Traversal Functions
 
-        //private Queue<T> PreOrder
-        //public Queue<T> PreOrder()
-        //{
-        //    Stack<AVLTreeNode<T>> stack = new Stack<AVLTreeNode<T>>();
-        //    stack.Push(Root);
-
-        //    while(Root.LeftChild != null)
-        //    {
-        //        stack.Push(Root.LeftChild);
-        //    }
-        //}
-
-        private Queue<T> InOrder()
+        public Queue<T> PreOrder()
         {
-            return InOrder(Root);
+            Queue<T> queue = new Queue<T>();
+            return PreOrder(Root, queue);
         }
-        public Queue<T> InOrder(AVLTreeNode<T> root)
+        private Queue<T> PreOrder(AVLTreeNode<T> node, Queue<T> queue)
         {
-            Stack<AVLTreeNode<T>> stack = new Stack<AVLTreeNode<T>>();
+            queue.Enqueue(node.Value);
+            
+            if(node.LeftChild != null)
+            {
+                PreOrder(node.LeftChild, queue);
+            }
 
+            if(node.RightChild != null)
+            {
+                PreOrder(node.RightChild, queue);
+            }
+
+            return queue;
+        }
+
+        public Queue<T> InOrder()
+        {
+            Queue<T> queue = new Queue<T>();
+            InOrder(Root, queue);
+            return queue;
+        }
+        private void InOrder(AVLTreeNode<T> node, Queue<T> queue)
+        {
+            if(node != null)
+            {
+                InOrder(node.LeftChild, queue);
+                queue.Enqueue(node.Value);
+                InOrder(node.RightChild, queue);
+            }
+        }
+
+        public Queue<T> PostOrder()
+        {
+            Queue<T> queue = new Queue<T>();
+            PostOrder(Root, queue);
+            return queue;
+        }
+        private void PostOrder(AVLTreeNode<T> node, Queue<T> queue)
+        {
+            if(node != null)
+            {
+                PostOrder(node.LeftChild, queue);
+                PostOrder(node.RightChild, queue);
+                queue.Enqueue(node.Value);
+            }
         }
 
 
