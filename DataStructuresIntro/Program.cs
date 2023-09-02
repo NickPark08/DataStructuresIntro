@@ -6,24 +6,20 @@ class Program
 {
     public static void Main()
     {
+        SortedDoublyLinkedList<int> list = new SortedDoublyLinkedList<int>();
 
-        AVLTree<int> AVLTree = new AVLTree<int>();
+        list.Insert(1);
+        list.Insert(2);
+        list.Insert(3);
+        list.Insert(4);
+        list.Insert(5);
+        list.Insert(6);
+        list.Insert(7);
+        list.Insert(8);
+        list.Insert(9);
+        list.Insert(10);
+        list.Display();
 
-        AVLTree.Insert(17);
-        AVLTree.Insert(5);
-        AVLTree.Insert(7);
-        AVLTree.Insert(3);
-        AVLTree.Insert(4);
-        AVLTree.Insert(20);
-        AVLTree.Insert(22);
-        AVLTree.Insert(2);
-        AVLTree.Insert(1);
-        AVLTree.Insert(6);
-
-        foreach(int num in AVLTree.PostOrder())
-        {
-            Console.WriteLine(num);
-        }
         ;
 
 
