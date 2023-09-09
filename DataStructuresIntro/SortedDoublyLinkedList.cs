@@ -74,11 +74,15 @@ namespace DataStructuresIntro
         public void Delete(T value)
         {
             SortedDoublyLinkedListNode<T> current = Head.Next;
-            while(current != Tail || !current.Value.Equals(value))
+            while(!current.Value.Equals(value) && current != Tail)
             {
                 current = current.Next;
             }
-            DeleteLinks(current);
+            if (current != null && current != Tail)
+            {
+                DeleteLinks(current);
+            }
+
         }
 
         private void DeleteLinks(SortedDoublyLinkedListNode<T> node)
