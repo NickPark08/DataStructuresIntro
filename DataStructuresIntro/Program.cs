@@ -4,21 +4,15 @@ using System.Data;
 
 class Program
 {
-    public static void Idk<T, TObject>(T collection)
-        where T : ICollection<TObject>
-    {
-        TObject newVal = default;
-
-        collection.Add(newVal);
-    }
-
     public static void Main()
     {
+        SkipList<int> skipList = new SkipList<int>();
 
-        LinkedList<int> ints= new LinkedList<int> { };
-
-        Idk<LinkedList<int>, int>(ints);
-
-
+        skipList.Add(1);
+        skipList.Add(2);
+        skipList.Add(3);
+        skipList.Add(4);
+        skipList.Add(5);
+        ;
     }
 }
