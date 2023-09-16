@@ -40,15 +40,15 @@ namespace DataStructuresIntro
         }
         public int GetBalance()
         {
-        //    return (RightChild == null ? 0 : RightChild.Height) - (LeftChild == null ? 0 : LeftChild.Height); 
+            return (RightChild == null ? 0 : RightChild.Height) - (LeftChild == null ? 0 : LeftChild.Height); 
 
-            if (RightChild == null && LeftChild == null) return 0;
+            //if (RightChild == null && LeftChild == null) return 0;
 
-            else if (LeftChild == null) return RightChild.Height - 0;
+            //else if (LeftChild == null) return RightChild.Height - 0;
 
-            else if (RightChild == null) return 0 - LeftChild.Height;
+            //else if (RightChild == null) return 0 - LeftChild.Height;
 
-            else return RightChild.Height - LeftChild.Height;
+            //else return RightChild.Height - LeftChild.Height;
 
         }
         public int GetHeight()

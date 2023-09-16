@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,13 +40,16 @@ namespace DataStructuresIntro
             }
             if (Head.Height < newHeight)
             {
-                Head.Height = newHeight;
-                SkipListNode<T> Pointer = Head;
-                while (Pointer.Height != 0)
-                {
-                    Pointer.Bottom = new SkipListNode<T>(Pointer.Value, Pointer.Next, null, Pointer.Height - 1);
-                    Pointer = Pointer.Bottom;
-                }
+                SkipListNode<T> newHead = new SkipListNode<T>(Head.Value, null, Head, newHeight);
+                Head = newHead;
+
+
+                //SkipListNode<T> Pointer = Head;
+                //while (Pointer.Height != 0)
+                //{
+                //    Pointer.Bottom = new SkipListNode<T>(Pointer.Value, Pointer.Next, null, Pointer.Height - 1);
+                //    Pointer = Pointer.Bottom;
+                //}
             }
             return newHeight;
         }
@@ -71,7 +75,7 @@ namespace DataStructuresIntro
                     ConnectNodes(Pointer, newNode);
                     break;
                 }
-                if (Pointer.Value.CompareTo(value) < 0)
+                if (Pointer.Value.CompareTo(value) > 0)
                 {
                     Pointer = Pointer.Next;
                 }
@@ -82,33 +86,54 @@ namespace DataStructuresIntro
                 }
             }
             while (Pointer != null);
-
-            //while(newNode.Height != 0 && Pointer.Height == newNode.Height)
-            //{
-            //    newNode.Bottom = new SkipListNode<T>(newNode.Value, newNode.Next, null, newNode.Height - 1);
-            //    newNode = newNode.Bottom;
-            //    Pointer.Bottom.Next = newNode;
-            //    Pointer = Pointer.Bottom;
-            //}
             Count++;
         }
 
         public void ConnectNodes(SkipListNode<T> previous, SkipListNode<T> current)
         {
             current.Next = previous.Next;
-            previous.Next = current;
-            SkipListNode<T> Pointer = current;
+            if (previous.Height == current.Height)
+            {
+                previous.Next = current;
+            }
+            //else
+            //{
+            //    SkipListNode<T> temp = Head;
+            //    while(temp.Height != current.Height)
+            //    {
+            //        temp = temp.Bottom;
+            //    }
 
+            //    while(temp.Next != null)
+            //    {
+            //        temp = temp.Next;
+            //    }
+            //    temp.Next = current;
+            //}
+            SkipListNode<T> Pointer = current;
+            SkipListNode<T> temp = previous.Bottom;
             while (Pointer.Height != 0)
             {
                 Pointer.Bottom = new SkipListNode<T>(Pointer.Value, Pointer.Next, null, Pointer.Height - 1);
                 Pointer = Pointer.Bottom;
             }
-
-            if (previous.Height == current.Height && current.Height > 0)
+            while (temp.Next != null && !temp.Next.Value.Equals(Pointer.Value))
             {
-                previous.Bottom.Next = current.Bottom;
+                temp = temp.Next;
             }
+            temp.Next = Pointer;
+            temp = temp.Bottom;
+            //while (temp.Next != null && temp.Next.Value.CompareTo(Pointer.Value) < 0)
+            //{
+            //    temp = temp.Next;
+            //}
+            //temp.Next = Pointer;
+
+
+            //if (previous.Height == current.Height && current.Height > 0)
+            //{
+            //    previous.Bottom.Next = current.Bottom;
+            //}
         }
 
         public void Clear()
