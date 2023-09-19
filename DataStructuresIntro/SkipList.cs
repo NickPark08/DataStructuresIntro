@@ -24,6 +24,7 @@ namespace DataStructuresIntro
     }
     class SkipList<T> : ICollection<T> where T : IComparable<T>
     {
+        private bool newHeadHeight = false;
         SkipListNode<T> Head = new SkipListNode<T>(default, null, null, 0);
         public int GenerateRandomHeight()
         {
@@ -42,14 +43,7 @@ namespace DataStructuresIntro
             {
                 SkipListNode<T> newHead = new SkipListNode<T>(Head.Value, null, Head, newHeight);
                 Head = newHead;
-
-
-                //SkipListNode<T> Pointer = Head;
-                //while (Pointer.Height != 0)
-                //{
-                //    Pointer.Bottom = new SkipListNode<T>(Pointer.Value, Pointer.Next, null, Pointer.Height - 1);
-                //    Pointer = Pointer.Bottom;
-                //}
+                newHeadHeight = true;
             }
             return newHeight;
         }
@@ -67,23 +61,43 @@ namespace DataStructuresIntro
                 Pointer = Pointer.Bottom;
             }
             SkipListNode<T> newNode = new SkipListNode<T>(value, null, null, Pointer.Height);
+            SkipListNode<T> tempPointer = Pointer;
 
             do
             {
-                if (Pointer.Next == null)
+                if (Pointer.Next == null && !newHeadHeight)
                 {
                     ConnectNodes(Pointer, newNode);
                     break;
                 }
-                if (Pointer.Value.CompareTo(value) > 0)
+                if (newHeadHeight)
                 {
-                    Pointer = Pointer.Next;
+                    Pointer = Pointer.Bottom;
+                    if (Pointer.Value.CompareTo(value) < 0)
+                    {
+                        Pointer = Pointer.Next;
+                    }
+                    else
+                    {
+                        ConnectNodes(tempPointer, newNode);
+                        newHeadHeight = false;
+                        break;
+                    }
                 }
                 else
                 {
-                    ConnectNodes(Pointer, newNode);
-                    break;
+                    if (Pointer.Next.Value.CompareTo(value) < 0)
+                    {
+                        Pointer = Pointer.Next;
+                    }
+                    else
+                    {
+                        ConnectNodes(Pointer, newNode);
+                        newHeadHeight = false;
+                        break;
+                    }
                 }
+
             }
             while (Pointer != null);
             Count++;
@@ -96,44 +110,25 @@ namespace DataStructuresIntro
             {
                 previous.Next = current;
             }
-            //else
-            //{
-            //    SkipListNode<T> temp = Head;
-            //    while(temp.Height != current.Height)
-            //    {
-            //        temp = temp.Bottom;
-            //    }
 
-            //    while(temp.Next != null)
-            //    {
-            //        temp = temp.Next;
-            //    }
-            //    temp.Next = current;
-            //}
             SkipListNode<T> Pointer = current;
-            SkipListNode<T> temp = previous.Bottom;
+
             while (Pointer.Height != 0)
             {
-                Pointer.Bottom = new SkipListNode<T>(Pointer.Value, Pointer.Next, null, Pointer.Height - 1);
+                Pointer.Bottom = new SkipListNode<T>(Pointer.Value, null, null, Pointer.Height - 1);
+
                 Pointer = Pointer.Bottom;
-            }
-            while (temp.Next != null && !temp.Next.Value.Equals(Pointer.Value))
-            {
-                temp = temp.Next;
-            }
-            temp.Next = Pointer;
-            temp = temp.Bottom;
-            //while (temp.Next != null && temp.Next.Value.CompareTo(Pointer.Value) < 0)
-            //{
-            //    temp = temp.Next;
-            //}
-            //temp.Next = Pointer;
 
-
-            //if (previous.Height == current.Height && current.Height > 0)
-            //{
-            //    previous.Bottom.Next = current.Bottom;
-            //}
+                if(previous.Bottom.Height == Pointer.Height)
+                {            
+                    SkipListNode<T> temp = previous.Bottom;
+                    while(temp.Next != null)
+                    {
+                        temp = temp.Next;
+                    }
+                    temp.Next = Pointer;
+                }
+            }
         }
 
         public void Clear()
