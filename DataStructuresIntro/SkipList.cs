@@ -24,8 +24,8 @@ namespace DataStructuresIntro
     }
     class SkipList<T> : ICollection<T> where T : IComparable<T>
     {
-        private bool newHeadHeight = false;
-        SkipListNode<T> Head = new SkipListNode<T>(default, null, null, 0);
+        public SkipListNode<T> Head = new SkipListNode<T>(default, null, null, 0);
+        private bool isNewHeight = false;
         public int GenerateRandomHeight()
         {
             Random rnd = new Random();
@@ -43,7 +43,7 @@ namespace DataStructuresIntro
             {
                 SkipListNode<T> newHead = new SkipListNode<T>(Head.Value, null, Head, newHeight);
                 Head = newHead;
-                newHeadHeight = true;
+                isNewHeight = true;
             }
             return newHeight;
         }
@@ -61,31 +61,17 @@ namespace DataStructuresIntro
                 Pointer = Pointer.Bottom;
             }
             SkipListNode<T> newNode = new SkipListNode<T>(value, null, null, Pointer.Height);
-            SkipListNode<T> tempPointer = Pointer;
+            Count++;
 
-            do
+            if (Pointer.Next == null && !isNewHeight)
             {
-                if (Pointer.Next == null && !newHeadHeight)
+                ConnectNodes(Pointer, newNode);
+            }
+            else
+            {
+                while (Pointer.Next != null)
                 {
-                    ConnectNodes(Pointer, newNode);
-                    break;
-                }
-                if (newHeadHeight)
-                {
-                    Pointer = Pointer.Bottom;
-                    if (Pointer.Value.CompareTo(value) < 0)
-                    {
-                        Pointer = Pointer.Next;
-                    }
-                    else
-                    {
-                        ConnectNodes(tempPointer, newNode);
-                        newHeadHeight = false;
-                        break;
-                    }
-                }
-                else
-                {
+                    isNewHeight = false;
                     if (Pointer.Next.Value.CompareTo(value) < 0)
                     {
                         Pointer = Pointer.Next;
@@ -93,40 +79,50 @@ namespace DataStructuresIntro
                     else
                     {
                         ConnectNodes(Pointer, newNode);
-                        newHeadHeight = false;
-                        break;
+                        return;
                     }
                 }
-
+                ConnectNodes(Pointer, newNode);
             }
-            while (Pointer != null);
-            Count++;
+
         }
 
         public void ConnectNodes(SkipListNode<T> previous, SkipListNode<T> current)
         {
             current.Next = previous.Next;
-            if (previous.Height == current.Height)
-            {
-                previous.Next = current;
-            }
+            previous.Next = current;
 
             SkipListNode<T> Pointer = current;
+            SkipListNode<T> temp = Head;
 
             while (Pointer.Height != 0)
             {
                 Pointer.Bottom = new SkipListNode<T>(Pointer.Value, null, null, Pointer.Height - 1);
-
                 Pointer = Pointer.Bottom;
 
-                if(previous.Bottom.Height == Pointer.Height)
-                {            
-                    SkipListNode<T> temp = previous.Bottom;
-                    while(temp.Next != null)
-                    {
-                        temp = temp.Next;
-                    }
-                    temp.Next = Pointer;
+                while(temp.Height != Pointer.Height)
+                {
+                    temp = temp.Bottom;
+                }
+                while(temp.Next != null && temp.Next.Value.CompareTo(Pointer.Value) < 0)
+                {
+                    temp = temp.Next;
+                }
+                Pointer.Next = temp.Next;
+                temp.Next = Pointer;
+
+            }
+        }
+
+        public void Delete(T value)
+        {
+            //add check if Pointer.Next is greater than val move down, otherwise start to delete
+            SkipListNode<T> Pointer = Head;
+            while (Pointer != null)
+            {
+                if (Pointer.Next.Value.CompareTo(value) > 0)
+                {
+                    Pointer = Pointer.Bottom;
                 }
             }
         }
