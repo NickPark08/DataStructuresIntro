@@ -7,6 +7,7 @@ class Program
     public static void Main()
     {
         SkipList<int> skipList = new SkipList<int>();
+        int[] ints = new int[10];
 
         skipList.Add(3);
         skipList.Add(1);
@@ -16,9 +17,17 @@ class Program
         skipList.Add(6);
         skipList.Add(7);
         skipList.Add(8);
-        skipList.Add(171);
-        skipList.Add(20);
+        skipList.Add(9);
+        skipList.Add(10);
+        skipList.Remove(5);
+        skipList.Remove(6);
+        skipList.Remove(2);
+        skipList.Remove(8);
 
+        foreach (int num in skipList)
+        {
+            Console.WriteLine(num);
+        }
         ;
     }
 }

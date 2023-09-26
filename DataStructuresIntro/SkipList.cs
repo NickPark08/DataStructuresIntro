@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -100,11 +101,11 @@ namespace DataStructuresIntro
                 Pointer.Bottom = new SkipListNode<T>(Pointer.Value, null, null, Pointer.Height - 1);
                 Pointer = Pointer.Bottom;
 
-                while(temp.Height != Pointer.Height)
+                while (temp.Height != Pointer.Height)
                 {
                     temp = temp.Bottom;
                 }
-                while(temp.Next != null && temp.Next.Value.CompareTo(Pointer.Value) < 0)
+                while (temp.Next != null && temp.Next.Value.CompareTo(Pointer.Value) < 0)
                 {
                     temp = temp.Next;
                 }
@@ -113,48 +114,114 @@ namespace DataStructuresIntro
 
             }
         }
-
-        public void Delete(T value)
+        public bool Remove(T value)
         {
-            //add check if Pointer.Next is greater than val move down, otherwise start to delete
             SkipListNode<T> Pointer = Head;
-            while (Pointer != null)
+            if (Pointer.Next.Value.Equals(value))
             {
-                if (Pointer.Next.Value.CompareTo(value) > 0)
+                DeleteNodes(Pointer, Pointer.Next);
+                return true;
+            }
+            while (Pointer != null && Pointer.Next.Value.CompareTo(value) > 0)
+            {
+                Pointer = Pointer.Bottom;
+            }
+            Pointer = Pointer.Next;
+            while (Pointer.Bottom != null)
+            {
+                Pointer = Pointer.Bottom;
+                while (Pointer.Next != null && Pointer.Next.Value.CompareTo(value) < 0)
                 {
-                    Pointer = Pointer.Bottom;
+                    Pointer = Pointer.Next;
                 }
+            }
+
+            if (Pointer == null) return false;
+            DeleteNodes(Pointer, Pointer.Next);
+            Count--;
+            return true;
+        }
+        private void DeleteNodes(SkipListNode<T> previous, SkipListNode<T> current)
+        {
+            previous.Next = current.Next;
+            while (previous.Height != 0)
+            {
+                previous = previous.Bottom;
+                current = current.Bottom;
+                while (previous.Next != current)
+                {
+                    previous = previous.Next;
+                }
+                previous.Next = current.Next;
+            }
+            if (Head.Next == null)
+            {
+                Head = Head.Bottom;
             }
         }
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            Head = null;
+            Count = 0;
         }
 
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            SkipListNode<T> Pointer = Head;
+            if (Pointer == null) return false;
+
+            while(Pointer.Height != 0)
+            {
+                Pointer = Pointer.Bottom;
+            }
+            while(Pointer.Next != null)
+            {
+                Pointer = Pointer.Next;
+                if (Pointer.Value.Equals(item)) return true;
+            }
+            return false;
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            if (array.Length < Count) throw new Exception("Array not large enough to hold all elements");
+            if (array == null) throw new ArgumentNullException("Array is null");
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("Index is less than 0");
+
+            SkipListNode<T> Pointer = Head;
+
+            while(Pointer.Height != 0)
+            {
+                Pointer = Pointer.Bottom;
+            }
+            while(Pointer.Next != null)
+            {
+                array[arrayIndex] = Pointer.Value;
+                arrayIndex++;
+                Pointer = Pointer.Next;
+            }
+            array[arrayIndex] = Pointer.Value;
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(T item)
-        {
-            throw new NotImplementedException();
+            SkipListNode<T> Pointer = Head;
+            while(Pointer.Height != 0)
+            {
+                Pointer = Pointer.Bottom;
+            }
+            while(Pointer.Next != null)
+            {
+                yield return Pointer.Value;
+                Pointer = Pointer.Next;
+            }
+            yield return Pointer.Value;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
     }
 }
