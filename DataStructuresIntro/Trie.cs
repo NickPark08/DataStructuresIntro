@@ -45,16 +45,80 @@ namespace DataStructuresIntro
             {
                 return false;
             }
+            TrieNode FirstLetter = Root;
 
             for (int i = 0; i < word.Length; i++)
             {
                 if (Pointer.Children.ContainsKey(word[i]))
                 {
+                    if(Pointer.IsWord)
+                    {
+                        FirstLetter = Pointer;
+                    }
+                    else if(Pointer.Children.Count > 1)
+                    {
+                        FirstLetter = Pointer;
+                    }
+
                     Pointer = Pointer.Children[word[i]];
                 }
             }
-            if ()
-            return true;
+            if(Pointer.IsWord)
+            {
+                Pointer.IsWord = false;
+                for (int i = 0; i < word.Length; i++)
+                {
+                    if (FirstLetter.Children.ContainsKey(word[i]))
+                    {
+                        FirstLetter.Children.Remove(word[i]);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public TrieNode Search(string prefix)
+        {
+            TrieNode Pointer = Root;
+
+            if (!Pointer.Children.ContainsKey(prefix[0])) throw new ArgumentException("String not found in Trie");
+
+            for(int i = 0; i < prefix.Length; i++)
+            {
+                if (Pointer.Children.ContainsKey(prefix[i]))
+                {
+                    Pointer = Pointer.Children[prefix[i]];
+                }
+            }    
+            return Pointer;
+        }
+
+        public List<string> MatchingPrefix(string prefix)
+        {
+            TrieNode Pointer = Root;
+            List<string> matched = new List<string>();
+            string word = "";
+            if (!Pointer.Children.ContainsKey(prefix[0])) throw new ArgumentException("Prefix not found in Trie");
+
+            for (int i = 0; i < prefix.Length; i++)
+            {
+                if (Pointer.Children.ContainsKey(prefix[i]))
+                {
+                    Pointer = Pointer.Children[prefix[i]];
+                    word += prefix[i];
+                }
+                if (Pointer.IsWord)
+                {
+                    matched.Add(word);
+                }
+            }
+            string pre = word;
+            for (int i = 0; i < Pointer.Children.Count; i++)
+            {
+                Pointer = Pointer.Children
+            }
         }
     }
 }

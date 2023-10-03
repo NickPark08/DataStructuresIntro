@@ -11,8 +11,10 @@ class Program
         trie.Insert("hello");
         trie.Insert("heyo");
         trie.Insert("jazz");
+        trie.Insert("heaven");
+        trie.Remove("heyo");
 
-        TrieNode Pointer = trie.Root;
+        Console.WriteLine(trie.Search("heax").Letter);
         ;
     }
 }
