@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Diagnostics.Tracing;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +13,7 @@ namespace DataStructuresIntro
     {
         public char Letter { get; private set; }
         public Dictionary<char, TrieNode> Children { get; private set; }
+        public TrieNode Parent;
         public bool IsWord { get; set; }
 
         public TrieNode(char c)
@@ -27,11 +30,13 @@ namespace DataStructuresIntro
         public void Insert(string word)
         {
             TrieNode Pointer = Root;
+            word = word.ToLower();
             for (int i = 0; i < word.Length; i++)
             {
                 if (!Pointer.Children.ContainsKey(word[i]))
                 {
                     Pointer.Children.Add(word[i], new TrieNode(word[i]));
+                    Pointer.Children[word[i]].Parent = Pointer;
                 }
                 Pointer = Pointer.Children[word[i]];
             }
@@ -51,11 +56,11 @@ namespace DataStructuresIntro
             {
                 if (Pointer.Children.ContainsKey(word[i]))
                 {
-                    if(Pointer.IsWord)
+                    if (Pointer.IsWord)
                     {
                         FirstLetter = Pointer;
                     }
-                    else if(Pointer.Children.Count > 1)
+                    else if (Pointer.Children.Count > 1)
                     {
                         FirstLetter = Pointer;
                     }
@@ -63,7 +68,7 @@ namespace DataStructuresIntro
                     Pointer = Pointer.Children[word[i]];
                 }
             }
-            if(Pointer.IsWord)
+            if (Pointer.IsWord)
             {
                 Pointer.IsWord = false;
                 for (int i = 0; i < word.Length; i++)
@@ -85,13 +90,13 @@ namespace DataStructuresIntro
 
             if (!Pointer.Children.ContainsKey(prefix[0])) throw new ArgumentException("String not found in Trie");
 
-            for(int i = 0; i < prefix.Length; i++)
+            for (int i = 0; i < prefix.Length; i++)
             {
                 if (Pointer.Children.ContainsKey(prefix[i]))
                 {
                     Pointer = Pointer.Children[prefix[i]];
                 }
-            }    
+            }
             return Pointer;
         }
 
@@ -115,10 +120,36 @@ namespace DataStructuresIntro
                 }
             }
             string pre = word;
-            for (int i = 0; i < Pointer.Children.Count; i++)
+            char finalLetter = 'a';
+            while (Pointer != Root)
             {
-                Pointer = Pointer.Children
+                for (char letter = finalLetter; letter <= 'z'; letter++)
+                {
+                    if (Pointer.Children.ContainsKey(letter))
+                    {
+                        Pointer = Pointer.Children[letter];
+                        word += letter;
+                        if (Pointer.IsWord)
+                        {
+                            matched.Add(word);
+                        }
+                        if (Pointer.Parent.Children.Count > 1)
+                        {
+                            finalLetter = letter;
+                        }
+                        letter = 'a';
+                    }
+                }
+                while(Pointer.Children.Count < 1)
+                {
+                    Pointer = Pointer.Parent;
+                }
+                word = pre;
             }
+
+
+
+            return matched;
         }
     }
 }
