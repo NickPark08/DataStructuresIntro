@@ -102,8 +102,65 @@ namespace DataStructuresIntro
 
         public List<string> MatchingPrefix(string prefix)
         {
-            TrieNode Pointer = Root;
             List<string> matched = new List<string>();
+            char lastLetter = 'a';
+            return MatchingPrefix(prefix, matched, lastLetter);
+        }
+        private List<string> MatchingPrefix(string prefix, List<string> matched, char lastLetter)
+        {
+            TrieNode Pointer = Root;
+            string word = "";
+
+            if (!Pointer.Children.ContainsKey(prefix[0])) throw new ArgumentException("Prefix not found in Trie");
+
+            if (Pointer.Children == null) return matched;
+
+            for (int i = 0; i < prefix.Length; i++)
+            {
+                if (Pointer.Children.ContainsKey(prefix[i]))
+                {
+                    Pointer = Pointer.Children[prefix[i]];
+                    word += prefix[i];
+                }
+            }
+            for (char letter = lastLetter; letter <= 'z'; letter++)
+            {
+                if (Pointer.Children.ContainsKey(letter))
+                {
+                    word += letter;
+                    if (Pointer.Children.Count > 1)
+                    {
+                        if (Pointer.Children[letter].Children.Count > 1)
+                        {
+                            lastLetter = 'a';
+                        }
+                        else
+                        {
+                            lastLetter = letter;
+                        }
+                        return MatchingPrefix(word, matched, lastLetter);
+                    }
+                    Pointer = Pointer.Children[letter];
+                    if (Pointer.IsWord)
+                    {
+                        matched.Add(word);
+                    }
+                    else
+                    {
+                        letter = 'a';
+                    }
+                }
+                if(Pointer.Children.Count == 0 && lastLetter <= 'z')
+                {
+                    //return MatchingPrefix(prefix, matched, (char)(lastLetter + 1));
+                }
+            }
+
+            return matched;
+
+
+
+            /*
             string word = "";
             if (!Pointer.Children.ContainsKey(prefix[0])) throw new ArgumentException("Prefix not found in Trie");
 
@@ -123,23 +180,7 @@ namespace DataStructuresIntro
             char finalLetter = 'a';
             while (Pointer != Root)
             {
-                for (char letter = finalLetter; letter <= 'z'; letter++)
-                {
-                    if (Pointer.Children.ContainsKey(letter))
-                    {
-                        Pointer = Pointer.Children[letter];
-                        word += letter;
-                        if (Pointer.IsWord)
-                        {
-                            matched.Add(word);
-                        }
-                        if (Pointer.Parent.Children.Count > 1)
-                        {
-                            finalLetter = letter;
-                        }
-                        letter = 'a';
-                    }
-                }
+                f
                 while(Pointer.Children.Count < 1)
                 {
                     Pointer = Pointer.Parent;
@@ -149,7 +190,7 @@ namespace DataStructuresIntro
 
 
 
-            return matched;
+            return matched;*/
         }
     }
 }

@@ -7,14 +7,24 @@ class Program
 {
     public static void Main()
     {
+        List<string> strings= new List<string>();
+
         Trie trie = new Trie();
         trie.Insert("hello");
         trie.Insert("heyo");
         trie.Insert("jazz");
         trie.Insert("heaven");
-        trie.Remove("heyo");
+        trie.Insert("hi");
+        trie.Insert("hj");
+        trie.Insert("ho");
+        trie.Insert("hp");
 
-        Console.WriteLine(trie.Search("heax").Letter);
+        strings = trie.MatchingPrefix("h");
+
+        for(int i = 0; i < strings.Count; i++)
+        {
+            Console.WriteLine(strings[i]);
+        }
         ;
     }
 }
