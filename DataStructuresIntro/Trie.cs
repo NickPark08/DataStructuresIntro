@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataStructuresIntro
 {
-    class TrieNode
+    public class TrieNode
     {
         public char Letter { get; private set; }
         public Dictionary<char, TrieNode> Children { get; private set; }
@@ -24,7 +24,7 @@ namespace DataStructuresIntro
         }
     }
 
-    class Trie
+    public class Trie
     {
         public TrieNode Root = new TrieNode('$');
         public void Insert(string word)
@@ -84,7 +84,7 @@ namespace DataStructuresIntro
             return false;
         }
 
-        public TrieNode Search(string prefix)
+        public TrieNode Contains(string prefix)
         {
             TrieNode Pointer = Root;
 
@@ -128,19 +128,13 @@ namespace DataStructuresIntro
                 if (Pointer.Children.ContainsKey(letter))
                 {
                     word += letter;
+                    Pointer = Pointer.Children[letter];
                     if (Pointer.Children.Count > 1)
                     {
-                        if (Pointer.Children[letter].Children.Count > 1)
-                        {
-                            lastLetter = 'a';
-                        }
-                        else
-                        {
-                            lastLetter = letter;
-                        }
+                        lastLetter = letter;
                         return MatchingPrefix(word, matched, lastLetter);
                     }
-                    Pointer = Pointer.Children[letter];
+
                     if (Pointer.IsWord)
                     {
                         matched.Add(word);
@@ -149,10 +143,6 @@ namespace DataStructuresIntro
                     {
                         letter = 'a';
                     }
-                }
-                if(Pointer.Children.Count == 0 && lastLetter <= 'z')
-                {
-                    //return MatchingPrefix(prefix, matched, (char)(lastLetter + 1));
                 }
             }
 
