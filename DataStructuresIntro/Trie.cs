@@ -103,17 +103,15 @@ namespace DataStructuresIntro
         public List<string> MatchingPrefix(string prefix)
         {
             List<string> matched = new List<string>();
-            char lastLetter = 'a';
-            return MatchingPrefix(prefix, matched, lastLetter);
+            MatchingPrefix(prefix, matched);
+            return matched;
         }
-        private List<string> MatchingPrefix(string prefix, List<string> matched, char lastLetter)
+        private void MatchingPrefix(string prefix, List<string> matched)
         {
             TrieNode Pointer = Root;
             string word = "";
 
             if (!Pointer.Children.ContainsKey(prefix[0])) throw new ArgumentException("Prefix not found in Trie");
-
-            if (Pointer.Children == null) return matched;
 
             for (int i = 0; i < prefix.Length; i++)
             {
@@ -123,31 +121,35 @@ namespace DataStructuresIntro
                     word += prefix[i];
                 }
             }
-            for (char letter = lastLetter; letter <= 'z'; letter++)
+            //loop through dictionary (children) in pointer 
+            for (char letter = 'a'; letter <= 'z'; letter++)
             {
                 if (Pointer.Children.ContainsKey(letter))
                 {
-                    word += letter;
                     Pointer = Pointer.Children[letter];
-                    if (Pointer.Children.Count > 1)
-                    {
-                        lastLetter = letter;
-                        return MatchingPrefix(word, matched, lastLetter);
-                    }
+                    MatchingPrefix(word + letter, matched);
+                    //word += letter;
+                    //Pointer = Pointer.Children[letter];
+                    //if (Pointer.Children.Count > 1)
+                    //{
+                    //    lastLetter = letter;
+                    //    MatchingPrefix(word, matched, lastLetter);
+                    //}
 
-                    if (Pointer.IsWord)
-                    {
-                        matched.Add(word);
-                    }
-                    else
-                    {
-                        letter = 'a';
-                    }
+                    //if (Pointer.IsWord)
+                    //{
+                    //    matched.Add(word);
+                    //}
+                    //else
+                    //{
+                    //    letter = 'a';
+                    //}
                 }
             }
-
-            return matched;
-
+            if(Pointer.IsWord)
+            {
+                matched.Add(prefix);
+            }
 
 
             /*
