@@ -1,5 +1,7 @@
 using DataStructuresIntro;
 
+using Microsoft.VisualBasic;
+
 using System.Net.Http.Headers;
 
 namespace Tries
@@ -11,58 +13,62 @@ namespace Tries
         Trie trie = new Trie();
 
         [TestMethod]
-        [DataRow()]
-        public void AddTest(string input)
+        public void AddTest()
         {
-            trie.Insert(input);
-
-
+            Random randy = new Random();
+            string[] strings = RandomizedStrings(17332, 13);
+            string ranString = strings[randy.Next(0, strings.Length)];
+            trie.Insert(ranString);
+            
         }
 
         [TestMethod]
-        [DataRow("a", "b")]
-        public void ContainsTest(string tester, params string[] inputs)
+        public void ContainsTest()
         {
-            foreach (string str in inputs)
+            Random randy = new Random();
+
+            string[] strings = RandomizedStrings(927382, 13);
+            string tester = strings[randy.Next(0, strings.Length)];
+            tester = tester.ToLower();
+
+            foreach (string str in strings)
             {
                 trie.Insert(str);
             }
             TrieNode test = trie.Contains(tester);
             TrieNode Pointer = trie.Root;
-            for(int i = 0; i < inputs.Length; i++)
+            for(int i = 0; i < tester.Length; i++)
             {
                 Pointer = Pointer.Children[tester[i]];
             }
             Assert.AreEqual(test, Pointer);
         }
 
-        [TestMethod]
-        public void RandomizedContains(int seed, int itemAmount)
+        public string[] RandomizedStrings(int seed, int itemAmount)
         {
             Random randy = new Random(seed);
             string[] strings = new string[itemAmount];
 
-            //TODO: fill array
+            for(int i = 0; i < strings.Length; i++)
+            {
+                char[] ranString = new char[randy.Next(0, 20)];
+                for(int j = 0; j < ranString.Length; j++)
+                {
+                    if (randy.Next(0, 2) == 1)
+                    {
+                        ranString[j] = (char)(randy.Next(97, 123));
+                    }
+                    else
+                    {
+                        ranString[j] = (char)(randy.Next(67, 91));
+                    }
+                }
+                strings[i] = new string(ranString);
+            }
 
+            return strings;
 
-            ContainsTest(strings[randy.Next()],strings);
         }
 
     }
 }
-
-//namespace Math.Dividing
-//{
-//    [TestClass]
-//    public class DivideTest
-//    {
-//        [TestMethod]
-//        [DataRow(5, 2, 0)]
-//        [DataRow(10, 2, 5)]
-//        public void DivisionTest(int num1, int num2, int expected)
-//        {
-//            int num = num1 / num2;
-//            Assert.IsTrue(num == expected);
-//        }
-//    }
-//}

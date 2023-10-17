@@ -45,6 +45,7 @@ namespace DataStructuresIntro
         public bool Remove(string word)
         {
             TrieNode Pointer = Root;
+            word = word.ToLower();
 
             if (!Pointer.Children.ContainsKey(word[0]))
             {
@@ -87,6 +88,7 @@ namespace DataStructuresIntro
         public TrieNode Contains(string prefix)
         {
             TrieNode Pointer = Root;
+            prefix = prefix.ToLower();
 
             if (!Pointer.Children.ContainsKey(prefix[0])) throw new ArgumentException("String not found in Trie");
 
@@ -121,68 +123,20 @@ namespace DataStructuresIntro
                     word += prefix[i];
                 }
             }
-            //loop through dictionary (children) in pointer 
+
             for (char letter = 'a'; letter <= 'z'; letter++)
             {
                 if (Pointer.Children.ContainsKey(letter))
                 {
                     Pointer = Pointer.Children[letter];
                     MatchingPrefix(word + letter, matched);
-                    //word += letter;
-                    //Pointer = Pointer.Children[letter];
-                    //if (Pointer.Children.Count > 1)
-                    //{
-                    //    lastLetter = letter;
-                    //    MatchingPrefix(word, matched, lastLetter);
-                    //}
-
-                    //if (Pointer.IsWord)
-                    //{
-                    //    matched.Add(word);
-                    //}
-                    //else
-                    //{
-                    //    letter = 'a';
-                    //}
+                    Pointer = Pointer.Parent;
                 }
             }
             if(Pointer.IsWord)
             {
                 matched.Add(prefix);
             }
-
-
-            /*
-            string word = "";
-            if (!Pointer.Children.ContainsKey(prefix[0])) throw new ArgumentException("Prefix not found in Trie");
-
-            for (int i = 0; i < prefix.Length; i++)
-            {
-                if (Pointer.Children.ContainsKey(prefix[i]))
-                {
-                    Pointer = Pointer.Children[prefix[i]];
-                    word += prefix[i];
-                }
-                if (Pointer.IsWord)
-                {
-                    matched.Add(word);
-                }
-            }
-            string pre = word;
-            char finalLetter = 'a';
-            while (Pointer != Root)
-            {
-                f
-                while(Pointer.Children.Count < 1)
-                {
-                    Pointer = Pointer.Parent;
-                }
-                word = pre;
-            }
-
-
-
-            return matched;*/
         }
     }
 }

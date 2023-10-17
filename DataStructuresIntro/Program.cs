@@ -18,8 +18,9 @@ class Program
         trie.Insert("hj");
         trie.Insert("ho");
         trie.Insert("hp");
+        trie.Insert("HA");
 
-        strings = trie.MatchingPrefix("h");
+        strings = trie.MatchingPrefix("j");
 
         for(int i = 0; i < strings.Count; i++)
         {
