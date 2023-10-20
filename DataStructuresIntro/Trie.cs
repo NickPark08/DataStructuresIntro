@@ -102,6 +102,23 @@ namespace DataStructuresIntro
             return Pointer;
         }
 
+        public bool ContainsWord(string prefix)
+        {
+            TrieNode temp = Contains(prefix);
+            TrieNode Pointer = Root;
+
+            if (!Pointer.Children.ContainsKey(prefix[0])) throw new ArgumentException("String not found in Trie");
+
+            for(int i = 0; i < prefix.Length; i++)
+            {
+                if (Pointer.Children.ContainsKey(prefix[i]))
+                {
+                    Pointer = Pointer.Children[prefix[i]];
+                }
+            }
+            return temp == Pointer;
+        }
+
         public List<string> MatchingPrefix(string prefix)
         {
             List<string> matched = new List<string>();

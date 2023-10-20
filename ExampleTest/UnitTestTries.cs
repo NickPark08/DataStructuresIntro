@@ -19,7 +19,7 @@ namespace Tries
             string[] strings = RandomizedStrings(17332, 13);
             string ranString = strings[randy.Next(0, strings.Length)];
             trie.Insert(ranString);
-            
+            Assert.IsTrue(trie.ContainsWord(ranString));
         }
 
         [TestMethod]
