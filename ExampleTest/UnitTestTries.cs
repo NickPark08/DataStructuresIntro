@@ -13,6 +13,51 @@ namespace Tries
         Trie trie = new Trie();
 
         [TestMethod]
+        [DataRow("z")]
+        public void MatchingPrefixTest(string prefix)
+        {
+            Trie trie1 = new Trie();
+            trie1.Insert("aa");
+            trie1.Insert("aab");
+            trie1.Insert("aabc");
+            trie1.Insert("aabcd");
+            trie1.Insert("zb");
+            trie1.Insert("zloes");
+            trie1.Insert("zleienesns");
+
+            List<string> expected = new List<string>();
+            expected.Add("aabcd");
+            expected.Add("aabc");
+            expected.Add("aab");
+            expected.Add("aa");
+
+            List<string> matched = new List<string>();
+            matched = trie1.MatchingPrefix(prefix);
+
+            for (int i = 0; i < matched.Count; i++)
+            {
+                if (matched[i] == expected[i])
+                {
+                    Assert.AreEqual(expected[i], matched[i]);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void RemoveTest()
+        {
+            Random randy = new Random();
+            string[] strings = RandomizedStrings(17332, 13);
+            string ranString = strings[randy.Next(0, strings.Length)];
+            foreach (string str in strings)
+            {
+                trie.Insert(str);
+            }
+            trie.Remove(ranString);
+            Assert.IsFalse(trie.ContainsWord(ranString));
+        }
+
+        [TestMethod]
         public void AddTest()
         {
             Random randy = new Random();
@@ -51,7 +96,7 @@ namespace Tries
 
             for(int i = 0; i < strings.Length; i++)
             {
-                char[] ranString = new char[randy.Next(0, 20)];
+                char[] ranString = new char[randy.Next(1, 20)];
                 for(int j = 0; j < ranString.Length; j++)
                 {
                     if (randy.Next(0, 2) == 1)

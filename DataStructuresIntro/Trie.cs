@@ -104,10 +104,11 @@ namespace DataStructuresIntro
 
         public bool ContainsWord(string prefix)
         {
-            TrieNode temp = Contains(prefix);
+            prefix = prefix.ToLower();
             TrieNode Pointer = Root;
 
-            if (!Pointer.Children.ContainsKey(prefix[0])) throw new ArgumentException("String not found in Trie");
+            if (!Pointer.Children.ContainsKey(prefix[0])) return false;
+            TrieNode temp = Contains(prefix);
 
             for(int i = 0; i < prefix.Length; i++)
             {
@@ -116,7 +117,8 @@ namespace DataStructuresIntro
                     Pointer = Pointer.Children[prefix[i]];
                 }
             }
-            return temp == Pointer;
+            if (Pointer != temp) return false;
+            else return Pointer.IsWord;
         }
 
         public List<string> MatchingPrefix(string prefix)
