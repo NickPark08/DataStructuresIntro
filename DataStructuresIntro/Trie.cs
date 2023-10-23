@@ -98,6 +98,10 @@ namespace DataStructuresIntro
                 {
                     Pointer = Pointer.Children[prefix[i]];
                 }
+                else
+                {
+                    return Root;
+                }
             }
             return Pointer;
         }

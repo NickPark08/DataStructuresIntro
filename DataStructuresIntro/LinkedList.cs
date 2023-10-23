@@ -58,25 +58,6 @@ namespace DataStructuresIntro
             Count++;
         }
 
-        //public void Add(T value, int index)
-        //{
-        //    //if index = 1, go through the loop 0 times, if 2, go through it once
-        //    Node<T> Pointer = Head;
-        //    int count = 1;
-        //    while(index > count)
-        //    {
-        //        count++;
-        //        Pointer = Pointer.Next;
-        //    }
-        //    Node<T> newNode = new Node<T>(value, Pointer.Next);
-        //    Pointer.Next = newNode;
-        //    if(newNode.Next == null)
-        //    {
-        //        Tail = newNode;
-        //    }
-        //    Count++;
-        //}
-
         public void AddBefore(T value, Node<T> node)
         {
             if (node == null) throw new ArgumentNullException("Node is null");
