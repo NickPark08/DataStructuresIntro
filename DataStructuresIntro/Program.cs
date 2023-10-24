@@ -1,4 +1,6 @@
-﻿using DataStructuresIntro;
+﻿using DataStructures;
+
+using DataStructuresIntro;
 
 using System.Data;
 using System.Reflection;
@@ -7,25 +9,18 @@ class Program
 {
     public static void Main()
     {
-        List<string> strings= new List<string>();
+        UndirectedUnweightedGraph<int> graph = new UndirectedUnweightedGraph<int>();
 
-        Trie trie = new Trie();
-        trie.Insert("hello");
-        trie.Insert("heyo");
-        trie.Insert("jazz");
-        trie.Insert("heaven");
-        trie.Insert("hi");
-        trie.Insert("hj");
-        trie.Insert("ho");
-        trie.Insert("hp");
-        trie.Insert("HA");
+        Random randy = new Random();
 
-        strings = trie.MatchingPrefix("j");
-
-        for(int i = 0; i < strings.Count; i++)
+        for(int i = 0; i < randy.Next(0,20); i++)
         {
-            Console.WriteLine(strings[i]);
+            graph.AddVertex(new Vertex<int>(randy.Next(0, 101)));
         }
+
+        graph.AddEdge(graph.Vertices[0], graph.Vertices[1]);
+        graph.DeleteEdge(graph.Vertices[0], graph.Vertices[1]);
+
         ;
     }
 }
