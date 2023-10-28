@@ -11,11 +11,13 @@ namespace DataStructures
         public T Value;
         public List<Vertex<T>> Neighbors;
         public int NeighborCount => Neighbors.Count;
+        public bool isVisited;
 
         public Vertex(T value)
         {
             Value = value;
             Neighbors = new List<Vertex<T>>();
+            isVisited = false;
         }
     }
     class UndirectedUnweightedGraph<T>
@@ -23,12 +25,51 @@ namespace DataStructures
         public List<Vertex<T>> Vertices = new List<Vertex<T>>();
         public int VertexCount => Vertices.Count;
 
-
-        public Queue<T> DepthFirst()
+        public bool AllVisited()
         {
-            var queue = new Queue<T>();
+            for(int i = 0; i < Vertices.Count; i++)
+            {
+                if (!Vertices[i].isVisited) return false;
+            }
 
+            return true;
+        }
 
+        public void DepthFirst(Vertex<T> start)
+        {
+            if (start.NeighborCount == 0) throw new Exception("Start vertex is not in graph");
+            var stack = new Stack<Vertex<T>>();
+            Vertex<T> Pointer = start;
+
+            stack.Push(start);
+            for(int i = 0; i < Vertices.Count; i++)
+            {
+                Vertices[i].isVisited = false;
+            }
+            start.isVisited = true;
+            Console.WriteLine(start.Value);
+
+            while (stack.Count != 0)
+            {
+                for (int i = Pointer.NeighborCount - 1; i >= 0; i--)
+                {
+                    if (!Pointer.Neighbors[i].isVisited)
+                    {
+                        stack.Push(Pointer.Neighbors[i]);
+                    }
+                }
+                if (!AllVisited())
+                {
+                    Pointer = stack.Pop();
+
+                    if (!Pointer.isVisited)
+                    {
+                        Pointer.isVisited = true;
+                        Console.WriteLine(Pointer.Value);
+                    }
+     
+                }
+            }
         }
 
         public bool AddVertex(Vertex<T> newVertex)
@@ -76,13 +117,13 @@ namespace DataStructures
                 {
                     vertexInList = true;
                 }
-                if(vert.Neighbors.Contains(vertex))
+                if (vert.Neighbors.Contains(vertex))
                 {
                     vert.Neighbors.Remove(vertex);
                 }
             }
 
-            if(vertexInList)
+            if (vertexInList)
             {
                 vertex.Neighbors.Clear();
                 Vertices.Remove(vertex);
@@ -94,7 +135,7 @@ namespace DataStructures
         {
             bool vertA = false;
             bool vertB = false;
-            for(int i = 0; i < VertexCount; i++)
+            for (int i = 0; i < VertexCount; i++)
             {
                 if (Vertices[i] == vertexA && vertexA.Neighbors.Contains(vertexB))
                 {

@@ -10,16 +10,28 @@ class Program
     public static void Main()
     {
         UndirectedUnweightedGraph<int> graph = new UndirectedUnweightedGraph<int>();
-
         Random randy = new Random();
 
-        for(int i = 0; i < randy.Next(0,20); i++)
+        Vertex<int>[] vertices = new Vertex<int>[8];
+
+        for(int i = 0; i < vertices.Length; i++)
         {
-            graph.AddVertex(new Vertex<int>(randy.Next(0, 101)));
+            vertices[i] = new Vertex<int>(i);
+            graph.AddVertex(vertices[i]);
         }
 
-        graph.AddEdge(graph.Vertices[0], graph.Vertices[1]);
-        graph.DeleteEdge(graph.Vertices[0], graph.Vertices[1]);
+        graph.AddEdge(vertices[0], vertices[1]);
+        graph.AddEdge(vertices[0], vertices[2]);
+        graph.AddEdge(vertices[1], vertices[3]);
+        graph.AddEdge(vertices[0], vertices[3]);
+        graph.AddEdge(vertices[3], vertices[5]);
+        graph.AddEdge(vertices[3], vertices[7]);
+        graph.AddEdge(vertices[5], vertices[6]);
+        graph.AddEdge(vertices[5], vertices[7]);
+        graph.AddEdge(vertices[6], vertices[7]);
+        graph.AddEdge(vertices[7], vertices[4]);
+
+        graph.DepthFirst(vertices[0]);
 
         ;
     }
