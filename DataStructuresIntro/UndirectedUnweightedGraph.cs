@@ -27,7 +27,7 @@ namespace DataStructures
 
         public bool AllVisited()
         {
-            for(int i = 0; i < Vertices.Count; i++)
+            for (int i = 0; i < Vertices.Count; i++)
             {
                 if (!Vertices[i].isVisited) return false;
             }
@@ -42,14 +42,14 @@ namespace DataStructures
             Vertex<T> Pointer = start;
 
             stack.Push(start);
-            for(int i = 0; i < Vertices.Count; i++)
+            for (int i = 0; i < Vertices.Count; i++)
             {
                 Vertices[i].isVisited = false;
             }
             start.isVisited = true;
             Console.WriteLine(start.Value);
 
-            while (stack.Count != 0)
+            while (stack.Count >= 1)
             {
                 for (int i = Pointer.NeighborCount - 1; i >= 0; i--)
                 {
@@ -67,9 +67,100 @@ namespace DataStructures
                         Pointer.isVisited = true;
                         Console.WriteLine(Pointer.Value);
                     }
-     
+                }
+                else
+                {
+                    stack.Clear();
+                    return;
                 }
             }
+        }
+
+        public void DepthFirstRecursive(Vertex<T> start)
+        {
+            var stack = new Stack<Vertex<T>>();
+            if (start.NeighborCount == 0) return;
+            Console.WriteLine(start.Value);
+
+            for (int i = VertexCount - 1; i >= 0; i--)
+            {
+                Vertices[i].isVisited = false;
+            }
+            start.isVisited = true;
+            DepthFirstRecursive(start, stack);
+
+            for (int i = 0; i < stack.Count; i++)
+            {
+                Console.WriteLine(stack.Pop().Value);
+            }
+        }
+        private void DepthFirstRecursive(Vertex<T> start, Stack<Vertex<T>> stack)
+        {
+            //start.isVisited = true;
+            //stack.Push(start);
+
+            for (int i = start.NeighborCount - 1; i >= 0; i--)
+            {
+                if (!start.Neighbors[i].isVisited)
+                {
+                    stack.Push(start.Neighbors[i]);
+                }
+            }
+            if (!AllVisited())
+            {
+                if (!stack.Peek().isVisited)
+                {
+                    stack.Peek().isVisited = true;
+                    Console.WriteLine(stack.Peek().Value);
+                }
+                DepthFirstRecursive(stack.Pop(), stack);
+                return;
+            }
+            else
+            {
+                stack.Clear();
+                return;
+            }
+        }
+
+        //public void BreadthFirst(Vertex<T> start)
+        //{
+        //    if (start.NeighborCount == 0) throw new Exception("Start vertex is not in graph");
+
+        //    for(int i = 0; i < VertexCount; i++)
+        //    {
+        //        Vertices[i].isVisited = false;
+        //    }
+        //    var queue = new Queue<Vertex<T>>();
+        //    Vertex<T> parent = start;
+        //    queue.Enqueue(start);
+        //    BreadthFirst(start, parent, queue);
+
+        //    //for(int i = 0; i < queue.Count; i++)
+        //    //{
+        //    //    Console.WriteLine(queue.Dequeue().Value);
+        //    //}
+        //}
+        public void BreadthFirst(Vertex<T> start)
+        {
+            var queue = new Queue<Vertex<T>>();
+            Vertex<T> Pointer = start;
+
+            for(int i = 0; i < Pointer.NeighborCount; i++)
+            {
+                if (!start.Neighbors[i].isVisited)
+                {
+                    queue.Enqueue(start.Neighbors[i]);
+                    start.Neighbors[i].isVisited = true;
+                    Console.WriteLine(start.Neighbors[i].Value);
+                }
+            }
+
+        }
+
+        private void CheckAllConnections()
+        {
+
         }
 
         public bool AddVertex(Vertex<T> newVertex)

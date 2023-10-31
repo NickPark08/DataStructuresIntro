@@ -32,6 +32,8 @@ class Program
         graph.AddEdge(vertices[7], vertices[4]);
 
         graph.DepthFirst(vertices[0]);
+        Console.WriteLine();
+        graph.DepthFirstRecursive(vertices[0]);
 
         ;
     }
