@@ -6,31 +6,31 @@ using System.Threading.Tasks;
 
 namespace DataStructures
 {
-    public class Vertex<T>
+    public class UUVertex<T>
     {
         public T Value;
-        public List<Vertex<T>> Neighbors;
-        public Vertex<T> Founder;
+        public List<UUVertex<T>> Neighbors;
+        public UUVertex<T> Founder;
         public int NeighborCount => Neighbors.Count;
         public bool isVisited;
 
-        public Vertex(T value)
+        public UUVertex(T value)
         {
             Value = value;
-            Neighbors = new List<Vertex<T>>();
+            Neighbors = new List<UUVertex<T>>();
             isVisited = false;
         }
     }
     class UndirectedUnweightedGraph<T>
     {
-        public List<Vertex<T>> Vertices = new List<Vertex<T>>();
+        public List<UUVertex<T>> Vertices = new List<UUVertex<T>>();
         public int VertexCount => Vertices.Count;
 
-        public void DepthFirst(Vertex<T> start)
+        public void DepthFirst(UUVertex<T> start)
         {
             if (start.NeighborCount == 0) throw new Exception("Start vertex is not in graph");
-            var stack = new Stack<Vertex<T>>();
-            Vertex<T> Pointer = start;
+            var stack = new Stack<UUVertex<T>>();
+            UUVertex<T> Pointer = start;
 
             stack.Push(start);
             for (int i = 0; i < Vertices.Count; i++)
@@ -59,9 +59,9 @@ namespace DataStructures
             }
         }
 
-        public void DepthFirstRecursive(Vertex<T> start)
+        public void DepthFirstRecursive(UUVertex<T> start)
         {
-            var stack = new Stack<Vertex<T>>();
+            var stack = new Stack<UUVertex<T>>();
             if (start.NeighborCount == 0) return;
             Console.WriteLine(start.Value);
 
@@ -77,7 +77,7 @@ namespace DataStructures
                 Console.WriteLine(stack.Pop().Value);
             }
         }
-        private void DepthFirstRecursive(Vertex<T> start, Stack<Vertex<T>> stack)
+        private void DepthFirstRecursive(UUVertex<T> start, Stack<UUVertex<T>> stack)
         {
             for (int i = start.NeighborCount - 1; i >= 0; i--)
             {
@@ -97,10 +97,9 @@ namespace DataStructures
             DepthFirstRecursive(stack.Pop(), stack);
             return;
         }
-        public List<Vertex<T>> BreadthFirst(Vertex<T> start)
+        public void BreadthFirst(UUVertex<T> start)
         {
-            Queue<Vertex<T>> traversal = new Queue<Vertex<T>>();
-            List<Vertex<T>> path = new List<Vertex<T>>();
+            Queue<UUVertex<T>> traversal = new Queue<UUVertex<T>>();
 
             for (int i = 0; i < VertexCount; i++)
             {
@@ -112,7 +111,7 @@ namespace DataStructures
 
             while (traversal.Count > 0)
             {
-                Vertex<T> Pointer = traversal.Dequeue();
+                UUVertex<T> Pointer = traversal.Dequeue();
                 for (int i = 0; i < Pointer.NeighborCount; i++)
                 {
                     if (!Pointer.Neighbors[i].isVisited)
@@ -123,10 +122,55 @@ namespace DataStructures
                     }
                 }
             }
-
         }
 
-        public bool AddVertex(Vertex<T> newVertex)
+        public List<UUVertex<T>> SingleSourceShortest(UUVertex<T> end, UUVertex<T> start)
+        {
+            Queue<UUVertex<T>> traversal = new Queue<UUVertex<T>>();
+            List<UUVertex<T>> path = new List<UUVertex<T>>();
+            bool endNotFound = true;
+
+            for (int i = 0; i < VertexCount; i++)
+            {
+                Vertices[i].isVisited = false;
+                Vertices[i].Founder = null;
+            }
+            start.isVisited = true;
+            traversal.Enqueue(start);
+
+            while (traversal.Count > 0)
+            {
+                UUVertex<T> Pointer = traversal.Dequeue();
+                for (int i = 0; i < Pointer.NeighborCount; i++)
+                {
+                    if (!Pointer.Neighbors[i].isVisited)
+                    {
+                        traversal.Enqueue(Pointer.Neighbors[i]);
+                        Pointer.Neighbors[i].isVisited = true;
+                        Pointer.Neighbors[i].Founder = Pointer;
+                        if (Pointer.Neighbors[i] == end)
+                        {
+                            path.Add(Pointer.Neighbors[i]);
+                            endNotFound = false;
+                            break;
+                        }
+                    }
+                }
+                if (!endNotFound)
+                {
+                    break;
+                }
+            }
+            UUVertex<T> founder = path[0];
+            while(founder != start)
+            {
+                path.Add(founder.Founder);
+                founder = founder.Founder;
+            }
+            return path;
+        }
+
+        public bool AddVertex(UUVertex<T> newVertex)
         {
             if (newVertex == null || newVertex.NeighborCount != 0) return false;
 
@@ -138,7 +182,7 @@ namespace DataStructures
             Vertices.Add(newVertex);
             return true;
         }
-        public bool AddEdge(Vertex<T> vertexA, Vertex<T> vertexB)
+        public bool AddEdge(UUVertex<T> vertexA, UUVertex<T> vertexB)
         {
             bool vertA = false;
             bool vertB = false;
@@ -162,10 +206,10 @@ namespace DataStructures
             }
             return vertA && vertB;
         }
-        public bool DeleteVertex(Vertex<T> vertex)
+        public bool DeleteVertex(UUVertex<T> vertex)
         {
             bool vertexInList = false;
-            foreach (Vertex<T> vert in Vertices)
+            foreach (UUVertex<T> vert in Vertices)
             {
                 if (vert == vertex)
                 {
@@ -185,7 +229,7 @@ namespace DataStructures
             }
             return vertexInList;
         }
-        public bool DeleteEdge(Vertex<T> vertexA, Vertex<T> vertexB)
+        public bool DeleteEdge(UUVertex<T> vertexA, UUVertex<T> vertexB)
         {
             bool vertA = false;
             bool vertB = false;
@@ -208,7 +252,7 @@ namespace DataStructures
             }
             return vertA && vertB;
         }
-        public Vertex<T> Search(T value)
+        public UUVertex<T> Search(T value)
         {
             int index = -1;
             for (int i = 0; i < VertexCount; i++)

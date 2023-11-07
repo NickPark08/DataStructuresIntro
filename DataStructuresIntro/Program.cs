@@ -12,11 +12,11 @@ class Program
         UndirectedUnweightedGraph<int> graph = new UndirectedUnweightedGraph<int>();
         Random randy = new Random();
 
-        Vertex<int>[] vertices = new Vertex<int>[8];
+        UUVertex<int>[] vertices = new UUVertex<int>[8];
 
         for (int i = 0; i < vertices.Length; i++)
         {
-            vertices[i] = new Vertex<int>(i);
+            vertices[i] = new UUVertex<int>(i);
             graph.AddVertex(vertices[i]);
         }
 
@@ -32,7 +32,11 @@ class Program
         graph.AddEdge(vertices[5], vertices[6]);
         graph.AddEdge(vertices[6], vertices[7]);
 
-        graph.DepthFirstRecursive(vertices[0]);
-        ;
+        List<UUVertex<int>> shortest = graph.SingleSourceShortest(vertices[4], vertices[6]);
+        
+        for(int i = 0; i < shortest.Count; i++)
+        {
+            Console.WriteLine(shortest[i].Value);
+        }
     }
 }
