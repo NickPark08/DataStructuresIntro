@@ -23,7 +23,9 @@ namespace DataStructures
     public class WDVertex<T>
     {
         public T Value;
-        public List<WDEdge<T>> Neighbors;
+        public List<WDEdge<T>> Neighbors = new List<WDEdge<T>>();
+        public bool isVisited;
+        public WDVertex<T> Founder;
         public int NeighborCount => Neighbors.Count;
 
         public WDVertex(T value)
@@ -33,9 +35,121 @@ namespace DataStructures
     }
     class WeightedDirectedGraph<T>
     {
-        public List<WDVertex<T>> Vertices;
-        public List<WDEdge<T>> Edges;
+        public List<WDVertex<T>> Vertices = new List<WDVertex<T>>();
+        public List<WDEdge<T>> Edges = new List<WDEdge<T>>();
         public int VertexCount => Vertices.Count;
+
+        public string CompareCosts(WDVertex<T> start, WDVertex<T> end)
+        {
+            float lowest;
+            float cost1 = DepthFirst(start, end);
+            float cost2 = BreadthFirst(start, end);
+            if(cost1 < cost2)
+            {
+                lowest = cost1;
+            }
+            else
+            {
+                lowest = cost2;
+            }
+
+            return $"DepthFirst: {cost1} \nBreadthFirst: {cost2} \nLowest Cost: {lowest}";
+        }
+
+        public float DepthFirst(WDVertex<T> start, WDVertex<T> end)
+        {
+            float cost = 0;
+            if (start.NeighborCount == 0) throw new Exception("Start vertex is not in graph");
+            var stack = new Stack<WDVertex<T>>();
+            WDVertex<T> Pointer = start;
+
+            stack.Push(start);
+            for (int i = 0; i < Vertices.Count; i++)
+            {
+                Vertices[i].isVisited = false;
+            }
+            start.isVisited = true;
+
+            while (stack.Count >= 1)
+            {
+                for (int i = Pointer.NeighborCount - 1; i >= 0; i--)
+                {
+                    if (!Pointer.Neighbors[i].EndPoint.isVisited)
+                    {
+                        stack.Push(Pointer.Neighbors[i].EndPoint);
+                    }
+                }
+                foreach(var edge in Edges)
+                {
+                    if(edge.StartPoint == Pointer && edge.EndPoint == stack.Peek())
+                    {
+                        cost += edge.Distance;
+                    }
+                }
+                Pointer = stack.Pop();
+          
+                if (!Pointer.isVisited)
+                {
+                    Pointer.isVisited = true;
+                    if (Pointer == end) break;
+                }
+            }
+            return cost;
+        }
+
+        public float BreadthFirst(WDVertex<T> start, WDVertex<T> end)
+        {
+            float cost = 0;
+            Queue<WDVertex<T>> traversal = new Queue<WDVertex<T>>();
+            List<WDVertex<T>> path = new List<WDVertex<T>>();
+            bool endNotFound = true;
+
+            for (int i = 0; i < VertexCount; i++)
+            {
+                Vertices[i].isVisited = false;
+                Vertices[i].Founder = null;
+            }
+            start.isVisited = true;
+            traversal.Enqueue(start);
+
+            while (traversal.Count > 0)
+            {
+                WDVertex<T> Pointer = traversal.Dequeue();
+                for (int i = 0; i < Pointer.NeighborCount; i++)
+                {
+                    if (!Pointer.Neighbors[i].EndPoint.isVisited && Pointer.Neighbors[i].EndPoint != Pointer)
+                    {
+                        traversal.Enqueue(Pointer.Neighbors[i].EndPoint);
+                        Pointer.Neighbors[i].EndPoint.isVisited = true;
+                        Pointer.Neighbors[i].EndPoint.Founder = Pointer;
+                        if (Pointer.Neighbors[i].EndPoint == end)
+                        {
+                            path.Add(Pointer.Neighbors[i].EndPoint);
+                            endNotFound = false;
+                            break;
+                        }
+                    }
+                }
+                if (!endNotFound)
+                {
+                    break;
+                }
+            }
+            WDVertex<T> founder = path[0];
+            while (founder != start)
+            {
+                foreach(var edge in Edges)
+                {
+                    if(edge.EndPoint == founder && edge.StartPoint == founder.Founder)
+                    {
+                        cost += edge.Distance;
+                    }
+                }
+                path.Add(founder.Founder);
+                founder = founder.Founder;
+            }
+            return cost;
+        }
 
         public bool AddVertex(WDVertex<T> newVertex)
         {
@@ -92,7 +206,7 @@ namespace DataStructures
         }
         public bool DeleteEdge(WDVertex<T> start, WDVertex<T> end)
         {
-            WDEdge<T> removedEdge;
+            WDEdge<T> removedEdge = null;
             bool edgeFound = false;
             if (start == null || end == null || !Vertices.Contains(start) || !Vertices.Contains(end)) return false;
 
@@ -100,14 +214,51 @@ namespace DataStructures
             {
                 if (edge.StartPoint == start && edge.EndPoint == end)
                 {
-                    removedEdge = //edge
+                    removedEdge = edge;
                     edgeFound = true;
                 }
             }
             if(edgeFound)
             {
-
+                start.Neighbors.Remove(removedEdge);
+                end.Neighbors.Remove(removedEdge);
+                Edges.Remove(removedEdge);
             }
+            return edgeFound;
+        }
+
+        public WDVertex<T> Search(T value)
+        {
+            int count = -1;
+            for(int i = 0; i < VertexCount; i++)
+            {
+                if (Vertices[i].Value.Equals(value))
+                {
+                    count = i;
+                    break;
+                }
+            }
+            if (count == -1) throw new Exception("Vertex not found in graph");
+            else
+            {
+                return Vertices[count];
+            }
+        }
+        public WDEdge<T> GetEdge(WDVertex<T> start, WDVertex<T> end)
+        {
+            int count = -1;
+            if (start == null || end == null) throw new Exception("Vertex is null");
+
+            for(int i = 0; i < Edges.Count; i++)
+            {
+                if (Edges[i].StartPoint == start && Edges[i].EndPoint == end)
+                {
+                    count = i;
+                    break;
+                }
+            }
+            if (count == -1) throw new Exception("Edge not found in graph");
+            return Edges[count];
         }
     }
 
