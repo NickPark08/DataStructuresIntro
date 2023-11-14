@@ -36,7 +36,11 @@ class Program
         graph.AddEdge(vertices[7], vertices[4], 23);
         graph.AddEdge(vertices[7], vertices[5], 24);
 
-        Console.WriteLine(graph.CompareCosts(vertices[0], vertices[5]));
-        ;
+        List<WDVertex<int>> path = graph.Dijkstra(vertices[0], vertices[7]);
+
+        for(int i = path.Count - 1; i >= 0; i--)
+        {
+            Console.WriteLine(path[i].Value);
+        }
     }
 }

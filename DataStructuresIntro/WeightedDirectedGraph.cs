@@ -25,7 +25,9 @@ namespace DataStructures
         public T Value;
         public List<WDEdge<T>> Neighbors = new List<WDEdge<T>>();
         public bool isVisited;
+        public bool inQueue;
         public WDVertex<T> Founder;
+        public float CumulativeDistance;
         public int NeighborCount => Neighbors.Count;
 
         public WDVertex(T value)
@@ -39,12 +41,67 @@ namespace DataStructures
         public List<WDEdge<T>> Edges = new List<WDEdge<T>>();
         public int VertexCount => Vertices.Count;
 
+
+        public List<WDVertex<T>> Dijkstra(WDVertex<T> start, WDVertex<T> end)
+        {
+            foreach (var vertex in Vertices)
+            {
+                vertex.isVisited = false;
+                vertex.inQueue = false;
+                vertex.CumulativeDistance = float.PositiveInfinity;
+                vertex.Founder = null;
+            }
+            PriorityQueue<WDVertex<T>, float> queue = new PriorityQueue<WDVertex<T>, float>();
+            List<WDVertex<T>> path = new List<WDVertex<T>>();
+            start.CumulativeDistance = 0f;
+            queue.Enqueue(start, start.CumulativeDistance);
+
+            do
+            {
+                WDVertex<T> current = queue.Dequeue();
+
+                for (int i = 0; i < current.NeighborCount; i++)
+                {
+                    float tentative;
+                    if (current.Neighbors[i].EndPoint != current)
+                    {
+                        tentative = current.CumulativeDistance + current.Neighbors[i].Distance;
+                        if (tentative < current.Neighbors[i].EndPoint.CumulativeDistance)
+                        {
+                            current.Neighbors[i].EndPoint.CumulativeDistance = tentative;
+                            current.Neighbors[i].EndPoint.Founder = current;
+                        }
+                        if (!current.Neighbors[i].EndPoint.isVisited && !current.Neighbors[i].EndPoint.inQueue)
+                        {
+                            queue.Enqueue(current.Neighbors[i].EndPoint, current.Neighbors[i].Distance);
+                            current.Neighbors[i].EndPoint.inQueue = true;
+                        }
+                    }
+                    current.isVisited = true;
+                }
+                if (end.isVisited)
+                {
+                    break;
+                }
+            } while (queue.Count > 0);
+
+            WDVertex<T> founder = end;
+            while(founder != start)
+            {
+                path.Add(founder);
+                founder = founder.Founder;
+            }
+            path.Add(start);
+            return path;
+        }
+
+
         public string CompareCosts(WDVertex<T> start, WDVertex<T> end)
         {
             float lowest;
             float cost1 = DepthFirst(start, end);
             float cost2 = BreadthFirst(start, end);
-            if(cost1 < cost2)
+            if (cost1 < cost2)
             {
                 lowest = cost1;
             }
@@ -79,15 +136,15 @@ namespace DataStructures
                         stack.Push(Pointer.Neighbors[i].EndPoint);
                     }
                 }
-                foreach(var edge in Edges)
+                foreach (var edge in Edges)
                 {
-                    if(edge.StartPoint == Pointer && edge.EndPoint == stack.Peek())
+                    if (edge.StartPoint == Pointer && edge.EndPoint == stack.Peek())
                     {
                         cost += edge.Distance;
                     }
                 }
                 Pointer = stack.Pop();
-          
+
                 if (!Pointer.isVisited)
                 {
                     Pointer.isVisited = true;
@@ -138,9 +195,9 @@ namespace DataStructures
             WDVertex<T> founder = path[0];
             while (founder != start)
             {
-                foreach(var edge in Edges)
+                foreach (var edge in Edges)
                 {
-                    if(edge.EndPoint == founder && edge.StartPoint == founder.Founder)
+                    if (edge.EndPoint == founder && edge.StartPoint == founder.Founder)
                     {
                         cost += edge.Distance;
                     }
@@ -191,9 +248,9 @@ namespace DataStructures
         }
         public bool DeleteVertex(WDVertex<T> vertex)
         {
-            if(!Vertices.Contains(vertex)) return false;
+            if (!Vertices.Contains(vertex)) return false;
 
-            for(int i = 0; i < vertex.NeighborCount; i++)
+            for (int i = 0; i < vertex.NeighborCount; i++)
             {
                 if (vertex.Neighbors[i].EndPoint == vertex)
                 {
@@ -218,7 +275,7 @@ namespace DataStructures
                     edgeFound = true;
                 }
             }
-            if(edgeFound)
+            if (edgeFound)
             {
                 start.Neighbors.Remove(removedEdge);
                 end.Neighbors.Remove(removedEdge);
@@ -230,7 +287,7 @@ namespace DataStructures
         public WDVertex<T> Search(T value)
         {
             int count = -1;
-            for(int i = 0; i < VertexCount; i++)
+            for (int i = 0; i < VertexCount; i++)
             {
                 if (Vertices[i].Value.Equals(value))
                 {
@@ -249,7 +306,7 @@ namespace DataStructures
             int count = -1;
             if (start == null || end == null) throw new Exception("Vertex is null");
 
-            for(int i = 0; i < Edges.Count; i++)
+            for (int i = 0; i < Edges.Count; i++)
             {
                 if (Edges[i].StartPoint == start && Edges[i].EndPoint == end)
                 {
