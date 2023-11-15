@@ -28,6 +28,7 @@ namespace DataStructures
         public bool inQueue;
         public WDVertex<T> Founder;
         public float CumulativeDistance;
+        public float FinalDistance;
         public int NeighborCount => Neighbors.Count;
 
         public WDVertex(T value)
@@ -95,6 +96,18 @@ namespace DataStructures
             return path;
         }
 
+        public void AStar(WDVertex<T> start, WDVertex<T> end)
+        {
+            for(int i = 0; i < VertexCount; i++)
+            {
+                Vertices[i].CumulativeDistance = Vertices[i].FinalDistance = float.PositiveInfinity;
+                Vertices[i].Founder = null;
+                Vertices[i].isVisited = false;
+            }
+
+            start.CumulativeDistance = 0;
+
+        }
 
         public string CompareCosts(WDVertex<T> start, WDVertex<T> end)
         {
