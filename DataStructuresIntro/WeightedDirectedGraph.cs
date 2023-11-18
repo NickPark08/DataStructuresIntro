@@ -29,6 +29,8 @@ namespace DataStructures
         public WDVertex<T> Founder;
         public float CumulativeDistance;
         public float FinalDistance;
+        public int x;
+        public int y;
         public int NeighborCount => Neighbors.Count;
 
         public WDVertex(T value)
@@ -36,7 +38,7 @@ namespace DataStructures
             Value = value;
         }
     }
-    class WeightedDirectedGraph<T>
+    public class WeightedDirectedGraph<T>
     {
         public List<WDVertex<T>> Vertices = new List<WDVertex<T>>();
         public List<WDEdge<T>> Edges = new List<WDEdge<T>>();
