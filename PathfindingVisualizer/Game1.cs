@@ -124,7 +124,7 @@ namespace PathfindingVisualizer
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            Content.Load<Texture2D>("checkersBinary");
             // TODO: use this.Content to load your game content here
         }
 
@@ -139,7 +139,7 @@ namespace PathfindingVisualizer
 
             foreach (var rect in hitboxes)
             {
-                _spriteBatch.Draw();
+                _spriteBatch.Draw(, rect, Color.LightBlue);
             }
 
                 _spriteBatch.End();
