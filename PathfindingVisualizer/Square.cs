@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DataStructures;
+
+using Microsoft.Xna.Framework;
 
 using System;
 using System.Collections.Generic;
@@ -8,16 +10,18 @@ using System.Threading.Tasks;
 
 namespace PathfindingVisualizer
 {
-    class Square
+    class Square <T>
     {
         public Color Color;
         public Rectangle Hitbox;
+        public WDVertex<T> Vertex;
         public bool isClicked = false;
 
-        public Square(Rectangle hb, Color col)
+        public Square(Rectangle hb, Color col, WDVertex<T> vertex)
         {
             Hitbox = hb;
             Color = col;
+            Vertex = vertex;
         }
     }
 }
