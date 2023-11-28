@@ -113,6 +113,7 @@ namespace DataStructures
                 Vertices[i].CumulativeDistance = Vertices[i].FinalDistance = float.PositiveInfinity;
                 Vertices[i].Founder = null;
                 Vertices[i].isVisited = false;
+                Vertices[i].inQueue = false;
             }
             PriorityQueue<WDVertex<T>, float> queue = new PriorityQueue<WDVertex<T>, float>();
             List<WDVertex<T>> path = new List<WDVertex<T>>();

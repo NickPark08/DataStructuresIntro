@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Collections.Generic;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace PathfindingVisualizer
 {
@@ -29,6 +30,8 @@ namespace PathfindingVisualizer
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
+        int length = 10;
+        int width = 15;
 
         protected override void Initialize()
         {
@@ -36,13 +39,12 @@ namespace PathfindingVisualizer
             _graphics.PreferredBackBufferHeight = 1000;
             _graphics.ApplyChanges();
 
-            int length = 10;
             int val = 0;
             previousMS = Mouse.GetState();
 
             for (int i = 0; i < length; i++)
             {
-                for (int j = 0; j < 15; j++)
+                for (int j = 0; j < width; j++)
                 {
                     val++;
                     vertices[i, j] = new WDVertex<int>(val);
@@ -56,9 +58,9 @@ namespace PathfindingVisualizer
             float temp = 1f;
             for (int i = 0; i < length; i++)
             {
-                for (int j = 0; j < 15; j++)
+                for (int j = 0; j < width; j++)
                 {
-                    if ((i != 0 && j != 0) && (i != length - 1 && j != 15 - 1))
+                    if ((i != 0 && j != 0) && (i != length - 1 && j != width - 1))
                     {
                         graph.AddEdge(vertices[i, j], vertices[i - 1, j], temp);
                         graph.AddEdge(vertices[i, j], vertices[i + 1, j], temp);
@@ -71,7 +73,7 @@ namespace PathfindingVisualizer
                     }
                     else
                     {
-                        if (j > 0 && j < 15 - 1)
+                        if (j > 0 && j < width - 1)
                         {
                             graph.AddEdge(vertices[i, j], vertices[i, j + 1], temp);
                             graph.AddEdge(vertices[i, j], vertices[i, j - 1], temp);
@@ -95,7 +97,7 @@ namespace PathfindingVisualizer
                                 graph.AddEdge(vertices[i, j], vertices[i + 1, j + 1], (float)Math.Sqrt(2));
                                 graph.AddEdge(vertices[i, j], vertices[i - 1, j + 1], (float)Math.Sqrt(2));
                             }
-                            else if (j == 15 - 1)
+                            else if (j == width - 1)
                             {
                                 graph.AddEdge(vertices[i, j], vertices[i + 1, j - 1], (float)Math.Sqrt(2));
                                 graph.AddEdge(vertices[i, j], vertices[i - 1, j - 1], (float)Math.Sqrt(2));
@@ -109,7 +111,7 @@ namespace PathfindingVisualizer
                             graph.AddEdge(vertices[i, j], vertices[i, j + 1], temp);
                             graph.AddEdge(vertices[i, j], vertices[i + 1, j], temp);
                         }
-                        else if (i == 0 && j == 15 - 1)
+                        else if (i == 0 && j == width - 1)
                         {
                             graph.AddEdge(vertices[i, j], vertices[i + 1, j - 1], (float)Math.Sqrt(2));
                             graph.AddEdge(vertices[i, j], vertices[i, j - 1], temp);
@@ -121,7 +123,7 @@ namespace PathfindingVisualizer
                             graph.AddEdge(vertices[i, j], vertices[i - 1, j], temp);
                             graph.AddEdge(vertices[i, j], vertices[i, j + 1], temp);
                         }
-                        else if (i == length - 1 && j == 15 - 1)
+                        else if (i == length - 1 && j == width - 1)
                         {
                             graph.AddEdge(vertices[i, j], vertices[i - 1, j - 1], (float)Math.Sqrt(2));
                             graph.AddEdge(vertices[i, j], vertices[i - 1, j], temp);
@@ -246,11 +248,31 @@ namespace PathfindingVisualizer
                 isJourneyVisualizationComplete = true;
                 foreach (var rect in hitboxes)
                 {
+                    if (rect.Color == Color.Orange || rect.Color == Color.Yellow)
+                    {
+                        rect.Color = Color.White;
+                    }
+                }
+            }
+            if (ks.IsKeyDown(Keys.Delete))
+            {
+                pathfinding = false;
+                isPathVisualizationComplete = true;
+                isJourneyVisualizationComplete = true;
+                foreach (var rect in hitboxes)
+                {
                     if (rect != start && rect != end)
                     {
                         rect.Color = Color.White;
                     }
                     rect.isClicked = false;
+                }
+                foreach (var edge in graph.Edges)
+                {
+                    if(edge.Blocked)
+                    {
+                        edge.Blocked = false;
+                    }
                 }
             }
             if (pathfinding && !isJourneyVisualizationComplete)
