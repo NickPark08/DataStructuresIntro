@@ -102,11 +102,11 @@ namespace DataStructures
             path.Reverse(0, path.Count);
             journey.Remove(start);
             journey.Remove(end);
-            path.Remove(end);
+            path.Remove(start);
             return (path, journey);
         }
 
-        public void AStar(WDVertex<T> start, WDVertex<T> end)
+        public (List<WDVertex<T>>, List<WDVertex<T>>) AStar(WDVertex<T> start, WDVertex<T> end)
         {
             for(int i = 0; i < VertexCount; i++)
             {
@@ -114,9 +114,68 @@ namespace DataStructures
                 Vertices[i].Founder = null;
                 Vertices[i].isVisited = false;
             }
+            PriorityQueue<WDVertex<T>, float> queue = new PriorityQueue<WDVertex<T>, float>();
+            List<WDVertex<T>> path = new List<WDVertex<T>>();
+            List<WDVertex<T>> journey = new List<WDVertex<T>>();
 
             start.CumulativeDistance = 0;
+            start.FinalDistance = Heuristic(start, end);
+            queue.Enqueue(start, start.FinalDistance);
 
+            do
+            {
+                WDVertex<T> current = queue.Dequeue();
+
+                for(int i = 0; i < current.NeighborCount; i++)
+                {
+                    if (current.Neighbors[i].EndPoint != current && !current.Neighbors[i].Blocked)
+                    {
+                        float tentative = current.CumulativeDistance + current.Neighbors[i].Distance;
+                        if (tentative < current.Neighbors[i].EndPoint.CumulativeDistance)
+                        {
+                            current.Neighbors[i].EndPoint.CumulativeDistance = tentative;
+                            current.Neighbors[i].EndPoint.Founder = current;
+                            current.Neighbors[i].EndPoint.FinalDistance = Heuristic(current.Neighbors[i].EndPoint, end) + tentative;
+                        }
+                        if (!current.Neighbors[i].EndPoint.isVisited && !current.Neighbors[i].EndPoint.inQueue)
+                        {
+                            journey.Add(current.Neighbors[i].EndPoint);
+                            queue.Enqueue(current.Neighbors[i].EndPoint, current.Neighbors[i].EndPoint.FinalDistance);
+                            current.Neighbors[i].EndPoint.inQueue = true;
+                        }
+                        current.isVisited = true;
+                    }
+                }
+
+                if(current == end || end.isVisited)
+                {
+                    break;
+                }
+            }
+            while (queue.Count > 0);
+
+            WDVertex<T> founder = end;
+
+            while(founder != start)
+            {
+                path.Add(founder.Founder);
+                founder = founder.Founder;
+            }
+            path.Reverse(0, path.Count);
+            path.Remove(start);
+            journey.Remove(start);
+            journey.Remove(end);
+
+            return (path, journey);
+        }
+
+        public float Heuristic(WDVertex<T> node, WDVertex<T> end)
+        {
+            float x = Math.Abs(node.x - end.x);
+            float y = Math.Abs(node.y - end.y);
+            float D1 = 1;
+            float D2 = (float)(Math.Sqrt(2));
+            return D1 * (x + y) + (D2 - 2 * D1) * Math.Min(D1, D2);
         }
 
         public string CompareCosts(WDVertex<T> start, WDVertex<T> end)

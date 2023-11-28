@@ -150,94 +150,6 @@ namespace PathfindingVisualizer
 
         bool movingStart = false;
         bool movingEnd = false;
-        //protected override void Update(GameTime gameTime)
-        //{
-        //    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-        //        Exit();
-
-        //    MouseState ms = Mouse.GetState();
-        //    KeyboardState ks = Keyboard.GetState();
-
-        //    foreach (var rect in hitboxes)
-        //    {
-        //        bool click = rect.Hitbox.Contains(ms.X, ms.Y) && ms.LeftButton == ButtonState.Pressed && previousMS.LeftButton == ButtonState.Released;
-        //        if (click)
-        //        {
-        //            if (movingStart)
-        //            {
-        //                start.Color = Color.White;
-        //                start = rect;
-        //                start.Color = Color.Green;
-        //                rect.isClicked = false;
-        //                movingStart = false;
-        //            }
-        //            else if (rect == start)
-        //            {
-        //                movingStart = true;
-        //                start.Color = Color.LightBlue;
-        //            }
-        //            else if (movingEnd)
-        //            {
-        //                end.Color = Color.White;
-        //                end = rect;
-        //                end.Color = Color.Red;
-        //                rect.isClicked = false;
-        //                movingEnd = false;
-        //            }
-        //            else if (rect == end)
-        //            {
-        //                movingEnd = true;
-        //                end.Color = Color.LightBlue;
-        //            }
-        //            else
-        //            {
-        //                if (!rect.isClicked)
-        //                {
-        //                    rect.Color = Color.Gray;
-        //                    rect.isClicked = true;
-        //                    for (int i = 0; i < rect.Vertex.NeighborCount; i++)
-        //                    {
-        //                        rect.Vertex.Neighbors[i].Blocked = true;
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    rect.Color = Color.White;
-        //                    rect.isClicked = false;
-        //                    for (int i = 0; i < rect.Vertex.NeighborCount; i++)
-        //                    {
-        //                        rect.Vertex.Neighbors[i].Blocked = false;
-        //                    }
-        //                }
-        //            }
-
-        //        }
-        //    }
-
-
-        //    if (ks.IsKeyDown(Keys.Space) && !pathfinding)
-        //    {
-        //        visual = graph.Dijkstra(start.Vertex, end.Vertex);
-        //        pathfinding = true;
-        //        foreach (var rect in hitboxes)
-        //        {
-        //            if (visual.journey.Contains(rect.Vertex))
-        //            {
-        //                rect.Color = Color.Yellow;
-        //            }
-        //            if (visual.path.Contains(rect.Vertex))
-        //            {
-        //                rect.Color = Color.Orange;
-        //            }
-
-
-        //        }
-        //    }
-
-        //    previousMS = ms;
-
-        //    base.Update(gameTime);
-        //}
         private TimeSpan delayBetweenSteps = TimeSpan.FromMilliseconds(50);
         private TimeSpan elapsedTimeSinceLastStep = TimeSpan.Zero;
         private int currentStep = 0;
@@ -291,7 +203,10 @@ namespace PathfindingVisualizer
                             rect.isClicked = true;
                             for (int i = 0; i < rect.Vertex.NeighborCount; i++)
                             {
-                                rect.Vertex.Neighbors[i].Blocked = true;
+                                if (rect.Vertex.Neighbors[i].EndPoint == rect.Vertex)
+                                {
+                                    rect.Vertex.Neighbors[i].Blocked = true;
+                                }
                             }
                         }
                         else
@@ -300,7 +215,10 @@ namespace PathfindingVisualizer
                             rect.isClicked = false;
                             for (int i = 0; i < rect.Vertex.NeighborCount; i++)
                             {
-                                rect.Vertex.Neighbors[i].Blocked = false;
+                                if (rect.Vertex.Neighbors[i].EndPoint == rect.Vertex)
+                                {
+                                    rect.Vertex.Neighbors[i].Blocked = false;
+                                }
                             }
                         }
                     }
@@ -310,7 +228,7 @@ namespace PathfindingVisualizer
 
             if (ks.IsKeyDown(Keys.Space) && !pathfinding)
             {
-                visual = graph.Dijkstra(start.Vertex, end.Vertex);
+                visual = graph.AStar(start.Vertex, end.Vertex);
                 pathfinding = true;
 
                 currentStep = 0;
@@ -332,6 +250,7 @@ namespace PathfindingVisualizer
                     {
                         rect.Color = Color.White;
                     }
+                    rect.isClicked = false;
                 }
             }
             if (pathfinding && !isJourneyVisualizationComplete)
@@ -380,12 +299,9 @@ namespace PathfindingVisualizer
 
 
             }
-
-
             previousMS = ms;
 
             base.Update(gameTime);
-
         }
 
 
