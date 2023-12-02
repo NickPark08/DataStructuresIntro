@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -103,6 +104,11 @@ namespace DataStructures
             journey.Remove(start);
             journey.Remove(end);
             path.Remove(start);
+
+            for(int i = 0; i < path.Count; i++)
+            {
+                Console.WriteLine(path[i].Value);
+            }
             return (path, journey);
         }
 
@@ -167,7 +173,52 @@ namespace DataStructures
             journey.Remove(start);
             journey.Remove(end);
 
+            for (int i = 0; i < path.Count; i++)
+            {
+                Console.WriteLine(path[i].Value);
+            }
             return (path, journey);
+        }
+
+        public void BellmanFord(WDVertex<T> start, WDVertex<T> end)
+        {
+            foreach(var vertex in Vertices)
+            {
+                vertex.CumulativeDistance = float.PositiveInfinity;
+                vertex.Founder = null;
+                vertex.isVisited = false;
+            }
+
+
+            PriorityQueue<WDVertex<T>, float> queue = new PriorityQueue<WDVertex<T>, float>();
+            queue.Enqueue(start, start.CumulativeDistance);
+
+            for (int j = 0; j < Vertices.Count; j++)
+            {
+                WDVertex<T> current = queue.Dequeue();
+                for (int i = 0; i < current.NeighborCount; i++)
+                {
+                    if (current.Neighbors[i].EndPoint != current && !current.Neighbors[i].Blocked)
+                    {
+                        float tentative = current.CumulativeDistance + current.Neighbors[i].Distance;
+                        if (tentative < current.Neighbors[i].EndPoint.CumulativeDistance)
+                        {
+                            current.Neighbors[i].EndPoint.CumulativeDistance = tentative;
+                            current.Neighbors[i].EndPoint.Founder = current;
+                            current.Neighbors[i].EndPoint.FinalDistance = Heuristic(current.Neighbors[i].EndPoint, end) + tentative;
+                        }
+                        if (!current.Neighbors[i].EndPoint.isVisited && !current.Neighbors[i].EndPoint.inQueue)
+                        {
+                            //journey.Add(current.Neighbors[i].EndPoint);
+                            queue.Enqueue(current.Neighbors[i].EndPoint, current.Neighbors[i].EndPoint.CumulativeDistance);
+                            current.Neighbors[i].EndPoint.inQueue = true;
+                        }
+                        current.isVisited = true;
+                    }
+                }
+            }
+            start.CumulativeDistance = 0;
+
         }
 
         public float Heuristic(WDVertex<T> node, WDVertex<T> end)
