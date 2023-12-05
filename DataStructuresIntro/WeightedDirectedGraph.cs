@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -48,7 +49,7 @@ namespace DataStructures
         public int VertexCount => Vertices.Count;
 
 
-        public (List<WDVertex<T>>,List<WDVertex<T>>) Dijkstra(WDVertex<T> start, WDVertex<T> end)
+        public (List<WDVertex<T>>, List<WDVertex<T>>) Dijkstra(WDVertex<T> start, WDVertex<T> end)
         {
             foreach (var vertex in Vertices)
             {
@@ -95,7 +96,7 @@ namespace DataStructures
             } while (queue.Count > 0);
 
             WDVertex<T> founder = end;
-            while(founder != start)
+            while (founder != start)
             {
                 path.Add(founder);
                 founder = founder.Founder;
@@ -105,7 +106,7 @@ namespace DataStructures
             journey.Remove(end);
             path.Remove(start);
 
-            for(int i = 0; i < path.Count; i++)
+            for (int i = 0; i < path.Count; i++)
             {
                 Console.WriteLine(path[i].Value);
             }
@@ -114,7 +115,7 @@ namespace DataStructures
 
         public (List<WDVertex<T>>, List<WDVertex<T>>) AStar(WDVertex<T> start, WDVertex<T> end)
         {
-            for(int i = 0; i < VertexCount; i++)
+            for (int i = 0; i < VertexCount; i++)
             {
                 Vertices[i].CumulativeDistance = Vertices[i].FinalDistance = float.PositiveInfinity;
                 Vertices[i].Founder = null;
@@ -133,7 +134,7 @@ namespace DataStructures
             {
                 WDVertex<T> current = queue.Dequeue();
 
-                for(int i = 0; i < current.NeighborCount; i++)
+                for (int i = 0; i < current.NeighborCount; i++)
                 {
                     if (current.Neighbors[i].EndPoint != current && !current.Neighbors[i].Blocked)
                     {
@@ -154,7 +155,7 @@ namespace DataStructures
                     }
                 }
 
-                if(current == end || end.isVisited)
+                if (current == end || end.isVisited)
                 {
                     break;
                 }
@@ -163,7 +164,7 @@ namespace DataStructures
 
             WDVertex<T> founder = end;
 
-            while(founder != start)
+            while (founder != start)
             {
                 path.Add(founder.Founder);
                 founder = founder.Founder;
@@ -180,22 +181,57 @@ namespace DataStructures
             return (path, journey);
         }
 
-        public void BellmanFord(WDVertex<T> start, WDVertex<T> end)
+        public (bool, List<WDVertex<T>>) BellmanFord(WDVertex<T> start, WDVertex<T> end)
         {
-            foreach(var vertex in Vertices)
+
+            start.CumulativeDistance = 0;
+            List<WDVertex<T>> journey = new List<WDVertex<T>>();
+            WDVertex<T> lowest = start;
+            PriorityQueue<WDVertex<T>, float> queue = new PriorityQueue<WDVertex<T>, float>();
+
+            foreach (var vertex in Vertices)
             {
                 vertex.CumulativeDistance = float.PositiveInfinity;
                 vertex.Founder = null;
                 vertex.isVisited = false;
             }
 
-
-            PriorityQueue<WDVertex<T>, float> queue = new PriorityQueue<WDVertex<T>, float>();
-            queue.Enqueue(start, start.CumulativeDistance);
-
             for (int j = 0; j < Vertices.Count; j++)
             {
+                start.CumulativeDistance = 0f;
+                queue.Enqueue(start, start.CumulativeDistance);
+                do
+                {
+
+                    WDVertex<T> current = queue.Dequeue();
+                    current.isVisited = true;
+
+                    for (int i = 0; i < current.NeighborCount; i++)
+                    {
+                        if (current.Neighbors[i].EndPoint != current && !current.Neighbors[i].Blocked)
+                        {
+                            float tentative = current.CumulativeDistance + current.Neighbors[i].Distance;
+                            if (tentative < current.Neighbors[i].EndPoint.CumulativeDistance)
+                            {
+                                current.Neighbors[i].EndPoint.CumulativeDistance = tentative;
+                                current.Neighbors[i].EndPoint.Founder = current;
+                                current.isVisited = false;
+                            }
+                            if (!current.Neighbors[i].EndPoint.isVisited && !current.Neighbors[i].EndPoint.inQueue)
+                            {
+                                queue.Enqueue(current.Neighbors[i].EndPoint, current.Neighbors[i].EndPoint.CumulativeDistance);
+                                current.Neighbors[i].EndPoint.inQueue = true;
+                            }
+                        }
+                    }
+
+                } while (queue.Count > 0);
+            }
+            queue.Enqueue(start, start.CumulativeDistance);
+            do
+            {
                 WDVertex<T> current = queue.Dequeue();
+                current.isVisited = false;
                 for (int i = 0; i < current.NeighborCount; i++)
                 {
                     if (current.Neighbors[i].EndPoint != current && !current.Neighbors[i].Blocked)
@@ -203,21 +239,24 @@ namespace DataStructures
                         float tentative = current.CumulativeDistance + current.Neighbors[i].Distance;
                         if (tentative < current.Neighbors[i].EndPoint.CumulativeDistance)
                         {
-                            current.Neighbors[i].EndPoint.CumulativeDistance = tentative;
-                            current.Neighbors[i].EndPoint.Founder = current;
-                            current.Neighbors[i].EndPoint.FinalDistance = Heuristic(current.Neighbors[i].EndPoint, end) + tentative;
+                            return (false, journey);
                         }
-                        if (!current.Neighbors[i].EndPoint.isVisited && !current.Neighbors[i].EndPoint.inQueue)
+                        if (current.Neighbors[i].EndPoint.isVisited && current.Neighbors[i].EndPoint.inQueue)
                         {
-                            //journey.Add(current.Neighbors[i].EndPoint);
                             queue.Enqueue(current.Neighbors[i].EndPoint, current.Neighbors[i].EndPoint.CumulativeDistance);
-                            current.Neighbors[i].EndPoint.inQueue = true;
+                            current.Neighbors[i].EndPoint.inQueue = false;
                         }
-                        current.isVisited = true;
                     }
                 }
+            } while (queue.Count > 0);
+            WDVertex<T> founder = end;
+            while (founder != start)
+            {
+                journey.Add(founder);
+                founder = founder.Founder;
             }
-            start.CumulativeDistance = 0;
+
+            return (true, journey);
 
         }
 
