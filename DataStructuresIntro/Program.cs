@@ -28,17 +28,20 @@ class Program
         graph.AddEdge(vertices[0], vertices[1], 1f);
         graph.AddEdge(vertices[2], vertices[0], 1f);
         graph.AddEdge(vertices[3], vertices[2], 1f);
-        graph.AddEdge(vertices[1], vertices[4], -1f);
+        graph.AddEdge(vertices[1], vertices[4], 1f);
         graph.AddEdge(vertices[4], vertices[5], 1f);
-        graph.AddEdge(vertices[5], vertices[1], -1f);
+        graph.AddEdge(vertices[5], vertices[1], 1f);
         graph.AddEdge(vertices[5], vertices[6], 1f);
 
         (bool cycle, List<WDVertex<int>> journey) result = graph.BellmanFord(vertices[3], vertices[6]);
         Console.WriteLine("Has negative cycle: " + !result.cycle);
         Console.WriteLine();
-        foreach (var vertex in result.journey)
+        if (result.cycle)
         {
-            Console.WriteLine(vertex.Value);
+            foreach (var vertex in result.journey)
+            {
+                Console.WriteLine(vertex.Value);
+            }
         }
 
         //string airportVertices = File.ReadAllText(@"..\..\..\AirportVertices.txt");
