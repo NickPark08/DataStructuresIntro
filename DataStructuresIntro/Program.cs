@@ -12,38 +12,15 @@ class Program
 {
     public static void Main()
     {
-        WeightedDirectedGraph<int> graph = new WeightedDirectedGraph<int>();
+        WeightedDirectedGraph<char> graph = new WeightedDirectedGraph<char>();
         Random randy = new Random();
 
-        WDVertex<int>[] vertices = new WDVertex<int>[7];
+        HashMap<int, string> map = new HashMap<int, string>();
 
-        //A = 1, G = 7
-
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            vertices[i] = new WDVertex<int>(i);
-            graph.AddVertex(vertices[i]);
-        }
-
-        graph.AddEdge(vertices[0], vertices[1], 1f);
-        graph.AddEdge(vertices[2], vertices[0], 1f);
-        graph.AddEdge(vertices[3], vertices[2], 1f);
-        graph.AddEdge(vertices[1], vertices[4], 1f);
-        graph.AddEdge(vertices[4], vertices[5], 1f);
-        graph.AddEdge(vertices[5], vertices[1], 1f);
-        graph.AddEdge(vertices[5], vertices[6], 1f);
-
-        (bool cycle, List<WDVertex<int>> journey) result = graph.BellmanFord(vertices[3], vertices[6]);
-        Console.WriteLine("Has negative cycle: " + !result.cycle);
-        Console.WriteLine();
-        if (result.cycle)
-        {
-            foreach (var vertex in result.journey)
-            {
-                Console.WriteLine(vertex.Value);
-            }
-        }
-
+        map.Add(0, "zero");
+        map.Add(1, "one");
+        map.Add(2, "two");
+        ;
         //string airportVertices = File.ReadAllText(@"..\..\..\AirportVertices.txt");
         //string airportEdges = File.ReadAllText(@"..\..\..\AirportEdges.txt");
 
