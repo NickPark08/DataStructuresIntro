@@ -20,6 +20,7 @@ class Program
         map.Add(0, "zero");
         map.Add(1, "one");
         map.Add(2, "two");
+        map.Remove(1);
         ;
         //string airportVertices = File.ReadAllText(@"..\..\..\AirportVertices.txt");
         //string airportEdges = File.ReadAllText(@"..\..\..\AirportEdges.txt");

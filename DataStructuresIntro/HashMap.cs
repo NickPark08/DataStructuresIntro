@@ -7,67 +7,85 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DataStructures
-{ 
+{
 
-    class HashMap<T, U> : IDictionary<T, U>
+    class HashMap<TKey, TValue>
     {
-        public LinkedList<U>[] array = new LinkedList<U>[1];
-        private List<T> keys = new List<T>();
-        private List<U> values = new List<U>();
-        IEqualityComparer<T> Comparer;
+        public LinkedList<KeyValuePair<TKey, TValue>>[] array = new LinkedList<KeyValuePair<TKey, TValue>>[2];
+        private readonly List<TKey> keys = new List<TKey>();
+        private readonly List<TValue> values = new List<TValue>();
+        IEqualityComparer<TKey> Comparer;
 
-        public HashMap(IEqualityComparer<T> comparer)
+        public HashMap(IEqualityComparer<TKey> comparer)
         {
             Comparer = comparer;
         }
         public HashMap()
         {
-            Comparer = EqualityComparer<T>.Default;
-            if(Comparer == null)
+            Comparer = EqualityComparer<TKey>.Default;
+            if (Comparer == null)
             {
                 throw new ArgumentNullException("Comparer is null");
             }
         }
 
-        public U this[T key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public TValue this[TKey key]
+        {
+            get
+            {
+                if (!keys.Contains(key)) throw new Exception("Key does not exist in collection");
+   
+                return array[Comparer.GetHashCode(key) % array.Length].First.Value.Value;
+            }
+            set
+            {
+                int index = Comparer.GetHashCode(key) % array.Length;
+                if (array[index] == null)
+                {
+                    Add(key, value);
+                }
+                else
+                {
+                    array[index].First.Value = new KeyValuePair<TKey, TValue>(key, value);
+                }
+            }
+        }
 
-        public ICollection<T> Keys => keys;
+        public ICollection<TKey> Keys => keys;
 
-        public ICollection<U> Values => values;
+        public ICollection<TValue> Values => values;
 
         public int Count => keys.Count;
 
         public bool IsReadOnly => throw new NotImplementedException();
-
-        public bool Equals(T x, T y)
+        public void Add(TKey key, TValue value)
         {
-            return x.Equals(y);
-        }
-        public int GetHashCode(T obj)
-        {
-            return Comparer.GetHashCode(obj);
-        }
-        public void Add(T key, U value)
-        {
-            if(Count == array.Length)
+            if (Count == array.Length)
             {
                 ReHash();
             }
             int index = Comparer.GetHashCode(key) % array.Length;
+            KeyValuePair<TKey, TValue> newPair = new KeyValuePair<TKey, TValue>(key, value);
             if (array[index] == null)
             {
-                array[index] = new LinkedList<U>();
-                array[index].AddFirst(value);
-                keys.Add(key);
-                values.Add(value);
+                array[index] = new LinkedList<KeyValuePair<TKey, TValue>>();
             }
-            else throw new Exception("Duplicate keys not allowed");
+            else
+            {
+                foreach (var pair in array[index])
+                {
+                    if (pair.Key.Equals(key)) throw new Exception("Duplicate keys not allowed");
+                }
+            }
+            keys.Add(key);
+            values.Add(value);
+            array[index].AddFirst(newPair);
         }
 
         private void ReHash()
         {
-            LinkedList<U>[] newArray = new LinkedList<U>[array.Length * 2];
-            for(int i = 0; i < Count; i++)
+            LinkedList<KeyValuePair<TKey, TValue>>[] newArray = new LinkedList<KeyValuePair<TKey, TValue>>[array.Length * 2];
+            for (int i = 0; i < Count; i++)
             {
                 int newIndex = Comparer.GetHashCode(keys[i]) % newArray.Length;
                 int index = Comparer.GetHashCode(keys[i]) % array.Length;
@@ -76,54 +94,68 @@ namespace DataStructures
             array = newArray;
         }
 
-        public void Add(KeyValuePair<T, U> item)
+        public void Add(KeyValuePair<TKey, TValue> item)
         {
             Add(item.Key, item.Value);
         }
 
         public void Clear()
         {
-            array = new LinkedList<U>[1];
+            array = new LinkedList<KeyValuePair<TKey, TValue>>[10];
         }
 
-        public bool Contains(KeyValuePair<T, U> item)
+        public bool Contains(KeyValuePair<TKey, TValue> item)
+        {
+            foreach (var key in keys)
+            {
+                if (array[Comparer.GetHashCode(key) % array.Length].Contains(item)) return true;
+            }
+            return false;
+        }
+
+        public bool ContainsKey(TKey key)
+        {
+            return keys.Contains(key);
+        }
+
+        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
 
-        public bool ContainsKey(T key)
-        {
-            throw new NotImplementedException();
-        }
 
-        public void CopyTo(KeyValuePair<T, U>[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public IEnumerator<KeyValuePair<T, U>> GetEnumerator()
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             throw new NotImplementedException();
         }
 
 
-        public bool Remove(T key)
+        public bool Remove(TKey key)
         {
-            throw new NotImplementedException();
+            int index = Comparer.GetHashCode(key) % array.Length;
+
+            if (array[index] == null) return false;
+
+            foreach (var pair in array[index])
+            {
+                if (pair.Key.Equals(key))
+                {
+                    array[index].Remove(pair);
+                    keys.Remove(pair.Key);
+                    values.Remove(pair.Value);
+                    break;
+                }
+            }
+
+            return true;
         }
 
-        public bool Remove(KeyValuePair<T, U> item)
+        public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            throw new NotImplementedException();
+            return Remove(item.Key);
         }
 
-        public bool TryGetValue(T key, [MaybeNullWhen(false)] out U value)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
+        public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
         {
             throw new NotImplementedException();
         }
