@@ -21,6 +21,9 @@ class Program
         map.Add(1, "one");
         map.Add(2, "two");
         map.Remove(1);
+        map[1] = "test";
+
+        Console.WriteLine(map.GetEnumerator());
         ;
         //string airportVertices = File.ReadAllText(@"..\..\..\AirportVertices.txt");
         //string airportEdges = File.ReadAllText(@"..\..\..\AirportEdges.txt");

@@ -46,7 +46,15 @@ namespace DataStructures
                 }
                 else
                 {
-                    array[index].First.Value = new KeyValuePair<TKey, TValue>(key, value);
+                    foreach(var pair in array[index])
+                    {
+                        if(pair.Key.Equals(key))
+                        {
+                            array[index].Remove(pair);
+                            array[index].AddFirst(new KeyValuePair<TKey, TValue>(pair.Key, value));
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -57,7 +65,6 @@ namespace DataStructures
 
         public int Count => keys.Count;
 
-        public bool IsReadOnly => throw new NotImplementedException();
         public void Add(TKey key, TValue value)
         {
             if (Count == array.Length)
@@ -118,15 +125,19 @@ namespace DataStructures
             return keys.Contains(key);
         }
 
-        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            throw new NotImplementedException();
+            foreach(var list in array)
+            {
+                if (list != null)
+                {
+                    foreach (var pair in list)
+                    {
+                        yield return pair;
+                    }
+                }
+            }
         }
 
 
