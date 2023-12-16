@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace DataStructures
 {
 
-    class HashMap<TKey, TValue>
+    public class HashMap<TKey, TValue>
     {
         public LinkedList<KeyValuePair<TKey, TValue>>[] array = new LinkedList<KeyValuePair<TKey, TValue>>[2];
         private readonly List<TKey> keys = new List<TKey>();
@@ -130,9 +130,9 @@ namespace DataStructures
         {
             foreach(var list in array)
             {
-                if (list != null)
+                if(list != null)
                 {
-                    foreach (var pair in list)
+                    foreach(var pair in list)
                     {
                         yield return pair;
                     }
@@ -168,7 +168,17 @@ namespace DataStructures
 
         public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
         {
-            throw new NotImplementedException();
+            int index = Comparer.GetHashCode(key) % array.Length;
+            foreach(var pair in array[index])
+            {
+                if(pair.Key.Equals(key))
+                {
+                    value = pair.Value;
+                    return true;
+                }
+            }
+            value = default;
+            return false;
         }
     }
 }
