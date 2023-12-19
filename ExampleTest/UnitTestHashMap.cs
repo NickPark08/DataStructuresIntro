@@ -15,6 +15,22 @@ namespace HashMap
         Random randy = new Random();
 
         [TestMethod]
+        public void EnumerationTest()
+        {
+            string[] vals = RandomizedStrings(111, 10);
+            for(int i = 0; i < vals.Length; i++)
+            {
+                map.Add(i, vals[i]);
+            }
+            var enumerator = map.GetEnumerator();
+            while(enumerator.MoveNext())
+            {
+                Assert.AreEqual(enumerator.Current.Value, map[enumerator.Current.Key]);
+            }
+        }
+
+
+        [TestMethod]
         public void IndexingTest()
         {
             string[] vals = RandomizedStrings(111, 10);
@@ -25,6 +41,10 @@ namespace HashMap
             for (int i = 0; i < vals.Length; i++)
             {
                 Assert.AreEqual(vals[i], map[i]);
+            }
+            for(int i = 1; i < vals.Length; i++)
+            {
+                Assert.AreNotEqual(vals[i - 1], map[i]);
             }
         }
 
