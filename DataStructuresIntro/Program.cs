@@ -12,27 +12,35 @@ class Program
 {
     public static void Main()
     {
-        WeightedDirectedGraph<char> graph = new WeightedDirectedGraph<char>();
+        UndirectedUnweightedGraph<char> graph = new UndirectedUnweightedGraph<char>();
         Random randy = new Random();
 
-        HashMap<int, string> map = new HashMap<int, string>();
 
-        map.Add(0, "zero");
-        map.Add(1, "one");
-        map.Add(2, "two");
+        string unionFindVertices = File.ReadAllText(@"..\..\..\UnionFindVertices.txt");
+        string unionFindEdges = File.ReadAllText(@"..\..\..\UnionFindEdges.txt");
 
-        var enumerator = map.GetEnumerator();
+        var arr = JsonSerializer.Deserialize<string[]>(unionFindVertices);
+        var arr2 = JsonSerializer.Deserialize<UnionFindEdge[]>(unionFindEdges);
 
-        while (enumerator.MoveNext())
+        QuickUnion<string> union = new QuickUnion<string>(arr);
+
+        foreach (var edge in arr2)
         {
-            Console.WriteLine(enumerator.Current.Value);
+            union.Union(edge.FriendA, edge.FriendB);
         }
+        List<int> list = new List<int>();
+        // find largest and smallest sets
+        foreach (var val in arr)
+        {
+            if (!list.Contains(union.Find(val)))
+            {
 
-        ;
-        //string airportVertices = File.ReadAllText(@"..\..\..\AirportVertices.txt");
-        //string airportEdges = File.ReadAllText(@"..\..\..\AirportEdges.txt");
+                list.Add(union.Find(val));
+            }
+        }
+        Console.WriteLine(list.Count);
 
-        //var arr = JsonSerializer.Deserialize<string[]>(airportVertices);
-        //var arr2 = JsonSerializer.Deserialize<AirportEdge[]>(airportEdges);
+
+
     }
 }
