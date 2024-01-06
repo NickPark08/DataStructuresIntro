@@ -93,6 +93,11 @@ namespace DataStructures
         {
             if (!AreConnected(p, q))
             {
+                //while (map[p] != parents[map[p]])
+                //{
+                //    map[p] = parents[map[p]];
+                //}
+                parents[map[q]] = map[p];
                 map[p] = parents[map[q]];
                 return true;
             }
