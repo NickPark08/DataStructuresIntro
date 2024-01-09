@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,7 @@ namespace DataStructures
             sets = new int[map.Count];
             for(int i = 0; i < sets.Length; i++)
             {
+                //map.Add(items[i], i);
                 sets[i] = i;
             }
         }
@@ -36,15 +38,19 @@ namespace DataStructures
 
         public bool Union(T p, T q)
         {
-            var enumerator = collection.GetEnumerator();
             bool union = false;
-            while(enumerator.MoveNext())
+            int set1 = Find(p);
+            int set2 = Find(q);
+
+            if (!AreConnected(p, q))
             {
-                var item = enumerator.Current;
-                if (map[item] == map[p] && !AreConnected(item, p))
+                for(int i = 0; i < sets.Length; i++)
                 {
-                    map[item] = map[q];
-                    union = true;
+                    if (sets[i] == set2)
+                    {
+                        sets[i] = set1;
+                        union = true;
+                    }
                 }
             }
             return union;
@@ -52,7 +58,7 @@ namespace DataStructures
 
         public bool AreConnected(T p, T q)
         {
-            return map[p] == map[q];
+            return Find(p) == Find(q);
         }
     }
 
@@ -93,19 +99,14 @@ namespace DataStructures
         {
             if (!AreConnected(p, q))
             {
-                //while (map[p] != parents[map[p]])
-                //{
-                //    map[p] = parents[map[p]];
-                //}
                 parents[map[q]] = map[p];
-                map[p] = parents[map[q]];
                 return true;
             }
             return false;
         }
         public bool AreConnected(T p, T q)
         {
-            return map[p] == map[q];
+            return Find(p) == Find(q);
         }
     }
 }

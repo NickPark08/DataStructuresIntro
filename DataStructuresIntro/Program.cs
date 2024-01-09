@@ -7,6 +7,7 @@ using System.Reflection;
 
 using System.IO;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 class Program
 {
@@ -22,7 +23,7 @@ class Program
         var arr = JsonSerializer.Deserialize<string[]>(unionFindVertices);
         var arr2 = JsonSerializer.Deserialize<UnionFindEdge[]>(unionFindEdges);
 
-        QuickUnion<string> union = new QuickUnion<string>(arr);
+        QuickFind<string> union = new QuickFind<string>(arr);
 
         foreach (var edge in arr2)
         {
@@ -76,7 +77,26 @@ class Program
             }
         }
 
-        Console.WriteLine(union.Find("Phoebe") == union.Find("Rachel"));
- 
+        Console.WriteLine();
+        Console.WriteLine(union.AreConnected("Phoebe", "Rachel"));
+        Console.WriteLine(union.AreConnected("Michael", "Pam"));
+        Console.WriteLine(union.AreConnected("Chandler", "Creed"));
+        Console.WriteLine();
+
+        for (int i = 1; i < arr.Length; i++)
+        {
+            if (ints[i] != 0)
+            {
+                Console.Write($"Group {i}: ");
+                foreach (var val in arr)
+                {
+                    if (union.Find(val) == i)
+                    {
+                        Console.Write(val + ", ");
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
     }
 }
