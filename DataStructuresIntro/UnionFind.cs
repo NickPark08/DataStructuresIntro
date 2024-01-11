@@ -13,20 +13,19 @@ namespace DataStructures
         IEnumerable<T> collection;
         private int[] sets;
         private Dictionary<T, int> map = new Dictionary<T, int>();
-        public QuickFind(IEnumerable<T> items) 
+        public QuickFind(IEnumerable<T> items)
         {
             collection = items;
             var enumerator = collection.GetEnumerator();
             int index = 0;
-            while(enumerator.MoveNext())
+            while (enumerator.MoveNext())
             {
                 map.Add(enumerator.Current, index);
                 index++;
             }
             sets = new int[map.Count];
-            for(int i = 0; i < sets.Length; i++)
+            for (int i = 0; i < sets.Length; i++)
             {
-                //map.Add(items[i], i);
                 sets[i] = i;
             }
         }
@@ -44,7 +43,7 @@ namespace DataStructures
 
             if (!AreConnected(p, q))
             {
-                for(int i = 0; i < sets.Length; i++)
+                for (int i = 0; i < sets.Length; i++)
                 {
                     if (sets[i] == set2)
                     {
@@ -78,17 +77,17 @@ namespace DataStructures
                 map.Add(enumerator.Current, index);
                 index++;
             }
-            parents = new int[map.Count];
-            for(int i = 0; i < parents.Length; i++)
+            parents = new int[items.Count()];
+            for (int i = 0; i < parents.Length; i++)
             {
                 parents[i] = i;
-            }    
+            }
         }
 
         public int Find(T p)
         {
             int current = map[p];
-            while (current != parents[current])
+            while (parents[current] != current)
             {
                 current = parents[current];
             }
@@ -97,12 +96,10 @@ namespace DataStructures
 
         public bool Union(T p, T q)
         {
-            if (!AreConnected(p, q))
-            {
-                parents[map[q]] = map[p];
-                return true;
-            }
-            return false;
+            if (AreConnected(p, q)) return false;
+
+            parents[map[q]] = map[p];
+            return true;
         }
         public bool AreConnected(T p, T q)
         {

@@ -57,8 +57,9 @@
             // 
             // textBox1
             // 
-            this.textBox1.Enabled = false;
+            this.textBox1.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.textBox1.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox1.Location = new System.Drawing.Point(277, 83);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(61, 63);
@@ -70,8 +71,9 @@
             // 
             // textBox2
             // 
-            this.textBox2.Enabled = false;
+            this.textBox2.BackColor = System.Drawing.Color.Yellow;
             this.textBox2.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox2.Location = new System.Drawing.Point(344, 83);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(61, 63);
@@ -83,8 +85,9 @@
             // 
             // textBox3
             // 
-            this.textBox3.Enabled = false;
+            this.textBox3.BackColor = System.Drawing.Color.YellowGreen;
             this.textBox3.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox3.Location = new System.Drawing.Point(411, 83);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(61, 63);
@@ -96,8 +99,9 @@
             // 
             // textBox4
             // 
-            this.textBox4.Enabled = false;
+            this.textBox4.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.textBox4.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox4.Location = new System.Drawing.Point(478, 83);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(61, 63);
@@ -109,8 +113,9 @@
             // 
             // textBox5
             // 
-            this.textBox5.Enabled = false;
+            this.textBox5.BackColor = System.Drawing.Color.AntiqueWhite;
             this.textBox5.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox5.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox5.Location = new System.Drawing.Point(545, 83);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(61, 63);
@@ -122,8 +127,9 @@
             // 
             // textBox6
             // 
-            this.textBox6.Enabled = false;
+            this.textBox6.BackColor = System.Drawing.Color.Turquoise;
             this.textBox6.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox6.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox6.Location = new System.Drawing.Point(545, 152);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(61, 63);
@@ -135,8 +141,9 @@
             // 
             // textBox7
             // 
-            this.textBox7.Enabled = false;
+            this.textBox7.BackColor = System.Drawing.Color.Violet;
             this.textBox7.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox7.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox7.Location = new System.Drawing.Point(478, 152);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(61, 63);
@@ -148,8 +155,9 @@
             // 
             // textBox8
             // 
-            this.textBox8.Enabled = false;
+            this.textBox8.BackColor = System.Drawing.Color.BlueViolet;
             this.textBox8.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox8.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox8.Location = new System.Drawing.Point(411, 152);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(61, 63);
@@ -161,8 +169,9 @@
             // 
             // textBox9
             // 
-            this.textBox9.Enabled = false;
+            this.textBox9.BackColor = System.Drawing.Color.Blue;
             this.textBox9.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox9.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox9.Location = new System.Drawing.Point(344, 152);
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(61, 63);
@@ -174,8 +183,9 @@
             // 
             // textBox10
             // 
-            this.textBox10.Enabled = false;
+            this.textBox10.BackColor = System.Drawing.Color.Aquamarine;
             this.textBox10.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox10.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox10.Location = new System.Drawing.Point(277, 152);
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(61, 63);
@@ -187,8 +197,9 @@
             // 
             // textBox11
             // 
-            this.textBox11.Enabled = false;
+            this.textBox11.BackColor = System.Drawing.Color.AliceBlue;
             this.textBox11.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox11.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox11.Location = new System.Drawing.Point(545, 221);
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(61, 63);
@@ -200,8 +211,9 @@
             // 
             // textBox12
             // 
-            this.textBox12.Enabled = false;
+            this.textBox12.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.textBox12.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox12.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox12.Location = new System.Drawing.Point(478, 221);
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(61, 63);
@@ -213,8 +225,9 @@
             // 
             // textBox13
             // 
-            this.textBox13.Enabled = false;
+            this.textBox13.BackColor = System.Drawing.Color.CadetBlue;
             this.textBox13.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox13.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox13.Location = new System.Drawing.Point(411, 221);
             this.textBox13.Name = "textBox13";
             this.textBox13.Size = new System.Drawing.Size(61, 63);
@@ -226,8 +239,9 @@
             // 
             // textBox14
             // 
-            this.textBox14.Enabled = false;
+            this.textBox14.BackColor = System.Drawing.Color.BurlyWood;
             this.textBox14.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox14.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox14.Location = new System.Drawing.Point(344, 221);
             this.textBox14.Name = "textBox14";
             this.textBox14.Size = new System.Drawing.Size(61, 63);
@@ -239,8 +253,9 @@
             // 
             // textBox15
             // 
-            this.textBox15.Enabled = false;
+            this.textBox15.BackColor = System.Drawing.Color.Brown;
             this.textBox15.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox15.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox15.Location = new System.Drawing.Point(277, 221);
             this.textBox15.Name = "textBox15";
             this.textBox15.Size = new System.Drawing.Size(61, 63);
@@ -252,8 +267,9 @@
             // 
             // textBox16
             // 
-            this.textBox16.Enabled = false;
+            this.textBox16.BackColor = System.Drawing.Color.Crimson;
             this.textBox16.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox16.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox16.Location = new System.Drawing.Point(545, 290);
             this.textBox16.Name = "textBox16";
             this.textBox16.Size = new System.Drawing.Size(61, 63);
@@ -265,8 +281,9 @@
             // 
             // textBox17
             // 
-            this.textBox17.Enabled = false;
+            this.textBox17.BackColor = System.Drawing.Color.Chocolate;
             this.textBox17.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox17.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox17.Location = new System.Drawing.Point(478, 290);
             this.textBox17.Name = "textBox17";
             this.textBox17.Size = new System.Drawing.Size(61, 63);
@@ -278,8 +295,9 @@
             // 
             // textBox18
             // 
-            this.textBox18.Enabled = false;
+            this.textBox18.BackColor = System.Drawing.Color.CornflowerBlue;
             this.textBox18.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox18.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox18.Location = new System.Drawing.Point(411, 290);
             this.textBox18.Name = "textBox18";
             this.textBox18.Size = new System.Drawing.Size(61, 63);
@@ -291,8 +309,9 @@
             // 
             // textBox19
             // 
-            this.textBox19.Enabled = false;
+            this.textBox19.BackColor = System.Drawing.Color.Chartreuse;
             this.textBox19.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox19.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox19.Location = new System.Drawing.Point(344, 290);
             this.textBox19.Name = "textBox19";
             this.textBox19.Size = new System.Drawing.Size(61, 63);
@@ -304,8 +323,9 @@
             // 
             // textBox20
             // 
-            this.textBox20.Enabled = false;
+            this.textBox20.BackColor = System.Drawing.Color.Aqua;
             this.textBox20.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox20.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox20.Location = new System.Drawing.Point(277, 290);
             this.textBox20.Name = "textBox20";
             this.textBox20.Size = new System.Drawing.Size(61, 63);
@@ -317,8 +337,9 @@
             // 
             // textBox21
             // 
-            this.textBox21.Enabled = false;
+            this.textBox21.BackColor = System.Drawing.Color.DarkMagenta;
             this.textBox21.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox21.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox21.Location = new System.Drawing.Point(545, 359);
             this.textBox21.Name = "textBox21";
             this.textBox21.Size = new System.Drawing.Size(61, 63);
@@ -330,8 +351,9 @@
             // 
             // textBox22
             // 
-            this.textBox22.Enabled = false;
+            this.textBox22.BackColor = System.Drawing.Color.DarkOliveGreen;
             this.textBox22.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox22.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox22.Location = new System.Drawing.Point(478, 359);
             this.textBox22.Name = "textBox22";
             this.textBox22.Size = new System.Drawing.Size(61, 63);
@@ -343,8 +365,9 @@
             // 
             // textBox23
             // 
-            this.textBox23.Enabled = false;
+            this.textBox23.BackColor = System.Drawing.Color.DarkGoldenrod;
             this.textBox23.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox23.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox23.Location = new System.Drawing.Point(411, 359);
             this.textBox23.Name = "textBox23";
             this.textBox23.Size = new System.Drawing.Size(61, 63);
@@ -356,8 +379,9 @@
             // 
             // textBox24
             // 
-            this.textBox24.Enabled = false;
+            this.textBox24.BackColor = System.Drawing.Color.Coral;
             this.textBox24.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox24.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox24.Location = new System.Drawing.Point(344, 359);
             this.textBox24.Name = "textBox24";
             this.textBox24.Size = new System.Drawing.Size(61, 63);
@@ -369,8 +393,9 @@
             // 
             // textBox25
             // 
-            this.textBox25.Enabled = false;
+            this.textBox25.BackColor = System.Drawing.Color.DarkCyan;
             this.textBox25.Font = new System.Drawing.Font("Times New Roman", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBox25.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox25.Location = new System.Drawing.Point(277, 359);
             this.textBox25.Name = "textBox25";
             this.textBox25.Size = new System.Drawing.Size(61, 63);

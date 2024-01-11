@@ -5,6 +5,8 @@ namespace UnionFindVisualizer
     public partial class Form1 : Form
     {
         TextBox[,] grid = new TextBox[5, 5];
+        QuickUnion<TextBox> union;
+        List<TextBox> list = new List<TextBox>();
         public Form1()
         {
             InitializeComponent();
@@ -26,7 +28,9 @@ namespace UnionFindVisualizer
                 string letter = ((char)(temp2)).ToString();
                 box.Text = letter;
                 temp2++;
+                list.Add(box);
             }
+            union = new QuickUnion<TextBox>(list);
         }
 
         TextBox firstBox;
@@ -45,7 +49,27 @@ namespace UnionFindVisualizer
 
             if(firstBox != null && secondBox != null)
             {
-                
+                //union.Union(secondBox, firstBox);
+                //foreach(TextBox box in list)
+                //{
+                //    if(union.AreConnected(box, firstBox))
+                //    {
+                //        box.Text = union.Find(box).ToString();//firstBox.Text;
+                //        box.BackColor = firstBox.BackColor;
+                //    }
+                //    Console.WriteLine(union.Find(box));
+                union.Union(secondBox, firstBox);
+                foreach(TextBox box in list)
+                {
+                    if(union.AreConnected(box, firstBox))
+                    {
+                        box.Text = union.Find(box).ToString();//firstBox.Text;
+                        box.BackColor = firstBox.BackColor;
+                    }
+                } // A - F, B - G, top left - right one
+                //}
+                firstBox = null;
+                secondBox = null;
             }
 
         }

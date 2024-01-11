@@ -23,7 +23,7 @@ class Program
         var arr = JsonSerializer.Deserialize<string[]>(unionFindVertices);
         var arr2 = JsonSerializer.Deserialize<UnionFindEdge[]>(unionFindEdges);
 
-        QuickFind<string> union = new QuickFind<string>(arr);
+        QuickUnion<string> union = new QuickUnion<string>(arr);
 
         foreach (var edge in arr2)
         {
