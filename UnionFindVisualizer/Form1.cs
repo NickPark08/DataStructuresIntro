@@ -49,22 +49,13 @@ namespace UnionFindVisualizer
 
             if(firstBox != null && secondBox != null)
             {
-                //union.Union(secondBox, firstBox);
-                //foreach(TextBox box in list)
-                //{
-                //    if(union.AreConnected(box, firstBox))
-                //    {
-                //        box.Text = union.Find(box).ToString();//firstBox.Text;
-                //        box.BackColor = firstBox.BackColor;
-                //    }
-                //    Console.WriteLine(union.Find(box));
-                union.Union(secondBox, firstBox);
+                union.Union(firstBox, secondBox);
                 foreach(TextBox box in list)
                 {
-                    if(union.AreConnected(box, firstBox))
+                    if(union.AreConnected(box, secondBox))
                     {
-                        box.Text = union.Find(box).ToString();//firstBox.Text;
-                        box.BackColor = firstBox.BackColor;
+                        box.Text = /*union.Find(box).ToString();*/secondBox.Text;
+                        box.BackColor = secondBox.BackColor;
                     }
                 } // A - F, B - G, top left - right one
                 //}

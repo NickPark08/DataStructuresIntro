@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "ExampleTest\Un
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathfindingVisualizer", "PathfindingVisualizer\PathfindingVisualizer.csproj", "{EBBD3A14-787A-4C39-B5DD-25D15D9B7296}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnionFindVisualizer", "UnionFindVisualizer\UnionFindVisualizer.csproj", "{AC521476-259A-4518-B282-3230D4C31C33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnionFindVisualizer", "UnionFindVisualizer\UnionFindVisualizer.csproj", "{AC521476-259A-4518-B282-3230D4C31C33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnionMazeVisualizer", "UnionMazeVisualizer\UnionMazeVisualizer.csproj", "{AF33C7CC-D30D-4DC3-967F-86DCDAB99DD8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{AC521476-259A-4518-B282-3230D4C31C33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC521476-259A-4518-B282-3230D4C31C33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC521476-259A-4518-B282-3230D4C31C33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF33C7CC-D30D-4DC3-967F-86DCDAB99DD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF33C7CC-D30D-4DC3-967F-86DCDAB99DD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF33C7CC-D30D-4DC3-967F-86DCDAB99DD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF33C7CC-D30D-4DC3-967F-86DCDAB99DD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -66,6 +66,7 @@ namespace DataStructures
         IEnumerable<T> collection;
         private int[] parents;
         private Dictionary<T, int> map = new Dictionary<T, int>();
+        private List<UUVertex<T>> vertices;
 
         public QuickUnion(IEnumerable<T> items)
         {
@@ -97,6 +98,11 @@ namespace DataStructures
         public bool Union(T p, T q)
         {
             if (AreConnected(p, q)) return false;
+
+            while (parents[map[q]] != map[q])
+            {
+                map[q] = parents[map[q]];
+            }
 
             parents[map[q]] = map[p];
             return true;
