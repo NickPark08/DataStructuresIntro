@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 
 namespace DataStructures
 {
-    internal class Maze<T>
+    public class Maze<T>
     {
         public Maze() 
         {
             
         }
 
-        public void MazeGenerator(WeightedDirectedGraph<T> graph, WDVertex<T> start, WDVertex<T> end)
+        public List<WDEdge<T>> MazeGenerator(WeightedDirectedGraph<T> graph, WDVertex<T> start, WDVertex<T> end)
         {
             var union = new QuickUnion<WDVertex<T>>(graph.Vertices);
             var edges = graph.Edges;
+            var removedEdges = new List<WDEdge<T>>();
             Random randy = new Random();
 
             while (!union.AreConnected(start, end))
@@ -27,9 +28,10 @@ namespace DataStructures
                 {
                     union.Union(edge.StartPoint, edge.EndPoint);
                     edges.Remove(edge);
+                    removedEdges.Add(edge);
                 }
-
             }
+            return removedEdges;
         }
     }
 }

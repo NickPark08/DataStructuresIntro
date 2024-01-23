@@ -1,5 +1,6 @@
 using DataStructures;
-
+using System.CodeDom.Compiler;
+using System.Diagnostics;
 using System.Linq;
 
 namespace UnionMazeVisualizer
@@ -7,7 +8,10 @@ namespace UnionMazeVisualizer
     public partial class Form1 : Form
     {
         WeightedDirectedGraph<Rectangle> graph = new WeightedDirectedGraph<Rectangle>();
-        WDVertex<Rectangle>[,] vertices = new WDVertex<Rectangle>[5, 5];
+        WDVertex<Rectangle>[,] vertices = new WDVertex<Rectangle>[20, 10];
+
+        Bitmap image;
+        Graphics gfx;
 
         public Form1()
         {
@@ -17,27 +21,22 @@ namespace UnionMazeVisualizer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //foreach (Control val in Controls)
-            //{
-            //    if (val.Tag != null && val.Tag.ToString().Length == 2)
-            //    {
-            //        string temp = val.Tag.ToString();
-            //     //   grid[int.Parse(temp[0].ToString()), int.Parse(temp[1].ToString())] = (WDVertex<TextBox>)val;
-            //    }
-            //}
-            //foreach (WDVertex<TextBox> box in grid)
-            //{
-            //    graph.AddVertex(box);
-            //}
             int temp = 0;
-
             for (int i = 0; i < vertices.GetLength(0); i++)
             {
                 for (int j = 0; j < vertices.GetLength(1); j++)
                 {
-                    int x = (pictureBox1.Width) / (i / vertices.GetLength(0));
-                    int y = (pictureBox1.Height) / (j / vertices.GetLength(1));
-                    graph.AddVertex(vertices[i, j] = new (new Rectangle(x, y, 100, 100)));
+                    int x = 0;
+                    int y = 0;
+                    if (i != 0)
+                    {
+                        x = i * ((pictureBox1.Width) / vertices.GetLength(0));
+                    }
+                    if (j != 0)
+                    {
+                        y = j * ((pictureBox1.Height) / vertices.GetLength(1));
+                    }
+                    graph.AddVertex(vertices[i, j] = new(new Rectangle(x, y, pictureBox1.Width / vertices.GetLength(0), pictureBox1.Height / vertices.GetLength(1))));
                 }
                 temp++;
             }
@@ -54,26 +53,50 @@ namespace UnionMazeVisualizer
             }
             while (row + 1 < vertices.GetLength(0))
             {
-                for (int i = 0; i < vertices.GetLength(0); i++)
+                for (int i = 0; i < vertices.GetLength(1); i++)
                 {
                     graph.AddEdge(vertices[row, i], vertices[row + 1, i], 0);
                 }
                 row++;
             }
 
+            image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            gfx = Graphics.FromImage(image);
+
+            foreach (var vertex in vertices)
+            {
+                gfx.DrawRectangle(Pens.Black, vertex.Value);
+            }
+
+            pictureBox1.Image = image;
 
             //Label edge = Controls.OfType<Label>().Where(edge => edge.Tag == "00-10").First();//code to find label between 2 edges
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private async void pictureBox1_Click(object sender, EventArgs e)
         {
-            Bitmap image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-            Graphics gfx = Graphics.FromImage(image);
+            Maze<Rectangle> maze = new Maze<Rectangle>();
+            WDVertex<Rectangle> start = vertices[0, 0];
+            WDVertex<Rectangle> end = vertices[0, vertices.GetLength(1) - 1];
 
-            gfx.DrawRectangle(Pens.Black, new Rectangle(0, 0, 100, 100));
-
-
-            pictureBox1.Image = image;
+            var edges = maze.MazeGenerator(graph, start, end);
+            foreach (var edge in edges)
+            {
+                var vertex = edge.StartPoint.Value;
+                if (edge.EndPoint.Value.X > vertex.X)
+                {
+                    //gfx.DrawRectangle(new Pen(Color.Red, 100), 50, 50, 100, 100);
+                    gfx.DrawLine(new Pen(BackColor), vertex.Right, vertex.Y, vertex.Right, vertex.Y + vertex.Height);
+                }
+                else
+                {
+                    //gfx.DrawRectangle(Pens.Red, 50, 50, 100, 100);
+                    gfx.DrawLine(new Pen(BackColor), vertex.X, vertex.Bottom, vertex.X + vertex.Width, vertex.Bottom);
+                }
+                pictureBox1.Image = image;
+                await Task.Delay(250);
+            }
         }
+
     }
 }
