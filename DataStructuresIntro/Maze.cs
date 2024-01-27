@@ -20,6 +20,11 @@ namespace DataStructures
             var removedEdges = new List<WDEdge<T>>();
             Random randy = new Random();
 
+            //foreach(var edge in edges)
+            //{
+            //    edge.Blocked = true;
+            //}
+
             while (!union.AreConnected(start, end))
             {
                 int ran = randy.Next(0, edges.Count);
@@ -27,8 +32,9 @@ namespace DataStructures
                 if(!union.AreConnected(edge.StartPoint, edge.EndPoint))
                 {
                     union.Union(edge.StartPoint, edge.EndPoint);
-                    edges.Remove(edge);
+                    //edges.Remove(edge);
                     removedEdges.Add(edge);
+                    edge.Blocked = true;
                 }
             }
             return removedEdges;
