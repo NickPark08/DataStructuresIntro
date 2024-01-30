@@ -13,90 +13,21 @@ class Program
 {
     public static void Main()
     {
-        UndirectedUnweightedGraph<char> graph = new UndirectedUnweightedGraph<char>();
+        BloomFilter<int> filter = new BloomFilter<int>(1000);
         Random randy = new Random();
 
-
-        string unionFindVertices = File.ReadAllText(@"..\..\..\UnionFindVertices.txt");
-        string unionFindEdges = File.ReadAllText(@"..\..\..\UnionFindEdges.txt");
-
-        var arr = JsonSerializer.Deserialize<string[]>(unionFindVertices);
-        var arr2 = JsonSerializer.Deserialize<UnionFindEdge[]>(unionFindEdges);
-
-        QuickUnion<string> union = new QuickUnion<string>(arr);
-
-        foreach (var edge in arr2)
+        for(int i = 0; i < 20; i++)
         {
-            union.Union(edge.FriendA, edge.FriendB);
-        }
-        List<int> list = new List<int>();
-        int[] ints = new int[arr.Length];
-
-        foreach (var val in arr)
-        {
-            if (!list.Contains(union.Find(val)))
-            {
-                list.Add(union.Find(val));
-            }
-            ints[union.Find(val)]++;
-            Console.WriteLine(val + " --> " + union.Find(val));
-
-        }
-        Console.WriteLine(list.Count);
-        Console.WriteLine();
-        int largest = ints[0];
-        int smallest = 10;
-        for (int i = 0; i < ints.Length; i++)
-        {
-            if (ints[i] > largest)
-            {
-                largest = i;
-            }
-            if (ints[i] != 0 && ints[i] < smallest)
-            {
-                smallest = i;
-            }
+            filter.Insert(i);
         }
 
-        Console.WriteLine("Largest:");
-        foreach (var val in arr)
-        {
-            if (union.Find(val) == largest)
-            {
-                Console.WriteLine(val);
-            }
-        }
-        Console.WriteLine();
+        Console.WriteLine(filter.ProbablyContains(7519));
 
-        Console.WriteLine("Smallest:");
-        foreach (var val in arr)
-        {
-            if (union.Find(val) == smallest)
-            {
-                Console.WriteLine(val);
-            }
-        }
+        //string unionFindVertices = File.ReadAllText(@"..\..\..\UnionFindVertices.txt");
+        //string unionFindEdges = File.ReadAllText(@"..\..\..\UnionFindEdges.txt");
 
-        Console.WriteLine();
-        Console.WriteLine(union.AreConnected("Phoebe", "Rachel"));
-        Console.WriteLine(union.AreConnected("Michael", "Pam"));
-        Console.WriteLine(union.AreConnected("Chandler", "Creed"));
-        Console.WriteLine();
+        //var arr = JsonSerializer.Deserialize<string[]>(unionFindVertices);
+        //var arr2 = JsonSerializer.Deserialize<UnionFindEdge[]>(unionFindEdges);
 
-        for (int i = 1; i < arr.Length; i++)
-        {
-            if (ints[i] != 0)
-            {
-                Console.Write($"Group {i}: ");
-                foreach (var val in arr)
-                {
-                    if (union.Find(val) == i)
-                    {
-                        Console.Write(val + ", ");
-                    }
-                }
-                Console.WriteLine();
-            }
-        }
     }
 }
