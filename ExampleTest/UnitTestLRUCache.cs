@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace UnitTests
 {
     [TestClass]
-    public class LRUCacheTest : ICache<int, string>
+    public class LRUCacheTest
     {
-        public LinkedList<int> list { get; set; }
-        public Dictionary<int, string> map { get; set; }
+
+        public LRUCache<int, string> cache = new LRUCache<int, string>();
 
         [TestMethod]
         public void TryGetValueTest()

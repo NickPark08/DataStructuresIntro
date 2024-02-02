@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DataStructures
-{
-    
+{ 
     public interface ICache <TKey, TValue>
     {
         bool TryGetValue(TKey key, out TValue value);
@@ -20,9 +19,37 @@ namespace DataStructures
 
         Dictionary<TKey, TValue> map { get; set; }
 
-        bool ICache<TKey, TValue>.TryGetValue(TKey key, out TValue value)
+        public bool TryGetValue(TKey key, out TValue value)
+        {
+            if (map.ContainsKey(key))
+            {
+                list.Remove(key);
+                list.AddFirst(key);
+                value = map[key];
+                return true;
+            }
+            value = default;
+            return false;
+        }
+
+        public void Put(TKey key, TValue value)
         {
             if (map[key] != null)
+            {
+                map[key] = value;
+            }
+            else
+            {
+                LinkedListNode<TKey> node = new LinkedListNode<TKey>(key);
+                map.Add(key, value);
+                list.AddFirst(node);
+            }
+        }
+
+
+        bool ICache<TKey, TValue>.TryGetValue(TKey key, out TValue value)
+        {
+            if (map.ContainsKey(key))
             {
                 list.Remove(key);
                 list.AddFirst(key);
