@@ -15,9 +15,15 @@ namespace DataStructures
 
     public class LRUCache<TKey, TValue> : ICache<TKey, TValue>
     {
-        LinkedList<TKey> list { get; set; }
+        public LinkedList<TKey> list { get; set; }
 
-        Dictionary<TKey, TValue> map { get; set; }
+        public Dictionary<TKey, TValue> map { get; set; }
+
+        public LRUCache() 
+        {
+            list = new LinkedList<TKey>();
+            map = new Dictionary<TKey, TValue>();
+        }
 
         public bool TryGetValue(TKey key, out TValue value)
         {
@@ -34,7 +40,7 @@ namespace DataStructures
 
         public void Put(TKey key, TValue value)
         {
-            if (map[key] != null)
+            if (map.ContainsKey(key))
             {
                 map[key] = value;
             }
