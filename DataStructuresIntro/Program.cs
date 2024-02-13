@@ -13,15 +13,10 @@ class Program
 {
     public static void Main()
     {
-        BloomFilter<int> filter = new BloomFilter<int>(1000);
-        Random randy = new Random();
+        string file = "test test hi zombie abcdefghijklmnopqrstuvwxyz a a a a a";
+        FixedLengthEncoding encoding = new FixedLengthEncoding(file);
 
-        for(int i = 0; i < 20; i++)
-        {
-            filter.Insert(i);
-        }
-
-        Console.WriteLine(filter.ProbablyContains(7519));
+        encoding.FillTree();
 
         //string unionFindVertices = File.ReadAllText(@"..\..\..\UnionFindVertices.txt");
         //string unionFindEdges = File.ReadAllText(@"..\..\..\UnionFindEdges.txt");

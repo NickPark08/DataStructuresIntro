@@ -26,13 +26,17 @@ namespace DataStructures
             int[] frequencies = new int[127];
             foreach (char letter in File)
             {
-                frequencies[letter]++;
+                int index = (int) letter;
+                frequencies[index]++;
             }
 
             for (int i = 0; i < frequencies.Length; i++)
             {
-                HuffmanNode node = new HuffmanNode((char)(i), default, default, frequencies[i]);
-                Queue.Enqueue(node, node.Frequency);
+                if (frequencies[i] != 0)
+                {
+                    HuffmanNode node = new HuffmanNode((char)(i), default, default, frequencies[i]);
+                    Queue.Enqueue(node, node.Frequency);
+                }
 
             }
             do
@@ -44,38 +48,50 @@ namespace DataStructures
                 Queue.Enqueue(parent, parent.Frequency);
             } while (Queue.Count > 1);
 
+            MapChars();
 
         }
         private void MapChars()
         {
-            Stack<HuffmanNode> stack = new Stack<HuffmanNode>();
-            Queue<char> queue = new Queue<char>();
+            Stack<HuffmanNode> traversal = new Stack<HuffmanNode>();
+            Stack<char> stack = new Stack<char>();
             var root = Queue.Peek();
             string binary = "";
 
-            stack.Push(root);
-            while (stack.Count > 0)
+            traversal.Push(root);
+            while (traversal.Count > 0)
             {
-                var currentNode = stack.Pop();
+                var currentNode = traversal.Pop();
+                stack.Push(currentNode.Value);
 
-                queue.Enqueue(currentNode.Value);
-
-                if (currentNode.RightChild != null)
-                {
-                    stack.Push(currentNode.RightChild);
-                    binary += "1";
-                }
                 if (currentNode.LeftChild != null)
                 {
-                    stack.Push(currentNode.LeftChild);
+                    traversal.Push(currentNode.LeftChild);
+                }
+                if (currentNode.RightChild != null)
+                {
+                    traversal.Push(currentNode.RightChild);
+                }
+
+                if(currentNode.LeftChild != null && currentNode.RightChild != null)
+                {
                     binary += "0";
                 }
-                if(currentNode.LeftChild == null && currentNode.RightChild == null)
+                else if (currentNode.RightChild == null)
+                {
+                    binary += "1";
+                }
+                else
+                {
+                    binary = binary.Substring(0, binary.Length - 2);
+                }
+
+                if (currentNode.LeftChild == null && currentNode.RightChild == null)
                 {
                     map.Add(binary, currentNode.Value);
-                    binary = "";
                 }
             }
+
         }
     }
 }
