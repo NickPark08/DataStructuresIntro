@@ -8,17 +8,20 @@ namespace DataStructures
 {
     public class HuffmanNode
     {
-        public int Frequency;
-        public HuffmanNode LeftChild;
-        public HuffmanNode RightChild;
-        public char Value;
+        public char Value { get; set; }
+        public HuffmanNode LeftChild { get; set; }
+        public HuffmanNode RightChild { get; set; }
+        public int Frequency { get; set; }
+        public string Binary { get; set; }
 
-        public HuffmanNode(char value, HuffmanNode left, HuffmanNode right, int frequency) 
+        public HuffmanNode(char value, HuffmanNode leftChild, HuffmanNode rightChild, int frequency)
         {
-            Frequency = frequency;
-            LeftChild = left;
-            RightChild = right;
             Value = value;
+            LeftChild = leftChild;
+            RightChild = rightChild;
+            Frequency = frequency;
+            Binary = "";
         }
     }
+
 }
