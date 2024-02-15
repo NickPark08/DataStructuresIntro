@@ -1,26 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using DataStructuresIntro;
 
 namespace DataStructures
 {
     public class FixedLengthEncoding
     {
-        string File;
+        string OriginalFile;
         PriorityQueue<HuffmanNode, int> Queue;
-        Dictionary<string, char> map;
+        Dictionary<char, string> map;
+        List<byte> newFile = new List<byte>();
 
         public FixedLengthEncoding(string file)
         {
-            File = file;
+            OriginalFile = file;
             Queue = new PriorityQueue<HuffmanNode, int>();
-            map = new Dictionary<string, char>();
+            map = new Dictionary<char, string>();
+        }
+
+        public void CompressFile(string file)
+        {
+            LettersToBytes(file);
+            File.WriteAllBytes("output.txt", newFile.ToArray());
         }
 
         public void FillTree()
         {
             int[] frequencies = new int[127];
-            foreach (char letter in File)
+            foreach (char letter in OriginalFile)
             {
                 int index = (int)letter;
                 frequencies[index]++;
@@ -28,7 +36,7 @@ namespace DataStructures
 
             for (int i = 0; i < frequencies.Length; i++)
             {
-                if (frequencies[i] != 0)
+                if (frequencies[i] != 0 && (char)(i) != ' ')
                 {
                     HuffmanNode node = new HuffmanNode((char)(i), default, default, frequencies[i]);
                     Queue.Enqueue(node, node.Frequency);
@@ -44,6 +52,32 @@ namespace DataStructures
             }
 
             MapChars();
+        }
+
+        private void LettersToBytes(string file)
+        {
+            string binary = "";
+
+            for (int i = 0; i < file.Length; i++)
+            {
+                if (map.ContainsKey(file[i]))
+                {
+                    binary += map[file[i]];
+                }
+            }
+
+
+            for (int i = 0; i < binary.Length - 8; i += 8)
+            {
+                string temp = binary.Substring(i, 8);
+                newFile.Add(Convert.ToByte(temp, 2));
+            }
+            if (binary.Length % 8 != 0)
+            {
+                string last = binary.Substring(binary.Length - binary.Length % 8);
+                newFile.Add(Convert.ToByte(last, 2));
+            }
+            newFile.Add(Convert.ToByte(binary.Length % 8));
         }
 
         private void MapChars()
@@ -69,7 +103,7 @@ namespace DataStructures
 
                 if (currentNode.LeftChild == null && currentNode.RightChild == null)
                 {
-                    map.Add(currentNode.Binary, currentNode.Value);
+                    map.Add(currentNode.Value, currentNode.Binary);
                 }
             }
         }

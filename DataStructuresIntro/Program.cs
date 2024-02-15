@@ -13,10 +13,13 @@ class Program
 {
     public static void Main()
     {
-        string file = "test test hi zombie abcdefghijklmnopqrstuvwxyz a a a a a";
+        string file = File.ReadAllText("Z:\\Visual Studio 2022\\Projects\\DataStructuresIntro\\DataStructuresIntro\\huffmaninput.txt");
         FixedLengthEncoding encoding = new FixedLengthEncoding(file);
 
         encoding.FillTree();
+        encoding.CompressFile(file);
+
+        string compressedFile = File.ReadAllText("output.txt");
 
         //string unionFindVertices = File.ReadAllText(@"..\..\..\UnionFindVertices.txt");
         //string unionFindEdges = File.ReadAllText(@"..\..\..\UnionFindEdges.txt");
