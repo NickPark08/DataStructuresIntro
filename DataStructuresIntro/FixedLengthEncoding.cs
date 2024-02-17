@@ -11,12 +11,35 @@ namespace DataStructures
         PriorityQueue<HuffmanNode, int> Queue;
         Dictionary<char, string> map;
         List<byte> newFile = new List<byte>();
+    
+        HuffmanNode root;
 
         public FixedLengthEncoding(string file)
         {
             OriginalFile = file;
             Queue = new PriorityQueue<HuffmanNode, int>();
             map = new Dictionary<char, string>();
+        }
+
+        public string DecompressFile(string file)
+        {
+            string binary = "";
+            foreach(byte b in newFile)
+            {
+                string temp = Convert.ToString(b, 2);
+                while(temp.Length != 8)
+                {
+                    temp = "0" + temp;
+                }
+
+                binary += temp;
+            }
+
+            //use tree to decompress file
+            //once working, use heap to put tree at start of file
+
+            return binary;
+
         }
 
         public void CompressFile(string file)
@@ -36,9 +59,9 @@ namespace DataStructures
 
             for (int i = 0; i < frequencies.Length; i++)
             {
-                if (frequencies[i] != 0 && (char)(i) != ' ')
+                if (frequencies[i] != 0)
                 {
-                    HuffmanNode node = new HuffmanNode((char)(i), default, default, frequencies[i]);
+                    var node = new HuffmanNode((char)(i), default, default, frequencies[i]);
                     Queue.Enqueue(node, node.Frequency);
                 }
             }
@@ -83,7 +106,7 @@ namespace DataStructures
         private void MapChars()
         {
             Stack<HuffmanNode> traversal = new Stack<HuffmanNode>();
-            var root = Queue.Peek();
+            root = Queue.Peek();
 
             traversal.Push(root);
             while (traversal.Count > 0)

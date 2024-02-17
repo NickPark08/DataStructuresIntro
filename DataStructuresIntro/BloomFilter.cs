@@ -41,7 +41,6 @@ namespace DataStructures
 
         public void LoadHashFunc(Func<T, int> hashFunc)
         {
-            //delegate intro
             set.Add(hashFunc);
         }
 

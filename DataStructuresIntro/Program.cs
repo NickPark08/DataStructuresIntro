@@ -13,14 +13,17 @@ class Program
 {
     public static void Main()
     {
-        string file = File.ReadAllText("Z:\\Visual Studio 2022\\Projects\\DataStructuresIntro\\DataStructuresIntro\\huffmaninput.txt");
+        string file = File.ReadAllText("\\\\GMRDC1\\Folder Redirection\\Nicholas.park\\Documents\\Visual Studio 2022\\Projects\\DataStructuresIntro\\DataStructuresIntro\\huffmaninput.txt");
+        //file = "aaaa\0\0\0\0\0\0, bbb";
         FixedLengthEncoding encoding = new FixedLengthEncoding(file);
 
         encoding.FillTree();
         encoding.CompressFile(file);
 
         string compressedFile = File.ReadAllText("output.txt");
+        encoding.DecompressFile(compressedFile);
 
+        ;
         //string unionFindVertices = File.ReadAllText(@"..\..\..\UnionFindVertices.txt");
         //string unionFindEdges = File.ReadAllText(@"..\..\..\UnionFindEdges.txt");
 
