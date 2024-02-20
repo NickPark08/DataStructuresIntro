@@ -21,29 +21,52 @@ namespace DataStructures
             map = new Dictionary<char, string>();
         }
 
-        public string DecompressFile(string file)
+        public string DecompressFile()
         {
             string binary = "";
-            foreach(byte b in newFile)
+            int finalLength = newFile[0];
+            for(int i = 1; i < newFile.Count; i++)
             {
-                string temp = Convert.ToString(b, 2);
+                string temp = Convert.ToString(newFile[i], 2);
                 while(temp.Length != 8)
                 {
-                    temp = "0" + temp;
+                    temp = '0' + temp;
                 }
 
                 binary += temp;
             }
-
-            //use tree to decompress file
+            string temp1 = binary.Substring(0, binary.Length - 8);
+            binary = temp1 + binary.Substring(binary.Length - finalLength) + '0';
             //once working, use heap to put tree at start of file
+            var currentNode = root;
+            string decompressed = "";
 
-            return binary;
+            for(int i = 0; i < binary.Length; i++)
+            {
+                if(currentNode.LeftChild == null && currentNode.RightChild == null)
+                {
+                    decompressed += currentNode.Value;
+                    currentNode = root;
+                }
+
+                if (binary[i] == '0')
+                {
+                    currentNode = currentNode.LeftChild;
+                }
+                else
+                {
+                    currentNode = currentNode.RightChild;
+                }
+            }
+
+            return decompressed;
 
         }
 
         public void CompressFile(string file)
         {
+            BinaryHeap<byte> heap = new BinaryHeap<byte>();
+            
             LettersToBytes(file);
             File.WriteAllBytes("output.txt", newFile.ToArray());
         }
@@ -89,6 +112,7 @@ namespace DataStructures
                 }
             }
 
+            newFile.Add(Convert.ToByte(binary.Length % 8));
 
             for (int i = 0; i < binary.Length - 8; i += 8)
             {
@@ -100,7 +124,6 @@ namespace DataStructures
                 string last = binary.Substring(binary.Length - binary.Length % 8);
                 newFile.Add(Convert.ToByte(last, 2));
             }
-            newFile.Add(Convert.ToByte(binary.Length % 8));
         }
 
         private void MapChars()
