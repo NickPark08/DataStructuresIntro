@@ -24,9 +24,10 @@ namespace DataStructures
 
         public string DecompressFile()
         {
+            Stack<HuffmanNode> stack = new Stack<HuffmanNode>();
             string binary = "";
             int finalLength = newFile[0];
-            for (int i = 1; i < newFile.Count; i++)
+            for (int i = 0; i < newFile.Count; i++)
             {
                 string temp = Convert.ToString(newFile[i], 2);
                 while (temp.Length != 8)
@@ -37,28 +38,67 @@ namespace DataStructures
                 binary += temp;
             }
 
-            HuffmanNode tempRoot;
+            HuffmanNode previousNode;
 
+            // root
             if (binary[0] == '1')
             {
-                tempRoot = new HuffmanNode('$', null, null, 0);
+                previousNode = new HuffmanNode('$', null, null, 0);
+                stack.Push(previousNode);
             }
             else
             {
-
+                string temp = "";
+                for (int i = 1; i < 9; i++)
+                {
+                    temp += binary[i];
+                }
+                var c = Convert.ToChar(Convert.ToByte(temp, 2));
+                previousNode = new HuffmanNode(c, null, null, 0);
             }
 
-            for(int i = 0; i < binary.Length; i++)
+            // rest
+
+            int index = 1;
+            while (stack.Count > 0)
             {
                 HuffmanNode newNode;
-                if (binary[i] == '1')
+                if (binary[index] == '1')
                 {
                     newNode = new HuffmanNode('$', null, null, 0);
+                    if (stack.Peek().LeftChild == null)
+                    {
+                        stack.Peek().LeftChild = newNode;
+                    }
+                    else
+                    {
+                        stack.Peek().RightChild = newNode;
+                        stack.Pop();
+                    }
+                    stack.Push(newNode);
+                    index++;
                 }
                 else
                 {
-
+                    string temp = "";
+                    for (int j = index; j < index + 8; j++)
+                    {
+                        temp += binary[j];
+                    }
+                    index += 8;
+                    var c = Convert.ToChar(Convert.ToByte(temp, 2));
+                    newNode = new HuffmanNode(c, null, null, 0);
+                    if(stack.Peek().LeftChild == null)
+                    {
+                        stack.Peek().LeftChild = newNode;
+                    }
+                    else
+                    {
+                        stack.Peek().RightChild = newNode;
+                        stack.Pop();
+                    }
                 }
+
             }
             string temp1 = binary.Substring(0, binary.Length - 8);
             binary = temp1 + binary.Substring(binary.Length - finalLength) + '0';
@@ -110,11 +150,13 @@ namespace DataStructures
                     nodes += "0" + temp;
                 }
             }
-            //for (int i = 0; i < nodes.Length - 8; i += 8)
-            //{
-            //    string temp = nodes.Substring(i, 8);
-            //    //newFile.Add(Convert.ToByte(temp, 2));
-            //}
+
+
+            for (int i = 0; i < nodes.Length - 8; i += 8)
+            {
+                string temp = nodes.Substring(i, 8);
+                newFile.Add(Convert.ToByte(temp, 2));
+            }
 
             LettersToBytes(file);
             File.WriteAllBytes("output.txt", newFile.ToArray());

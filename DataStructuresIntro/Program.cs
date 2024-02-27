@@ -14,7 +14,7 @@ class Program
     public static void Main()
     {
         string file = File.ReadAllText("\\\\GMRDC1\\Folder Redirection\\Nicholas.park\\Documents\\Visual Studio 2022\\Projects\\DataStructuresIntro\\DataStructuresIntro\\huffmaninput.txt");
-        file = "tes test tests pleased";
+        file = "test tttsjs";
         FixedLengthEncoding encoding = new FixedLengthEncoding(file);
 
         encoding.FillTree();
