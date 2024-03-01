@@ -26,7 +26,6 @@ namespace DataStructures
         {
             Stack<HuffmanNode> stack = new Stack<HuffmanNode>();
             string binary = "";
-            int finalLength = newFile[0];
             for (int i = 0; i < newFile.Count; i++)
             {
                 string temp = Convert.ToString(newFile[i], 2);
@@ -60,6 +59,7 @@ namespace DataStructures
             // rest
 
             int index = 1;
+            int indexByte = 0;
             while (stack.Count > 0)
             {
                 HuffmanNode newNode;
@@ -97,9 +97,12 @@ namespace DataStructures
                         stack.Peek().RightChild = newNode;
                         stack.Pop();
                     }
+                    indexByte++;
                 }
 
             }
+            int finalLength = newFile[indexByte];
+
             string temp1 = binary.Substring(0, binary.Length - 8);
             binary = temp1 + binary.Substring(binary.Length - finalLength) + '0';
             //once working, put tree at start of file
