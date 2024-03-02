@@ -26,7 +26,8 @@ namespace DataStructures
         {
             Stack<HuffmanNode> stack = new Stack<HuffmanNode>();
             string binary = "";
-            for (int i = 0; i < newFile.Count; i++)
+            //int nodesLength = newFile[0];
+            for (int i = 1; i < newFile.Count; i++)
             {
                 string temp = Convert.ToString(newFile[i], 2);
                 while (temp.Length != 8)
@@ -81,11 +82,15 @@ namespace DataStructures
                 else
                 {
                     string temp = "";
+
                     for (int j = index; j < index + 8; j++)
                     {
                         temp += binary[j];
+                        //                                    "01100101"
+                        //"10111010010111001110110101010010000001100101"
+                        //"101110100101110011101101010100100000011000000110011111001110000100011010"
+                        //"101110100101110011101101010100100000011001010000"
                     }
-                    index += 8;
                     var c = Convert.ToChar(Convert.ToByte(temp, 2));
                     newNode = new HuffmanNode(c, null, null, 0);
                     if(stack.Peek().LeftChild == null)
@@ -97,18 +102,17 @@ namespace DataStructures
                         stack.Peek().RightChild = newNode;
                         stack.Pop();
                     }
+                    index += 8;
                     indexByte++;
                 }
-
             }
-            int finalLength = newFile[indexByte];
+            index += index % 8;
+            int finalLength = newFile[0];
 
-            string temp1 = binary.Substring(0, binary.Length - 8);
+            string temp1 = binary.Substring(index, binary.Length - index - 8);
             binary = temp1 + binary.Substring(binary.Length - finalLength) + '0';
-            //once working, put tree at start of file
 
-
-            var currentNode = root;
+            var currentNode = previousNode;
             string decompressed = "";
 
             for (int i = 0; i < binary.Length; i++)
@@ -116,7 +120,7 @@ namespace DataStructures
                 if (currentNode.LeftChild == null && currentNode.RightChild == null)
                 {
                     decompressed += currentNode.Value;
-                    currentNode = root;
+                    currentNode = previousNode;
                 }
 
                 if (binary[i] == '0')
@@ -154,14 +158,17 @@ namespace DataStructures
                 }
             }
 
+            //while(nodes.Length % 8 != 0)
+            //{
+            //    nodes += '0';
+            //}
+            //for (int i = 0; i < nodes.Length - 8; i += 8)
+            //{
+            //    string temp = nodes.Substring(i, 8);
+            //    newFile.Add(Convert.ToByte(temp, 2));
+            //}
 
-            for (int i = 0; i < nodes.Length - 8; i += 8)
-            {
-                string temp = nodes.Substring(i, 8);
-                newFile.Add(Convert.ToByte(temp, 2));
-            }
-
-            LettersToBytes(file);
+            LettersToBytes(file, nodes);
             File.WriteAllBytes("output.txt", newFile.ToArray());
         }
 
@@ -219,7 +226,7 @@ namespace DataStructures
             return queue;
         }
 
-        private void LettersToBytes(string file)
+        private void LettersToBytes(string file, string nodeBinary)
         {
             string binary = "";
 
@@ -231,6 +238,9 @@ namespace DataStructures
                 }
             }
             // add tree before adding count and rest of file
+
+            binary = nodeBinary + binary;
+
             newFile.Add(Convert.ToByte(binary.Length % 8));
 
             for (int i = 0; i < binary.Length - 8; i += 8)
