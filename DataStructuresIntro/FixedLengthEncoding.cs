@@ -93,7 +93,7 @@ namespace DataStructures
                     }
                     var c = Convert.ToChar(Convert.ToByte(temp, 2));
                     newNode = new HuffmanNode(c, null, null, 0);
-                    if(stack.Peek().LeftChild == null)
+                    if (stack.Peek().LeftChild == null)
                     {
                         stack.Peek().LeftChild = newNode;
                     }
