@@ -86,10 +86,7 @@ namespace DataStructures
                     for (int j = index; j < index + 8; j++)
                     {
                         temp += binary[j];
-                        //                                    "01100101"
-                        //"10111010010111001110110101010010000001100101"
-                        //"101110100101110011101101010100100000011000000110011111001110000100011010"
-                        //"101110100101110011101101010100100000011001010000"
+
                     }
                     var c = Convert.ToChar(Convert.ToByte(temp, 2));
                     newNode = new HuffmanNode(c, null, null, 0);
@@ -106,7 +103,7 @@ namespace DataStructures
                     indexByte++;
                 }
             }
-            index += index % 8;
+            //index += index % 8;
             int finalLength = newFile[0];
 
             string temp1 = binary.Substring(index, binary.Length - index - 8);
@@ -157,19 +154,35 @@ namespace DataStructures
                     nodes += "0" + temp;
                 }
             }
-
-            //while(nodes.Length % 8 != 0)
-            //{
-            //    nodes += '0';
-            //}
-            //for (int i = 0; i < nodes.Length - 8; i += 8)
-            //{
-            //    string temp = nodes.Substring(i, 8);
-            //    newFile.Add(Convert.ToByte(temp, 2));
-            //}
-
             LettersToBytes(file, nodes);
             File.WriteAllBytes("output.txt", newFile.ToArray());
+        }
+        private void LettersToBytes(string file, string nodesBinary)
+        {
+            string binary = "";
+
+            for (int i = 0; i < file.Length; i++)
+            {
+                if (map.ContainsKey(file[i]))
+                {
+                    binary += map[file[i]];
+                }
+            }
+
+            binary = nodesBinary + binary;
+
+            newFile.Add(Convert.ToByte(binary.Length % 8));
+
+            for (int i = 0; i < binary.Length - 8; i += 8)
+            {
+                string temp = binary.Substring(i, 8);
+                newFile.Add(Convert.ToByte(temp, 2));
+            }
+            if (binary.Length % 8 != 0)
+            {
+                string last = binary.Substring(binary.Length - binary.Length % 8);
+                newFile.Add(Convert.ToByte(last, 2));
+            }
         }
 
         public void FillTree()
@@ -224,35 +237,6 @@ namespace DataStructures
                 }
             }
             return queue;
-        }
-
-        private void LettersToBytes(string file, string nodeBinary)
-        {
-            string binary = "";
-
-            for (int i = 0; i < file.Length; i++)
-            {
-                if (map.ContainsKey(file[i]))
-                {
-                    binary += map[file[i]];
-                }
-            }
-            // add tree before adding count and rest of file
-
-            binary = nodeBinary + binary;
-
-            newFile.Add(Convert.ToByte(binary.Length % 8));
-
-            for (int i = 0; i < binary.Length - 8; i += 8)
-            {
-                string temp = binary.Substring(i, 8);
-                newFile.Add(Convert.ToByte(temp, 2));
-            }
-            if (binary.Length % 8 != 0)
-            {
-                string last = binary.Substring(binary.Length - binary.Length % 8);
-                newFile.Add(Convert.ToByte(last, 2));
-            }
         }
 
         private void MapChars()
