@@ -22,6 +22,7 @@ class Program
         tree.Insert(9);
         tree.Insert(10);
         tree.Insert(11);
+        tree.Insert(12);
 
 
         ;
