@@ -15,7 +15,7 @@ namespace DataStructures
 
         public BTreeNode(T v1)
         {
-            values= new List<T>();
+            values = new List<T>();
             values.Add(v1);
             children = new List<BTreeNode<T>>();
         }
