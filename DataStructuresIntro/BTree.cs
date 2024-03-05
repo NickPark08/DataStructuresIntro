@@ -10,6 +10,7 @@ namespace DataStructures
     public class BTree<T> where T : IComparable<T>
     {
         BTreeNode<T> root;
+        bool rootOnly = true;
 
         public void Insert(T value)
         {
@@ -20,10 +21,9 @@ namespace DataStructures
             }
             var currentNode = root;
             BTreeNode<T> previousNode = null;
-            bool rootOnly = true;
 
 
-            if (currentNode.values.Count == 3)
+            if (currentNode.values.Count == 3 && rootOnly)
             {
                 BTreeNode<T> newNode = new BTreeNode<T>(currentNode.values[1]);
                 newNode.children.Add(new BTreeNode<T>(currentNode.values[0]));
@@ -37,7 +37,8 @@ namespace DataStructures
                     AddValue(value, newNode.children[1]);
                 }
                 root = newNode;
-
+                rootOnly = false;
+                return;
             }
 
 
@@ -82,16 +83,22 @@ namespace DataStructures
             }
             if (currentNode.values.Count == 3 && !rootOnly)
             {
+                previousNode.children.Remove(currentNode);
                 AddValue(currentNode.values[1], previousNode);
+                int index = 0;
+                if (previousNode.children.Count == 1) index = 1;
+                else if (previousNode.children.Count == 2) index = 2;
+                else index = 3;
+                
                 previousNode.children.Add(new BTreeNode<T>(currentNode.values[0]));
                 previousNode.children.Add(new BTreeNode<T>(currentNode.values[2]));
-                if (value.CompareTo(previousNode.values[0]) < 0)
+                if (value.CompareTo(currentNode.values[1]) < 0)
                 {
-                    AddValue(value, previousNode.children[0]);
+                    AddValue(value, previousNode.children[index]);
                 }
                 else
                 {
-                    AddValue(value, previousNode.children[1]);
+                    AddValue(value, previousNode.children[index + 1]);
                 }
             }
             else
@@ -103,6 +110,7 @@ namespace DataStructures
         private void AddValue(T value, BTreeNode<T> currentNode)
         {
             bool isHighest = true;
+            //int last 
             for (int i = 0; i < currentNode.values.Count; i++)
             {
                 if (value.CompareTo(currentNode.values[i]) < 0)
