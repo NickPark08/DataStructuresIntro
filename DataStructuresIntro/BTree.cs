@@ -21,7 +21,6 @@ public class BTree<T> where T : IComparable<T>
             newNode.children.Add(new BTreeNode<T>(root.values[0]));
             newNode.children.Add(new BTreeNode<T>(root.values[2]));
 
-            // Rearrange child nodes if they exist
             if (root.children.Count >= 2)
             {
                 newNode.children[0].children.AddRange(root.children[0].children.GetRange(0, 2));
@@ -37,25 +36,25 @@ public class BTree<T> where T : IComparable<T>
             root = newNode;
         }
         Insert(root, value);
-
-        // Split root if necessary
     }
 
     private void Insert(BTreeNode<T> node, T value)
     {
-        if (node.children.Count == 0) // Leaf node
+        if (node.children.Count == 0)
         {
             AddValue(value, node);
         }
-        else // Internal node
+        else
         {
             int index = 0;
-            while (index < node.values.Count && value.CompareTo(node.values[index]) >= 0)
+            while (index < node.values.Count && value.CompareTo(node.values[index]) > 0)
             {
                 index++;
             }
-
-            // Split child if necessary
+            if(index >= node.children.Count)
+            {
+                index = node.children.Count - 1;
+            }
             if (node.children[index].values.Count == 3)
             {
                 var child = node.children[index];
