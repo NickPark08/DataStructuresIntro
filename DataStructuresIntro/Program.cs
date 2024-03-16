@@ -13,31 +13,15 @@ class Program
 {
     public static void Main()
     {
-        BTree<int> tree = new BTree<int>();
+        RedBlackTree<int> tree= new RedBlackTree<int>();
 
-        tree.Insert(1);
-        tree.Insert(6);
-        tree.Insert(7);
-        tree.Insert(4);
-
-        tree.Insert(2);
-        tree.Insert(5);
-        tree.Insert(8);
-        tree.Insert(9);
         tree.Insert(10);
-        tree.Insert(11);
-        tree.Insert(12);
-        tree.Insert(12);
-        tree.Insert(12);
-
-        Console.WriteLine(tree.Search(7));
-        Console.WriteLine(tree.Search(12));
-        Console.WriteLine(tree.Search(7123));
-        Console.WriteLine(tree.Search(2));
-        Console.WriteLine(tree.Search(5));
-        Console.WriteLine(tree.Search(8));
-        Console.WriteLine(tree.Search(1));
-
+        tree.Insert(5);
+        tree.Insert(15);
+        tree.Insert(20);
+        tree.Insert(2);
+        tree.Insert(3);
+        tree.Insert(4);
 
         ;
         //string unionFindVertices = File.ReadAllText(@"..\..\..\UnionFindVertices.txt");
