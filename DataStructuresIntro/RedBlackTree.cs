@@ -1,8 +1,10 @@
-﻿using System;
+﻿using DataStructuresIntro;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace DataStructures
 {
@@ -17,22 +19,22 @@ namespace DataStructures
                 return;
             }
 
-            Insert(val, root);
+            Insert(val, ref root);
         }
-        private void Insert(T val, RBNode<T> currentNode)
+        private void Insert(T val, ref RBNode<T> currentNode)
         {
             if (currentNode.Left != null && val.CompareTo(currentNode.Value) < 0)
             {
-                Insert(val, currentNode.Left);
+                Insert(val, ref currentNode.Left);
             }
             else if (currentNode.Right != null)
             {
-                Insert(val, currentNode.Right);
+                Insert(val, ref currentNode.Right);
             }
 
             else
             {
-                if (val.CompareTo(currentNode.Value) <= 0)
+                if (val.CompareTo(currentNode.Value) < 0)
                 {
                     currentNode.Left = new RBNode<T>(val, false);
                 }
@@ -40,6 +42,7 @@ namespace DataStructures
                 {
                     currentNode.Right = new RBNode<T>(val, false);
                 }
+
                 if (currentNode.Left != null && currentNode.Right != null && !currentNode.Left.isBlack && !currentNode.Right.isBlack)
                 {
                     FlipColor(currentNode);
@@ -48,12 +51,12 @@ namespace DataStructures
 
             if (currentNode.Right != null && !currentNode.Right.isBlack)
             {
-                RotateLeft(currentNode);
+                RotateLeft(ref currentNode);
             }
 
             if (currentNode.Left != null && currentNode.Left.Left != null && !currentNode.Left.isBlack && !currentNode.Left.Left.isBlack)
             {
-                RotateRight(currentNode);
+                RotateRight(ref currentNode);
             }
         }
         private void FlipColor(RBNode<T> currentNode)
@@ -67,26 +70,56 @@ namespace DataStructures
                 root.isBlack = true;
             }
         }
-        private void RotateLeft(RBNode<T> currentNode)
+        private void RotateLeft(ref RBNode<T> currentNode)
         {
-            var right = currentNode.Right;
-            if (right.Left != null)
-            {
-                currentNode.Right = right.Left;
-                right.Left = currentNode;
-            }
-
-            right.isBlack = true;
+            bool originalParent = currentNode.isBlack;
+            var temp = currentNode.Right;
+            currentNode.Right = temp.Left;
+            temp.Left = currentNode;
+            temp.isBlack = originalParent;
             currentNode.isBlack = false;
+            currentNode = temp;
+            //var right = currentNode.Right;
+
+            //if (right.Left != null)
+            //{
+            //    currentNode.Right = right.Left;
+            //    right.Left = currentNode;
+            //}
+            //else if (right.Right != null)
+            //{
+            //    currentNode.Left = right.Right;
+            //    right.Right = currentNode;
+            //}
+
+            //temp.isBlack = true;
+            //currentNode.isBlack = false;
         }
-        private void RotateRight(RBNode<T> currentNode)
+        private void RotateRight(ref RBNode<T> currentNode)
         {
-            var left = currentNode.Left;
-            currentNode.Left = left.Right;
-            left.Right = currentNode;
-
-            left.isBlack = true;
+            bool originalParent = currentNode.isBlack;
+            var temp = currentNode.Left;
+            currentNode.Left = temp.Right;
+            temp.Right = currentNode;
+            temp.isBlack = originalParent;
             currentNode.isBlack = false;
+            currentNode = temp;
+
+            //var left = currentNode.Left;
+
+            //if (left.Right != null)
+            //{
+            //    currentNode.Left = left.Right;
+            //    left.Right = currentNode;
+            //}
+            //else if (left.Left != null)
+            //{
+            //    currentNode.Right = left.Left;
+            //    left.Left = currentNode;
+            //}
+
+            //temp.isBlack = true;
+            //currentNode.isBlack = false;
         }
 
     }
