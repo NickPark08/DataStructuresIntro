@@ -14,6 +14,7 @@ namespace Tries
 
         [TestMethod]
         [DataRow("z")]
+        [DataRow("a")]
         public void MatchingPrefixTest(string prefix)
         {
             Trie trie1 = new Trie();

@@ -79,21 +79,6 @@ namespace DataStructures
             temp.isBlack = originalParent;
             currentNode.isBlack = false;
             currentNode = temp;
-            //var right = currentNode.Right;
-
-            //if (right.Left != null)
-            //{
-            //    currentNode.Right = right.Left;
-            //    right.Left = currentNode;
-            //}
-            //else if (right.Right != null)
-            //{
-            //    currentNode.Left = right.Right;
-            //    right.Right = currentNode;
-            //}
-
-            //temp.isBlack = true;
-            //currentNode.isBlack = false;
         }
         private void RotateRight(ref RBNode<T> currentNode)
         {
@@ -104,22 +89,18 @@ namespace DataStructures
             temp.isBlack = originalParent;
             currentNode.isBlack = false;
             currentNode = temp;
+        }
 
-            //var left = currentNode.Left;
+        private void MoveRedRight(RBNode<T> currentNode)
+        {
+            if (currentNode.Right == null) return;
 
-            //if (left.Right != null)
-            //{
-            //    currentNode.Left = left.Right;
-            //    left.Right = currentNode;
-            //}
-            //else if (left.Left != null)
-            //{
-            //    currentNode.Right = left.Left;
-            //    left.Left = currentNode;
-            //}
 
-            //temp.isBlack = true;
-            //currentNode.isBlack = false;
+        }
+
+        private void MoveRedLeft()
+        {
+
         }
 
     }
