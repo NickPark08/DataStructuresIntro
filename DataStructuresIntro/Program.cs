@@ -34,6 +34,13 @@ class Program
         testTree.Insert(19);
         testTree.Insert(47);
 
+        var temp = testTree.InOrder();
+
+        foreach(var val in temp)
+        {
+            Console.WriteLine(val);
+        }
+
 
         tree.Insert(17);
         tree.Insert(3);

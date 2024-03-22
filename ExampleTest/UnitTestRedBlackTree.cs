@@ -43,53 +43,133 @@ namespace UnitTests
         //i want a public func and priv one (helper)
         //priv one should max 4 lines not including curly braces
 
+
+        public Queue<RBNode<int>> PreOrder(RBNode<int> node)
+        {
+            Queue<RBNode<int>> queue = new Queue<RBNode<int>>();
+            return PreOrder(node, queue);
+        }
+        private Queue<RBNode<int>> PreOrder(RBNode<int> node, Queue<RBNode<int>> queue)
+        {
+            queue.Enqueue(node);
+
+            if (node.Left != null) PreOrder(node.Left, queue);
+
+            if (node.Right != null) PreOrder(node.Right, queue);
+
+            return queue;
+        }
+
+        public Queue<int> InOrder(RBNode<int> node)
+        {
+            Queue<int> queue = new Queue<int>();
+            InOrder(node, queue);
+            return queue;
+        }
+        private void InOrder(RBNode<int> node, Queue<int> queue)
+        {
+            if (node != null)
+            {
+                InOrder(node.Left, queue);
+                queue.Enqueue(node.Value);
+                InOrder(node.Right, queue);
+            }
+        }
+        public Queue<int> PostOrder(RBNode<int> node)
+        {
+            Queue<int> queue = new Queue<int>();
+            PostOrder(node, queue);
+            return queue;
+        }
+        private void PostOrder(RBNode<int> node, Queue<int> queue)
+        {
+            if (node != null)
+            {
+                PostOrder(node.Left, queue);
+                PostOrder(node.Right, queue);
+                queue.Enqueue(node.Value);
+            }
+        }
+
         public void ValidateTree()
         {
             Stack<RBNode<int>> stack = new Stack<RBNode<int>>();
             //Queue<int> queue = new Queue<int>();
             Assert.IsTrue(tree.root.isBlack);
 
-            stack.Push(tree.root);
-            while (stack.Count > 0)
+            Queue<RBNode<int>> traverse = PreOrder(tree.root);
+
+            foreach(var node in traverse)
             {
-                List<int> counts = new List<int>();
-                RBNode<int> currentNode;
-                currentNode = stack.Pop();
+                CountBlacks(node);
+            }
 
-                if(currentNode.Right != null && currentNode.Left != null) Assert.IsTrue(!currentNode.isBlack && currentNode.Left.isBlack && currentNode.Right.isBlack);
+            //stack.Push(tree.root);
+            //while (stack.Count > 0)
+            //{
+            //    List<int> counts = new List<int>();
+            //    RBNode<int> currentNode;
+            //    currentNode = stack.Pop();
 
-                Stack<RBNode<int>> nullStack = new Stack<RBNode<int>>();
-                RBNode<int> node = currentNode;
-                nullStack.Push(currentNode);
-                int count = 0;
-                while(nullStack.Count > 0)
-                {
-                    node = nullStack.Pop();
-                    if (currentNode.Right != null)
-                    {
-                        nullStack.Push(node.Right);
-                    }
-                    if (currentNode.Left != null)
-                    {
-                        nullStack.Push(node.Left);
-                    }
-                    count++;
-                }
-                counts.Add(count);
-                foreach(int val in counts)
-                {
-                    if (val != counts[0]) Assert.Fail();
-                }
+            //    if(currentNode.Right != null && currentNode.Left != null) Assert.IsTrue(!currentNode.isBlack && currentNode.Left.isBlack && currentNode.Right.isBlack);
 
-                if (currentNode.Right != null)
+            //    Stack<RBNode<int>> nullStack = new Stack<RBNode<int>>();
+            //    RBNode<int> node = currentNode;
+            //    nullStack.Push(currentNode);
+            //    int count = 0;
+            //    while(nullStack.Count > 0)
+            //    {
+            //        node = nullStack.Pop();
+            //        if (currentNode.Right != null)
+            //        {
+            //            nullStack.Push(node.Right);
+            //        }
+            //        if (currentNode.Left != null)
+            //        {
+            //            nullStack.Push(node.Left);
+            //        }
+            //        count++;
+            //    }
+            //    counts.Add(count);
+            //    foreach(int val in counts)
+            //    {
+            //        if (val != counts[0]) Assert.Fail();
+            //    }
+
+            //    if (currentNode.Right != null)
+            //    {
+            //        stack.Push(currentNode.Right);
+            //    }
+            //    if (currentNode.Left != null)
+            //    {
+            //        stack.Push(currentNode.Left);
+            //    }
+            //}
+        }
+        private int CountBlacks(RBNode<int> node)
+        {
+            if (node == null)
+            {
+                return 1;
+            }
+
+            int leftCount = CountBlacks(node.Left);
+            int rightCount = CountBlacks(node.Right);
+            if (node.Right != null && node.Left != null)
+            {
+                if (!node.isBlack && node.Left.isBlack && node.Right.isBlack)
                 {
-                    stack.Push(currentNode.Right);
-                }
-                if (currentNode.Left != null)
-                {
-                    stack.Push(currentNode.Left);
+                    Assert.Fail("Red-red violation detected.");
                 }
             }
+
+            if (leftCount != rightCount)
+            {
+                Assert.Fail("Black node count mismatch detected.");
+            }
+
+            return node.isBlack ? leftCount + 1 : leftCount;
         }
+
     }
 }
