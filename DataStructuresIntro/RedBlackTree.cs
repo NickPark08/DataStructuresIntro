@@ -23,6 +23,10 @@ namespace DataStructures
         }
         private void Insert(T val, ref RBNode<T> currentNode)
         {
+            if (currentNode.Left != null && currentNode.Right != null && !currentNode.Left.isBlack && !currentNode.Right.isBlack)
+            {
+                FlipColor(currentNode);
+            }
             if (currentNode.Left != null && val.CompareTo(currentNode.Value) < 0)
             {
                 Insert(val, ref currentNode.Left);
@@ -43,10 +47,6 @@ namespace DataStructures
                     currentNode.Right = new RBNode<T>(val, false);
                 }
 
-                if (currentNode.Left != null && currentNode.Right != null && !currentNode.Left.isBlack && !currentNode.Right.isBlack)
-                {
-                    FlipColor(currentNode);
-                }
             }
 
             if (currentNode.Right != null && !currentNode.Right.isBlack)

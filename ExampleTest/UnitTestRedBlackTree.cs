@@ -1,4 +1,6 @@
 ﻿using DataStructures;
+using Newtonsoft.Json.Linq;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,22 @@ namespace UnitTests
     [TestClass]
     public class UnitTestRedBlackTree
     {
-
+        [TestMethod]
+        [DataRow(18213, 009121)]
+        public void RandomiedInsertTest(int size, int seed, int max = 100)
+        {
+            int[] data = new int[size];
+            Random rand = new(seed);
+            for (int i = 0; i < size; i++)
+            {
+                data[i] = rand.Next(max);
+            }
+            foreach (var item in data)
+            {
+                tree.Insert(item);
+                ValidateTree();
+            }
+        }
         RedBlackTree<int> tree = new RedBlackTree<int>();
         [TestMethod]
         [DataRow(2, "L", new int[] { 17, 3, 20, 1 })]
@@ -19,7 +36,7 @@ namespace UnitTests
         [DataRow(19, "R", new int[] { 17, 3, 20, 1, 2, 12, 18 })]
         [DataRow(47, "RR", new int[] { 17, 3, 20, 1, 2, 12, 18, 19 })]
         [DataRow(49, "RRR", new int[] { 17, 3, 20, 1, 2, 12, 18, 19, 47 })]
-        [DataRow(50, "RRR", new int[] { 17, 3, 20, 1, 2, 12, 18, 19, 47, 49 })]
+        [DataRow(50, "RR", new int[] { 17, 3, 20, 1, 2, 12, 18, 19, 47, 49 })]
 
 
         public void InsertTest(int value, string position, int[] values)
@@ -27,6 +44,7 @@ namespace UnitTests
             foreach (var item in values)
             {
                 tree.Insert(item);
+                ValidateTree();
             }
             tree.Insert(value);
 
@@ -93,71 +111,34 @@ namespace UnitTests
 
         public void ValidateTree()
         {
-            Stack<RBNode<int>> stack = new Stack<RBNode<int>>();
-            //Queue<int> queue = new Queue<int>();
             Assert.IsTrue(tree.root.isBlack);
 
             Queue<RBNode<int>> traverse = PreOrder(tree.root);
 
             foreach(var node in traverse)
             {
-                CountBlacks(node);
+                CountBlackNodes(node);
             }
-
-            //stack.Push(tree.root);
-            //while (stack.Count > 0)
-            //{
-            //    List<int> counts = new List<int>();
-            //    RBNode<int> currentNode;
-            //    currentNode = stack.Pop();
-
-            //    if(currentNode.Right != null && currentNode.Left != null) Assert.IsTrue(!currentNode.isBlack && currentNode.Left.isBlack && currentNode.Right.isBlack);
-
-            //    Stack<RBNode<int>> nullStack = new Stack<RBNode<int>>();
-            //    RBNode<int> node = currentNode;
-            //    nullStack.Push(currentNode);
-            //    int count = 0;
-            //    while(nullStack.Count > 0)
-            //    {
-            //        node = nullStack.Pop();
-            //        if (currentNode.Right != null)
-            //        {
-            //            nullStack.Push(node.Right);
-            //        }
-            //        if (currentNode.Left != null)
-            //        {
-            //            nullStack.Push(node.Left);
-            //        }
-            //        count++;
-            //    }
-            //    counts.Add(count);
-            //    foreach(int val in counts)
-            //    {
-            //        if (val != counts[0]) Assert.Fail();
-            //    }
-
-            //    if (currentNode.Right != null)
-            //    {
-            //        stack.Push(currentNode.Right);
-            //    }
-            //    if (currentNode.Left != null)
-            //    {
-            //        stack.Push(currentNode.Left);
-            //    }
-            //}
         }
-        private int CountBlacks(RBNode<int> node)
+        private int CountBlackNodes(RBNode<int> node)
         {
             if (node == null)
             {
                 return 1;
             }
 
-            int leftCount = CountBlacks(node.Left);
-            int rightCount = CountBlacks(node.Right);
-            if (node.Right != null && node.Left != null)
+            int leftCount = CountBlackNodes(node.Left);
+            int rightCount = CountBlackNodes(node.Right);
+            if (node.Right != null)
             {
-                if (!node.isBlack && node.Left.isBlack && node.Right.isBlack)
+                if (!node.isBlack && !node.Right.isBlack)
+                {
+                    Assert.Fail("Red-red violation detected.");
+                }
+            }
+            if (node.Left != null)
+            {
+                if (!node.isBlack && !node.Left.isBlack)
                 {
                     Assert.Fail("Red-red violation detected.");
                 }
