@@ -93,15 +93,125 @@ namespace DataStructures
 
         private void MoveRedRight(RBNode<T> currentNode)
         {
+            //fix this function, losing conections to 12 and 3
+            
             if (currentNode.Right == null) return;
 
+            if (currentNode.Right.Right != null && !currentNode.Right.Right.isBlack || !currentNode.Right.Left.isBlack) return;
 
+            FlipColor(currentNode);
+
+            if(!currentNode.Left.Left.isBlack)
+            {
+                RotateRight(ref currentNode);
+                FlipColor(currentNode);
+            }
         }
 
-        private void MoveRedLeft()
+        private void MoveRedLeft(RBNode<T> currentNode)
         {
+            if (currentNode.Left == null) return;
 
+            if (currentNode.Left.Left?.isBlack == false|| currentNode.Left.Right?.isBlack == false) return;
+
+            FlipColor(currentNode);
+
+            if (currentNode.Right.Left?.isBlack == false)
+            {
+                RotateRight(ref currentNode.Right);
+                RotateLeft(ref currentNode);
+                FlipColor(currentNode);
+            }
         }
 
+        public void Remove(T val)
+        {
+            if (root == null) return;
+
+            root = Remove(val, root);
+        }
+
+        private RBNode<T> Remove(T val, RBNode<T> currentNode)
+        {
+            if (currentNode.Left != null && val.CompareTo(currentNode.Value) < 0)
+            {
+                if(currentNode.Left.isBlack && currentNode.Left.Left.isBlack)
+                {
+                    MoveRedLeft(currentNode.Left);
+                }
+
+                currentNode.Left = Remove(val, currentNode.Left);
+            }
+            else
+            {
+                if(!currentNode.Left.isBlack)
+                {
+                    RotateLeft(ref currentNode.Left);
+                }
+
+                if (currentNode.Value.Equals(val) && currentNode.Left == null && currentNode.Right == null)
+                {
+                    return null;
+                }
+                else 
+                {
+                    if (currentNode.Left == null || currentNode.Left.isBlack)
+                    {
+                        MoveRedRight(currentNode);
+                        currentNode.Right = Remove(val, currentNode.Right);
+                    }
+                    else
+                    {
+                        RBNode<T> minValue = currentNode.Right;
+                        while(minValue.Left != null)
+                        {
+                            minValue = minValue.Left;
+                        }
+
+                        currentNode.Value = minValue.Value;
+                        minValue.Value = val;
+
+                        Remove(val);
+                    }
+                }
+
+            }
+            Fixup(currentNode);
+
+            return currentNode;
+        }
+
+        public void Fixup(RBNode<T> currentNode)
+        {
+            if (!isBlack(currentNode.Right)) RotateLeft(ref currentNode);
+
+            if (!isBlack(currentNode.Left) && !isBlack(currentNode.Left.Left))
+            {
+                RotateRight(ref currentNode);
+            }
+
+            if (!isBlack(currentNode.Right) && !isBlack(currentNode.Left)) FlipColor(currentNode);
+
+            if(!isBlack(currentNode.Right))
+            {
+                RotateLeft(ref currentNode);
+            }
+            if (currentNode.Left != null && !isBlack(currentNode.Left.Right))
+            {
+                RotateLeft(ref currentNode.Left);
+                if (currentNode.Left.Left != null && currentNode.Left.Left.Left != null && !currentNode.Left.Left
+                    .isBlack && !currentNode.Left.Left.Left.isBlack)
+                {
+                    RotateRight(ref currentNode.Left);
+                }
+            }
+        }
+
+        private bool isBlack(RBNode<T> currentNode)
+        {
+            if (currentNode == null || currentNode.isBlack) return true;
+
+            return false;
+        }
     }
 }

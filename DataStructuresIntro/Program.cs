@@ -14,34 +14,8 @@ class Program
     public static void Main()
     {
         RedBlackTree<int> tree= new RedBlackTree<int>();
-        AVLTree<int> testTree = new AVLTree<int>();
 
-        //tree.Insert(10);
-        //tree.Insert(5);
-        //tree.Insert(15);
-        //tree.Insert(20);
-        //tree.Insert(2);
-        //tree.Insert(3);
-        //tree.Insert(4);
-
-        testTree.Insert(17);
-        testTree.Insert(3);
-        testTree.Insert(20);
-        testTree.Insert(1);
-        testTree.Insert(2);
-        testTree.Insert(12);
-        testTree.Insert(18);
-        testTree.Insert(19);
-        testTree.Insert(47);
-
-        var temp = testTree.InOrder();
-
-        foreach(var val in temp)
-        {
-            Console.WriteLine(val);
-        }
-
-
+        //17, 3, 20, 1, 2, 12, 18, 19, 47, 49, 50
         tree.Insert(17);
         tree.Insert(3);
         tree.Insert(20);
@@ -51,6 +25,9 @@ class Program
         tree.Insert(18);
         tree.Insert(19);
         tree.Insert(47);
+        tree.Insert(49);
+        tree.Insert(50);
+        tree.Remove(3);
 
         ;
         //string unionFindVertices = File.ReadAllText(@"..\..\..\UnionFindVertices.txt");
