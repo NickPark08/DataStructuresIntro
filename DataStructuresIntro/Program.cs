@@ -28,7 +28,8 @@ class Program
         tree.Insert(49);
         tree.Insert(50);
         tree.Remove(3);
-
+        tree.Remove(50);
+        
         ;
         //string unionFindVertices = File.ReadAllText(@"..\..\..\UnionFindVertices.txt");
         //string unionFindEdges = File.ReadAllText(@"..\..\..\UnionFindEdges.txt");
