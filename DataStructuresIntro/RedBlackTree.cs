@@ -93,7 +93,6 @@ namespace DataStructures
 
         private void MoveRedRight(ref RBNode<T> currentNode)
         {
-            //fix this function, losing conections to 12 and 3
             
             if (currentNode.Right == null) return;
 
@@ -101,7 +100,7 @@ namespace DataStructures
 
             FlipColor(currentNode);
 
-            if(currentNode.Left.Left?.isBlack == false)
+            if(currentNode.Left?.Left?.isBlack == false)
             {
                 RotateRight(ref currentNode);
                 FlipColor(currentNode);
@@ -130,6 +129,7 @@ namespace DataStructures
             if (root == null) return;
 
             root = Remove(val, root);
+            root.isBlack = true;
         }
 
         private RBNode<T> Remove(T val, RBNode<T> currentNode)
@@ -160,8 +160,8 @@ namespace DataStructures
                     {
                         if (currentNode != null && (currentNode.Left == null || currentNode.Left.isBlack) && val.CompareTo(currentNode.Value) > 0)
                         {
-                            MoveRedRight(ref currentNode);
                             currentNode.Right = Remove(val, currentNode.Right);
+                            MoveRedRight(ref currentNode);
                         }
                         else if (currentNode != null)
                         {
@@ -187,10 +187,10 @@ namespace DataStructures
 
         public void Fixup(RBNode<T> currentNode)
         {
-            if (root?.isBlack == false) FlipColor(root);
+            if (root?.isBlack == false) root.isBlack = true;
             if (currentNode != null)
             {
-                if (!isBlack(currentNode.Right)) RotateLeft(ref currentNode);
+                if (!isBlack(currentNode.Right)) RotateLeft(ref currentNode); //17's right node is lost during fixup on specific test case
 
                 if (!isBlack(currentNode.Left) && !isBlack(currentNode.Left.Left))
                 {

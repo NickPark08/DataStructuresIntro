@@ -13,7 +13,7 @@ class Program
 {
     public static void Main()
     {
-        RedBlackTree<int> tree= new RedBlackTree<int>();
+        RedBlackTree<double> tree= new RedBlackTree<double>();
 
         //17, 3, 20, 1, 2, 12, 18, 19, 47, 49, 50
         tree.Insert(17);
@@ -25,11 +25,19 @@ class Program
         tree.Insert(18);
         tree.Insert(19);
         tree.Insert(47);
-        tree.Insert(49);
+        //tree.Insert(49);
         tree.Insert(50);
-        tree.Remove(3);
+        //tree.Remove(3);
+        //tree.Remove(50);
+        tree.Insert(0);
+        tree.Insert(1.5);
+        tree.Insert(13);
+        tree.Insert(.5);
+        //tree.Insert(.25);
+        tree.Insert(2.25);
+        tree.Insert(1.25);
+
         tree.Remove(50);
-        
         ;
         //string unionFindVertices = File.ReadAllText(@"..\..\..\UnionFindVertices.txt");
         //string unionFindEdges = File.ReadAllText(@"..\..\..\UnionFindEdges.txt");
