@@ -190,7 +190,7 @@ namespace DataStructures
             if (root?.isBlack == false) root.isBlack = true;
             if (currentNode != null)
             {
-                if (!isBlack(currentNode.Right)) RotateLeft(ref currentNode); //17's right node is lost during fixup on specific test case
+                if (!isBlack(currentNode.Right)) RotateLeft(ref currentNode); //17's right node is lost during fixup on specific test case, may be other rotations losing nodes
 
                 if (!isBlack(currentNode.Left) && !isBlack(currentNode.Left.Left))
                 {
