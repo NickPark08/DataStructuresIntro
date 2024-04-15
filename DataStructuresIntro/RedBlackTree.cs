@@ -91,35 +91,56 @@ namespace DataStructures
             currentNode = temp;
         }
 
+        //private void MoveRedRight(ref RBNode<T> currentNode)
+        //{
+
+        //    if (currentNode.Right == null) return;
+
+        //    if (currentNode.Right.Right?.isBlack == false || currentNode.Right.Left?.isBlack == false) return;
+
+        //    FlipColor(currentNode);
+
+        //    if(currentNode.Left?.Left?.isBlack == false)
+        //    {
+        //        RotateRight(ref currentNode);
+        //        FlipColor(currentNode);
+        //    }
+        //}
+
         private void MoveRedRight(ref RBNode<T> currentNode)
         {
-            
-            if (currentNode.Right == null) return;
-
-            if (currentNode.Right.Right?.isBlack == false || currentNode.Right.Left?.isBlack == false) return;
-
             FlipColor(currentNode);
-
-            if(currentNode.Left?.Left?.isBlack == false)
+            if (currentNode.Left?.Left?.isBlack == true)
             {
-                RotateRight(ref currentNode);
-                FlipColor(currentNode);
+                RotateRight(ref currentNode.Left);
+                FlipColor(currentNode.Left);
             }
         }
 
+        //private void MoveRedLeft(ref RBNode<T> currentNode)
+        //{
+        //    if (currentNode.Left == null) return;
+
+        //    if (currentNode.Left.Left?.isBlack == false || currentNode.Left.Right?.isBlack == false) return;
+
+        //    FlipColor(currentNode);
+
+        //    if (currentNode.Right.Left?.isBlack == false)
+        //    {
+        //        RotateRight(ref currentNode.Right);
+        //        RotateLeft(ref currentNode);
+        //        if(currentNode.Left == root) root = currentNode;
+        //        FlipColor(currentNode);
+        //    }
+        //}
+
         private void MoveRedLeft(ref RBNode<T> currentNode)
         {
-            if (currentNode.Left == null) return;
-
-            if (currentNode.Left.Left?.isBlack == false || currentNode.Left.Right?.isBlack == false) return;
-
             FlipColor(currentNode);
-
-            if (currentNode.Right.Left?.isBlack == false)
+            if (currentNode.Right?.Left?.isBlack == true)
             {
                 RotateRight(ref currentNode.Right);
                 RotateLeft(ref currentNode);
-                if(currentNode.Left == root) root = currentNode;
                 FlipColor(currentNode);
             }
         }
