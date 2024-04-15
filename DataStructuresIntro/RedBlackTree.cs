@@ -110,10 +110,10 @@ namespace DataStructures
         private void MoveRedRight(ref RBNode<T> currentNode)
         {
             FlipColor(currentNode);
-            if (currentNode.Left?.Left?.isBlack == true)
+            if (currentNode.Left?.Left?.isBlack == false)
             {
-                RotateRight(ref currentNode.Left);
-                FlipColor(currentNode.Left);
+                RotateRight(ref currentNode);
+                FlipColor(currentNode);
             }
         }
 
@@ -137,12 +137,17 @@ namespace DataStructures
         private void MoveRedLeft(ref RBNode<T> currentNode)
         {
             FlipColor(currentNode);
-            if (currentNode.Right?.Left?.isBlack == true)
+            if (currentNode.Right?.Left?.isBlack == false)
             {
                 RotateRight(ref currentNode.Right);
                 RotateLeft(ref currentNode);
                 FlipColor(currentNode);
+                if (currentNode.Right.Right?.isBlack == false)
+                {
+                    RotateLeft(ref currentNode.Right);
+                }
             }
+
         }
 
         public void Remove(T val)
@@ -157,18 +162,21 @@ namespace DataStructures
         {
             if (currentNode != null)
             {
-                if (currentNode != null && currentNode.Left != null && val.CompareTo(currentNode.Value) < 0)
+                if (val.CompareTo(currentNode.Value) < 0)
                 {
-                    if (currentNode.Left.isBlack && currentNode.Left.Left.isBlack)
+                    if (currentNode.Left != null)
                     {
-                        MoveRedLeft(ref currentNode);
-                    }
+                        if (currentNode.Left.isBlack && currentNode.Left.Left.isBlack)
+                        {
+                            MoveRedLeft(ref currentNode);
+                        }
 
-                    currentNode.Left = Remove(val, currentNode.Left);
+                        currentNode.Left = Remove(val, currentNode.Left);
+                    }
                 }
                 else
                 {
-                    if (currentNode != null && currentNode.Left?.isBlack == false)
+                    if (currentNode.Left?.isBlack == false)
                     {
                         RotateRight(ref currentNode);
                     }
@@ -177,14 +185,19 @@ namespace DataStructures
                     {
                         return null;
                     }
-                    else
+                    if(currentNode.Right != null)
                     {
-                        if (currentNode != null && (currentNode.Left == null || currentNode.Left.isBlack) && val.CompareTo(currentNode.Value) > 0)
+                        if(currentNode.Right?.isBlack == true && currentNode.Right.Left?.isBlack == true)
                         {
-                            currentNode.Right = Remove(val, currentNode.Right);
                             MoveRedRight(ref currentNode);
                         }
-                        else if (currentNode != null)
+
+                        //if (currentNode.Left == null || currentNode.Left.isBlack)
+                        //{
+                        //    currentNode.Right = Remove(val, currentNode.Right);
+                        //    MoveRedRight(ref currentNode);
+                        //}
+                        if(val.CompareTo(currentNode.Value) == 0)
                         {
                             RBNode<T> minValue = currentNode.Right;
                             while (minValue.Left != null)
@@ -197,6 +210,10 @@ namespace DataStructures
 
                             Remove(val);
                         }
+                        else
+                        {
+                            currentNode.Right = Remove(val, currentNode.Right);
+                        }
                     }
 
                 }
@@ -208,7 +225,6 @@ namespace DataStructures
 
         public void Fixup(RBNode<T> currentNode)
         {
-            if (root?.isBlack == false) root.isBlack = true;
             if (currentNode != null)
             {
                 if (!isBlack(currentNode.Right)) RotateLeft(ref currentNode); //17's right node is lost during fixup on specific test case, may be other rotations losing nodes
@@ -224,7 +240,7 @@ namespace DataStructures
                 {
                     RotateLeft(ref currentNode);
                 }
-                if (currentNode.Left != null && !isBlack(currentNode.Left.Right))
+                if (currentNode.Left != null && !isBlack(currentNode.Left.Right) && isBlack(currentNode.Left.Left))
                 {
                     RotateLeft(ref currentNode.Left);
                     if (currentNode.Left.Left != null && currentNode.Left.Left.Left != null && !currentNode.Left.Left
@@ -232,7 +248,22 @@ namespace DataStructures
                     {
                         RotateRight(ref currentNode);
                     }
+                    else if (!isBlack(currentNode.Left))
+                    {
+                        RotateRight(ref currentNode);
+                    }
                 }
+                //if ((node.Left != null) && IsRed(node.Left.Right) && !IsRed(node.Left.Left))
+                //{
+                //    node.Left = RotateLeft(node.Left);
+
+                //    // Avoid red touching red
+                //    if (IsRed(node.Left))
+                //    {
+                //        //Balance a (4-node) node with 2 red children
+                //        node = RotateRight(node);
+                //    }
+                //}
             }
         }
 
