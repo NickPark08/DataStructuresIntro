@@ -46,7 +46,10 @@ namespace DataStructures
                 {
                     currentNode.Right = new RBNode<T>(val, false);
                 }
-
+                if (currentNode.Left != null && currentNode.Right != null && !currentNode.Left.isBlack && !currentNode.Right.isBlack)
+                {
+                    FlipColor(currentNode);
+                }
             }
 
             if (currentNode.Right != null && !currentNode.Right.isBlack)
@@ -189,6 +192,7 @@ namespace DataStructures
                     {
                         if(currentNode.Right?.isBlack == true && currentNode.Right.Left?.isBlack == true)
                         {
+                            // should flip color on 47 when this is called after rotating
                             MoveRedRight(ref currentNode);
                         }
 

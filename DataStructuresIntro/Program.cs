@@ -15,7 +15,7 @@ class Program
     {
         RedBlackTree<double> tree= new RedBlackTree<double>();
 
-        //17, 3, 20, 1, 2, 12, 18, 19, 47, 49, 50
+        //17, 10, 20, 5, 8, 12, 18, 19, 47, 49, 50, 0, 7, 13, 4, 9, 6,
         tree.Insert(17);
         tree.Insert(3);
         tree.Insert(20);
@@ -29,13 +29,13 @@ class Program
         tree.Insert(50);
         //tree.Remove(3);
         //tree.Remove(50);
-        tree.Insert(0);
-        tree.Insert(1.5);
-        tree.Insert(13);
-        tree.Insert(.5);
+        tree.Insert(0); //< 1 -> 0
+        tree.Insert(1.5); // < 2 -> 7
+        tree.Insert(13); 
+        tree.Insert(.5); //  < 1 -> 4
         //tree.Insert(.25);
-        tree.Insert(2.25);
-        tree.Insert(1.25);
+        tree.Insert(2.25); // < 3 -> 9
+        tree.Insert(1.25); // < 2 -> 6
 
         tree.Remove(50);
         ;
