@@ -15,7 +15,7 @@ class Program
     {
         RedBlackTree<double> tree= new RedBlackTree<double>();
 
-        //17, 10, 20, 5, 8, 12, 18, 19, 47, 49, 50, 0, 7, 13, 4, 9, 6,
+        //17, 10, 20, 5, 8, 12, 18, 19, 40, 50, 0, 7, 13, 4, 9, 6, 47, 53, 46, 48, 52, 54 
         tree.Insert(17);
         tree.Insert(3);
         tree.Insert(20);
@@ -36,8 +36,14 @@ class Program
         //tree.Insert(.25);
         tree.Insert(2.25); // < 3 -> 9
         tree.Insert(1.25); // < 2 -> 6
+        tree.Insert(49); // 47
+        tree.Insert(51); // 53
+        tree.Insert(48); // 46
+        tree.Insert(49.5); // 48
+        tree.Insert(50.5); // 52
+        tree.Insert(52); // 54
 
-        tree.Remove(50);
+        tree.Remove(47);
         ;
         //string unionFindVertices = File.ReadAllText(@"..\..\..\UnionFindVertices.txt");
         //string unionFindEdges = File.ReadAllText(@"..\..\..\UnionFindEdges.txt");

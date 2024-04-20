@@ -13,6 +13,14 @@ namespace UnitTests
     public class UnitTestRedBlackTree
     {
         [TestMethod]
+        public void DeleteTest()
+        {
+
+        }
+
+
+
+        [TestMethod]
         [DataRow(18213, 009121)]
         public void RandomiedInsertTest(int size, int seed, int max = 100)
         {
