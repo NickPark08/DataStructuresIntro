@@ -23,7 +23,7 @@ namespace DataStructures
         }
         private void Insert(T val, ref RBNode<T> currentNode)
         {
-            if (currentNode.Left != null && currentNode.Right != null && !currentNode.Left.isBlack && !currentNode.Right.isBlack)
+            if (currentNode.Left?.isBlack == false && currentNode.Right?.isBlack == false)
             {
                 FlipColor(currentNode);
             }
@@ -67,11 +67,6 @@ namespace DataStructures
             currentNode.isBlack = !currentNode.isBlack;
             if (currentNode.Right != null) currentNode.Right.isBlack = !currentNode.Right.isBlack;
             if (currentNode.Left != null) currentNode.Left.isBlack = !currentNode.Left.isBlack;
-
-            if (currentNode == root)
-            {
-                root.isBlack = true;
-            }
         }
         private void RotateLeft(ref RBNode<T> currentNode)
         {
@@ -250,6 +245,13 @@ namespace DataStructures
                         RotateRight(ref currentNode);
                     }
                     else if (!isBlack(currentNode.Left))
+                    {
+                        RotateRight(ref currentNode);
+                    }
+                }
+                if ((currentNode.Left != null) && !isBlack(currentNode.Left.Right) && isBlack(currentNode.Left.Left))
+                {
+                    if (!isBlack(currentNode.Left))
                     {
                         RotateRight(ref currentNode);
                     }
