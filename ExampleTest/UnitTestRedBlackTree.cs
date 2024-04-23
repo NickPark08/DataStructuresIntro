@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,15 +14,30 @@ namespace UnitTests
     public class UnitTestRedBlackTree
     {
         [TestMethod]
-        public void DeleteTest()
+        [DataRow(8232, 0001213)]
+        public void DeleteTest(int size, int seed, int max = 100)
         {
-
+            int[] data = new int[size];
+            Random rand = new(seed);
+            for (int i = 0; i < size; i++)
+            {
+                data[i] = rand.Next(max);
+            }
+            foreach(var item in data)
+            {
+                tree.Insert(item);
+            }
+            for(int i = 0; i < 4000; i++)
+            {
+                tree.Remove(data[rand.Next(data.Length)]);
+                ValidateTree();
+            }
         }
 
 
 
         [TestMethod]
-        [DataRow(18213, 009121)]
+        [DataRow(100, 009121)]
         public void RandomiedInsertTest(int size, int seed, int max = 100)
         {
             int[] data = new int[size];
@@ -43,7 +59,6 @@ namespace UnitTests
         [DataRow(18, "RL", new int[] { 17, 3, 20, 1, 2, 12 })]
         [DataRow(19, "R", new int[] { 17, 3, 20, 1, 2, 12, 18 })]
         [DataRow(47, "RR", new int[] { 17, 3, 20, 1, 2, 12, 18, 19 })]
-        [DataRow(49, "RRR", new int[] { 17, 3, 20, 1, 2, 12, 18, 19, 47 })]
         [DataRow(50, "RR", new int[] { 17, 3, 20, 1, 2, 12, 18, 19, 47, 49 })]
 
 

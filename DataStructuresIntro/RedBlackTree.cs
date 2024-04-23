@@ -11,8 +11,10 @@ namespace DataStructures
     public class RedBlackTree<T> where T : IComparable<T>
     {
         public RBNode<T> root;
+        public int Count { get; private set; }
         public void Insert(T val)
         {
+            Count++;
             if (root == null)
             {
                 root = new RBNode<T>(val, true);
@@ -20,6 +22,8 @@ namespace DataStructures
             }
 
             Insert(val, ref root);
+
+            root.isBlack = true;
         }
         private void Insert(T val, ref RBNode<T> currentNode)
         {
@@ -52,6 +56,10 @@ namespace DataStructures
                 }
             }
 
+            if (currentNode.Left != null && currentNode.Right != null && !currentNode.Left.isBlack && !currentNode.Right.isBlack)
+            {
+                FlipColor(currentNode);
+            }
             if (currentNode.Right != null && !currentNode.Right.isBlack)
             {
                 RotateLeft(ref currentNode);
@@ -89,22 +97,6 @@ namespace DataStructures
             currentNode = temp;
         }
 
-        //private void MoveRedRight(ref RBNode<T> currentNode)
-        //{
-
-        //    if (currentNode.Right == null) return;
-
-        //    if (currentNode.Right.Right?.isBlack == false || currentNode.Right.Left?.isBlack == false) return;
-
-        //    FlipColor(currentNode);
-
-        //    if(currentNode.Left?.Left?.isBlack == false)
-        //    {
-        //        RotateRight(ref currentNode);
-        //        FlipColor(currentNode);
-        //    }
-        //}
-
         private void MoveRedRight(ref RBNode<T> currentNode)
         {
             FlipColor(currentNode);
@@ -114,23 +106,6 @@ namespace DataStructures
                 FlipColor(currentNode);
             }
         }
-
-        //private void MoveRedLeft(ref RBNode<T> currentNode)
-        //{
-        //    if (currentNode.Left == null) return;
-
-        //    if (currentNode.Left.Left?.isBlack == false || currentNode.Left.Right?.isBlack == false) return;
-
-        //    FlipColor(currentNode);
-
-        //    if (currentNode.Right.Left?.isBlack == false)
-        //    {
-        //        RotateRight(ref currentNode.Right);
-        //        RotateLeft(ref currentNode);
-        //        if(currentNode.Left == root) root = currentNode;
-        //        FlipColor(currentNode);
-        //    }
-        //}
 
         private void MoveRedLeft(ref RBNode<T> currentNode)
         {
@@ -154,6 +129,7 @@ namespace DataStructures
 
             root = Remove(val, root);
             root.isBlack = true;
+            Count--;
         }
 
         private RBNode<T> Remove(T val, RBNode<T> currentNode)
@@ -183,14 +159,14 @@ namespace DataStructures
                     {
                         return null;
                     }
-                    if(currentNode.Right != null)
+                    if (currentNode.Right != null)
                     {
-                        if(currentNode.Right?.isBlack == true && isBlack(currentNode.Right.Left))
+                        if (currentNode.Right?.isBlack == true && isBlack(currentNode.Right.Left))
                         {
                             MoveRedRight(ref currentNode);
                         }
 
-                        if(val.CompareTo(currentNode.Value) == 0)
+                        if (val.CompareTo(currentNode.Value) == 0)
                         {
                             RBNode<T> minValue = currentNode.Right;
                             while (minValue.Left != null)
@@ -221,8 +197,8 @@ namespace DataStructures
             if (currentNode != null)
             {
                 if (!isBlack(currentNode.Right))
-                { 
-                    RotateLeft(ref currentNode); 
+                {
+                    RotateLeft(ref currentNode);
                 }
 
                 if (!isBlack(currentNode.Left) && !isBlack(currentNode.Left.Left))
