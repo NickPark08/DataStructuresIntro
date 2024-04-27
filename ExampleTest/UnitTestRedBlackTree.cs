@@ -52,7 +52,7 @@ namespace UnitTests
                 ValidateTree();
             }
         }
-        RedBlackTree<int> tree = new RedBlackTree<int>();
+        RedBlackTree<int> tree = new RedBlackTree<int>(null);
         [TestMethod]
         [DataRow(2, "L", new int[] { 17, 3, 20, 1 })]
         [DataRow(12, "LR", new int[] { 17, 3, 20, 1, 2 })]

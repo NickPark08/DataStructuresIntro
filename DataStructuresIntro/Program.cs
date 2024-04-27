@@ -8,67 +8,50 @@ using System.Reflection;
 using System.IO;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.ComponentModel;
 
 class Program
 {
     public static void Main()
     {
-        RedBlackTree<double> tree= new RedBlackTree<double>();
+        RedBlackTree<int> tree = new(null);
+        RedBlackTree<int> tree2 = new(null);
 
-        ////17, 10, 20, 5, 8, 12, 18, 19, 40, 50, 0, 7, 13, 4, 9, 6, 47, 53, 46, 48, 52, 54 
-        //tree.Insert(17);
-        //tree.Insert(3);
-        //tree.Insert(20);
-        //tree.Insert(1);
-        //tree.Insert(2);
-        //tree.Insert(12);
-        //tree.Insert(18);
-        //tree.Insert(19);
-        //tree.Insert(47);
-        ////tree.Insert(49);
-        //tree.Insert(50);
-        ////tree.Remove(3);
-        ////tree.Remove(50);
-        //tree.Insert(0); //< 1 -> 0
-        //tree.Insert(1.5); // < 2 -> 7
-        //tree.Insert(13); 
-        //tree.Insert(.5); //  < 1 -> 4
-        ////tree.Insert(.25);
-        //tree.Insert(2.25); // < 3 -> 9
-        //tree.Insert(1.25); // < 2 -> 6
-        //tree.Insert(49); // 47
-        //tree.Insert(51); // 53
-        //tree.Insert(48); // 46
-        //tree.Insert(49.5); // 48
-        //tree.Insert(50.5); // 52
-        //tree.Insert(17.5);
-        //tree.Insert(18.5);
-        //tree.Insert(19.5);
-        //tree.Insert(21);
-
-        //tree.Insert(52); // 54
-
-        tree.Insert(46);
-        tree.Insert(19);
-        tree.Insert(50);
-        tree.Insert(15);
-        tree.Insert(23);
-        tree.Insert(48);
-        tree.Insert(52);
-        tree.Insert(14);
-        tree.Insert(16);
-        tree.Insert(22);
-        tree.Insert(24);
-        //tree.Insert(47);
-        //tree.Insert(49);
-        //tree.Insert(51);
-        //tree.Insert(53);
-        tree.Insert(12);
-        tree.Insert(11);
+        List<int> list = new List<int>() {3, 23, 5, 1, 7, 72, 19, 92, 12, 61 };
+        List<int> list2 = new List<int>() { 7, 912, 421, 3, 23, 19, 76, 61, 27, 81, 6432, 123 };
 
 
-        tree.Remove(15);
-        ;
+        tree.AddRange(list);
+        tree2.AddRange(list2);
+        var temp = tree.InOrder();
+        foreach(var val in temp)
+        {
+            Console.Write($"{val}, ");
+        }
+        Console.WriteLine();
+        var temp4 = tree2.InOrder();
+        foreach(var val in temp4)
+        {
+            Console.Write($"{val}, ");
+        }
+        Console.WriteLine();
+
+        RedBlackTree<int> temp2 = (RedBlackTree<int>)tree.Union(tree2);
+        RedBlackTree<int> temp3 = (RedBlackTree<int>)tree.Intersection(tree2);
+
+        var temp5 = temp2.InOrder();
+        var temp6 = temp3.InOrder();
+
+        foreach(var val in temp5)
+        {
+            Console.Write($"{val}, ");
+        }
+        Console.WriteLine();
+        foreach (var val in temp6)
+        {
+            Console.Write($"{val}, ");
+        }
+
         //string unionFindVertices = File.ReadAllText(@"..\..\..\UnionFindVertices.txt");
         //string unionFindEdges = File.ReadAllText(@"..\..\..\UnionFindEdges.txt");
 

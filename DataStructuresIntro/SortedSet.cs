@@ -8,6 +8,7 @@ namespace DataStructures
 {
     public interface ISortedSet<T> : IEnumerable<T>
     {
+
         IComparer<T> Comparer { get; }
         int Count { get; }
         void Clear();
@@ -22,4 +23,5 @@ namespace DataStructures
         ISortedSet<T> Union(ISortedSet<T> other);
         ISortedSet<T> Intersection(ISortedSet<T> other);
     }
+
 }
