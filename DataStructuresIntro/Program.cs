@@ -17,8 +17,8 @@ class Program
         RedBlackTree<int> tree = new(null);
         RedBlackTree<int> tree2 = new(null);
 
-        List<int> list = new List<int>() {3, 23, 5, 1, 7, 72, 19, 92, 12, 61 };
-        List<int> list2 = new List<int>() { 7, 912, 421, 3, 23, 19, 76, 61, 27, 81, 6432, 123 };
+        List<int> list = new List<int>() {1, 2, 3, 4, 5, 6, 7, 8, 9, 12};
+        List<int> list2 = new List<int>() { 1, 3, 5, 7, 9, 11, 13 };
 
 
         tree.AddRange(list);
@@ -35,19 +35,11 @@ class Program
             Console.Write($"{val}, ");
         }
         Console.WriteLine();
-
-        RedBlackTree<int> temp2 = (RedBlackTree<int>)tree.Union(tree2);
-        RedBlackTree<int> temp3 = (RedBlackTree<int>)tree.Intersection(tree2);
-
-        var temp5 = temp2.InOrder();
-        var temp6 = temp3.InOrder();
-
-        foreach(var val in temp5)
-        {
-            Console.Write($"{val}, ");
-        }
         Console.WriteLine();
-        foreach (var val in temp6)
+
+
+        var union = tree.Union(tree2);
+        foreach(var val in union)
         {
             Console.Write($"{val}, ");
         }

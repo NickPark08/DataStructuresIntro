@@ -383,24 +383,35 @@ namespace DataStructures
 
         public ISortedSet<T> Union(ISortedSet<T> other)
         {
+            var values = new RedBlackTree<T>(Comparer);
             if (other == null) return this;
 
+            foreach(var val in this)
+            {
+                values.Add(val);
+            }
             foreach(var item in other)
             {
-                if(!Contains(item))
+                if(Contains(item))
                 {
-                    Add(item);
+                    values.Remove(item);
+                }
+                else
+                {
+                    values.Add(item);
                 }
             }
 
-            return this;
+            return values;
         }
 
         public ISortedSet<T> Intersection(ISortedSet<T> other)
         {
-            var values = new RedBlackTree<T>(Comparer);
             if (other == null) return this;
-            foreach(var item in other)
+
+            var values = new RedBlackTree<T>(Comparer);
+
+            foreach (var item in other)
             {
                 if(Contains(item))
                 {
