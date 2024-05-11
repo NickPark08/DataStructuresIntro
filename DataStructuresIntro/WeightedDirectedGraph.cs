@@ -113,7 +113,7 @@ namespace DataStructures
             return (path, journey);
         }
 
-        public (List<WDVertex<T>>, List<WDVertex<T>>) AStar(WDVertex<T> start, WDVertex<T> end)
+        public List<WDVertex<T>> AStar(WDVertex<T> start, WDVertex<T> end)
         {
             for (int i = 0; i < VertexCount; i++)
             {
@@ -178,7 +178,7 @@ namespace DataStructures
             {
                 Console.WriteLine(path[i].Value);
             }
-            return (path, journey);
+            return path;
         }
 
         public (bool, List<WDVertex<T>>) BellmanFord(WDVertex<T> start, WDVertex<T> end)

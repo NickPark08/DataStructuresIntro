@@ -22,7 +22,7 @@ namespace PathfindingVisualizer
         Texture2D square;
         MouseState previousMS;
         bool pathfinding = false;
-        (List<WDVertex<int>> path, List<WDVertex<int>> journey) visual;
+        List<WDVertex<int>> visual;
 
         public Game1()
         {
@@ -283,9 +283,9 @@ namespace PathfindingVisualizer
                 {
                     elapsedTimeSinceLastJourneyStep = TimeSpan.Zero;
 
-                    if (currentJourneyStep < visual.journey.Count)
+                    if (currentJourneyStep < visual.Count)
                     {
-                        var currentVertex = visual.journey[currentJourneyStep];
+                        var currentVertex = visual[currentJourneyStep];
                         var currentRect = hitboxes[currentVertex.y, currentVertex.x];
                         currentRect.Color = Color.Orange;
 
@@ -306,9 +306,9 @@ namespace PathfindingVisualizer
                 {
                     elapsedTimeSinceLastStep = TimeSpan.Zero;
 
-                    if (currentStep < visual.path.Count)
+                    if (currentStep < visual.Count)
                     {
-                        var currentVertex = visual.path[currentStep];
+                        var currentVertex = visual[currentStep];
                         var currentRect = hitboxes[currentVertex.y, currentVertex.x];
                         currentRect.Color = Color.Yellow;
                         currentStep++;
