@@ -23,6 +23,13 @@ namespace DataStructures
             Distance = distance;
             Blocked = false;
         }
+        public WDEdge(WDVertex<T> start, WDVertex<T> end, float distance, bool block)
+        {
+            StartPoint = start;
+            EndPoint = end;
+            Distance = distance;
+            Blocked = block;
+        }
     }
     public class WDVertex<T>
     {
@@ -49,7 +56,7 @@ namespace DataStructures
         public int VertexCount => Vertices.Count;
 
 
-        public (List<WDVertex<T>>, List<WDVertex<T>>) Dijkstra(WDVertex<T> start, WDVertex<T> end)
+        public List<WDVertex<T>> Dijkstra(WDVertex<T> start, WDVertex<T> end)
         {
             foreach (var vertex in Vertices)
             {
@@ -110,7 +117,7 @@ namespace DataStructures
             {
                 Console.WriteLine(path[i].Value);
             }
-            return (path, journey);
+            return path;
         }
 
         public List<WDVertex<T>> AStar(WDVertex<T> start, WDVertex<T> end)
@@ -136,6 +143,10 @@ namespace DataStructures
 
                 for (int i = 0; i < current.NeighborCount; i++)
                 {
+                    if (!current.Neighbors[i].Blocked)
+                    {
+
+                    }
                     if (current.Neighbors[i].EndPoint != current && !current.Neighbors[i].Blocked)
                     {
                         float tentative = current.CumulativeDistance + current.Neighbors[i].Distance;
@@ -358,7 +369,7 @@ namespace DataStructures
             return true;
         }
 
-        public bool AddEdge(WDVertex<T> start, WDVertex<T> end, float distance)
+        public bool AddEdge(WDVertex<T> start, WDVertex<T> end, float distance, bool isBlocked)
         {
             bool vertA = false;
             bool vertB = false;
@@ -376,7 +387,7 @@ namespace DataStructures
             }
             if (vertA && vertB)
             {
-                WDEdge<T> newEdge = new WDEdge<T>(start, end, distance);
+                WDEdge<T> newEdge = new WDEdge<T>(start, end, distance, isBlocked);
                 Edges.Add(newEdge);
                 start.Neighbors.Add(newEdge);
                 end.Neighbors.Add(newEdge);
