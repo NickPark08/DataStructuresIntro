@@ -390,7 +390,6 @@ namespace DataStructures
                 WDEdge<T> newEdge = new WDEdge<T>(start, end, distance, isBlocked);
                 Edges.Add(newEdge);
                 start.Neighbors.Add(newEdge);
-                end.Neighbors.Add(newEdge);
             }
             return vertA && vertB;
         }
