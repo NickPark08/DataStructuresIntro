@@ -30,6 +30,11 @@ namespace DataStructures
             Distance = distance;
             Blocked = block;
         }
+
+        public override string ToString()
+        {
+            return $"S = ({StartPoint}) E = ({EndPoint}) {(Blocked ? "Blocked" : "")}";
+        }
     }
     public class WDVertex<T>
     {
@@ -47,6 +52,11 @@ namespace DataStructures
         public WDVertex(T value)
         {
             Value = value;
+        }
+
+        public override string ToString()
+        {
+            return $"({x}, {y}) F = [{Founder}]";
         }
     }
     public class WeightedDirectedGraph<T>
