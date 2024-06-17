@@ -56,7 +56,7 @@ namespace DataStructures
 
         public override string ToString()
         {
-            return $"({x}, {y}) F = [{Founder}]";
+            return $"({x}, {y}) Edges = {NeighborCount}";
         }
     }
     public class WeightedDirectedGraph<T>
@@ -176,12 +176,12 @@ namespace DataStructures
                     }
                 }
 
-                if (current == end || end.isVisited)
+                if (queue.Count <= 0)
                 {
                     break;
                 }
             }
-            while (queue.Count > 0);
+            while (!end.isVisited);
 
             WDVertex<T> founder = end;
 
@@ -245,6 +245,7 @@ namespace DataStructures
             return (true, path);
         }
 
+        // delegate explanation
         public float Heuristic(WDVertex<T> node, WDVertex<T> end)
         {
             float x = Math.Abs(node.x - end.x);
