@@ -131,6 +131,8 @@ namespace DataStructures
             }
             return path;
         }
+
+        //delegates: https://sharplab.io/#v2:CYLg1APgAgTAjAWAFBQAwAIpwCwG5lqZwB0AMgJYB2AjvkgPT3ACmANswOYCGALs5tnQAVABZUOATwAUASjrJGLdtz7CASswDOAV1Y90AcWY8+AJwA8QgDTqtungD4pQ9FznICMdAGFeyAN7I6MGYAMzoVPoAghzMdCFhRBgAclwAtnFBIVnBUOG+PFKRrrE2WBiU6cwyOeiBSAkJMfwAvCWZDY3BqRnobZUZ8SEAvrW1eQLoAAqmkbK19V25cACcUgAkAEQF6APMwHU9zMPtB/7Nw5ty2Z3Bo7fo4+FQgkY8APKsLKbzD4tLzTAYFwNwS93uHhQzy83jqkISWAAbJMACIAewAyjxtAAzHG/BL/Lq1BGrKSbTTYvFXIZ3eEhJGTAq+AAO2NMzCkaO0+iwXgARmj+TU/iSEjsAFbkNJongiCR9XbMADuPl4UgArKgbJsogBjPVaTQANXIaNYvDNlAAogAPQ1sq009CMNJcADW/ClMrlEhsmmM6B4aKVytYCqo5B45C4rHIAC99ug9bx0IgHuLUxK0SJKLL5YrKCq1YU4Nr0JspmJWM7XR6vTm877/YHg+hvfmFQBaBzoAM8TRBkMp/TppaPDMhYpcRVwWmNYr8xVcefEyfBQVLtrZ3Od4gzSKrkKb9BgbfSvdvT7fI/BMW5QQACTYrDRBKWRPHrkVQP5t8aWBrG4/73OO97oCeZ7oM+rCvv+tSMAkMGvrI8Hru2jZ7s0s6oLgiFFqqBRSGWOr6oamgmmaFrRmiNr2swjq0bW9A7k2Bb9kOobhhElBRjGcaJgcI7oDAtSgaCDIwF4CwkuB9JrmB6HgYw06KnwaQssQACSlAAG5op65JllwNJyehkQANoALroMAvBcDObQWRqNgkWmLkieWMAalZaHjsUlDaGkOF+UsulcKY6AcjoeiKnZPAOcQADqIjMByUjBS0vb+BBaLmt+bTBQApLsQV9G0uGYAA7K4uAnDIxBCGiUSmKYXDSO4SldeOOJohyXB6iI6BSOFkVRswwVUFFdh6CK46fuOgFFOp1x3uh4kKUs4F8rlf6IW06JYriOKhV0jAnm0yFokejCIbtp5tIBt6IZBB2YlSJ1indr27aud0TuO51CtpekGZynWA/QqlvUdeKnZmPCsuynLcvom4Q4096Iaxe4HpQhQY5j6GbiD+mGYTXQkzpZPgyCa1gsgwxAA
         public List<WDVertex<T>> AStar(WDVertex<T> start, WDVertex<T> end, Func<WDVertex<T>, WDVertex<T>, float> heuristic = null, Func<WDVertex<T>, WDVertex<T>, bool> endFunc = null)
         {
             endFunc = endFunc ?? ((current, endVert) => current == endVert);
