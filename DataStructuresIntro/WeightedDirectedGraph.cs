@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DataStructuresIntro;
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -129,9 +131,11 @@ namespace DataStructures
             }
             return path;
         }
-
-        public List<WDVertex<T>> AStar(WDVertex<T> start, WDVertex<T> end)
+        public List<WDVertex<T>> AStar(WDVertex<T> start, WDVertex<T> end, Func<WDVertex<T>, WDVertex<T>, float> heuristic = null, Func<WDVertex<T>, WDVertex<T>, bool> endFunc = null)
         {
+            endFunc = endFunc ?? ((current, endVert) => current == endVert);
+            heuristic = heuristic ?? Heuristic;
+
             for (int i = 0; i < VertexCount; i++)
             {
                 Vertices[i].CumulativeDistance = Vertices[i].FinalDistance = float.PositiveInfinity;
@@ -144,13 +148,13 @@ namespace DataStructures
             List<WDVertex<T>> journey = new List<WDVertex<T>>();
 
             start.CumulativeDistance = 0;
-            start.FinalDistance = Heuristic(start, end);
-            queue.Enqueue(start, start.FinalDistance);
+            start.FinalDistance = heuristic(start, end);
+            queue.Enqueue(start, start.CumulativeDistance + start.FinalDistance);
 
+            WDVertex<T> current;
             do
             {
-                WDVertex<T> current = queue.Dequeue();
-
+                current = queue.Dequeue();
                 for (int i = 0; i < current.NeighborCount; i++)
                 {
                     if (!current.Neighbors[i].Blocked)
@@ -178,10 +182,10 @@ namespace DataStructures
 
                 if (queue.Count <= 0)
                 {
-                    break;
+                    return null;
                 }
             }
-            while (!end.isVisited);
+            while (endFunc(current, end));
 
             WDVertex<T> founder = end;
 
