@@ -187,7 +187,7 @@ namespace DataStructures
                     return null;
                 }
             }
-            while (endFunc(current, end));
+            while (!endFunc(current, end));
 
             WDVertex<T> founder = end;
 
