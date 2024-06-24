@@ -189,7 +189,7 @@ namespace DataStructures
             }
             while (!endFunc(current, end));
 
-            WDVertex<T> founder = end;
+            WDVertex<T> founder = current;
 
             while (founder != start)
             {
