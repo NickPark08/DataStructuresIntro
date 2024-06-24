@@ -170,7 +170,7 @@ namespace DataStructures
                         {
                             current.Neighbors[i].EndPoint.CumulativeDistance = tentative;
                             current.Neighbors[i].EndPoint.Founder = current;
-                            current.Neighbors[i].EndPoint.FinalDistance = Heuristic(current.Neighbors[i].EndPoint, end) + tentative;
+                            current.Neighbors[i].EndPoint.FinalDistance = heuristic(current.Neighbors[i].EndPoint, end) + tentative;
                         }
                         if (!current.Neighbors[i].EndPoint.isVisited && !current.Neighbors[i].EndPoint.inQueue)
                         {
