@@ -159,10 +159,6 @@ namespace DataStructures
                 current = queue.Dequeue();
                 for (int i = 0; i < current.NeighborCount; i++)
                 {
-                    if (!current.Neighbors[i].Blocked)
-                    {
-
-                    }
                     if (current.Neighbors[i].EndPoint != current && !current.Neighbors[i].Blocked)
                     {
                         float tentative = current.CumulativeDistance + current.Neighbors[i].Distance;
