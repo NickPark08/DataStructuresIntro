@@ -14,35 +14,17 @@ class Program
 {
     public static void Main()
     {
-        RedBlackTree<int> tree = new(null);
-        RedBlackTree<int> tree2 = new(null);
+        NonComparativeSorts sorts = new NonComparativeSorts();
 
-        List<int> list = new List<int>() {1, 2, 3, 4, 5, 6, 7, 8, 9, 12};
-        List<int> list2 = new List<int>() { 1, 3, 5, 7, 9, 11, 13 };
+        int[] array = new int[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50};
 
+        sorts.CountingSort(ref array);
 
-        tree.AddRange(list);
-        tree2.AddRange(list2);
-        var temp = tree.InOrder();
-        foreach(var val in temp)
+        foreach(var val in array)
         {
-            Console.Write($"{val}, ");
+            Console.WriteLine(val);
         }
-        Console.WriteLine();
-        var temp4 = tree2.InOrder();
-        foreach(var val in temp4)
-        {
-            Console.Write($"{val}, ");
-        }
-        Console.WriteLine();
-        Console.WriteLine();
 
-
-        var union = tree.Union(tree2);
-        foreach(var val in union)
-        {
-            Console.Write($"{val}, ");
-        }
 
         //string unionFindVertices = File.ReadAllText(@"..\..\..\UnionFindVertices.txt");
         //string unionFindEdges = File.ReadAllText(@"..\..\..\UnionFindEdges.txt");
