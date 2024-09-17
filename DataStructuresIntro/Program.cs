@@ -15,12 +15,18 @@ class Program
     public static void Main()
     {
         NonComparativeSorts sorts = new NonComparativeSorts();
+        Random gen = new Random();
 
-        int[] array = new int[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50};
+        IKeyableInt[] array = new IKeyableInt[10];
+        for (int i = array.Length - 1; i >= 0; i--)
+        {
+            array[i] = new IKeyableInt(gen.Next(-100, 100));
+        }
 
-        sorts.CountingSort(ref array);
+        int[] array2 = new int[] { 10, 9, 83, 2, 3, 2, 1, 5 };
+        sorts.BucketSort(ref array2);
 
-        foreach(var val in array)
+        foreach (var val in array2)
         {
             Console.WriteLine(val);
         }
