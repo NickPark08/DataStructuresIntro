@@ -23,8 +23,8 @@ class Program
             array[i] = new IKeyableInt(gen.Next(-100, 100));
         }
 
-        int[] array2 = new int[] { 10, 9, 83, 2, 3, 2, 1, 5 };
-        sorts.BucketSort(ref array2);
+        int[] array2 = new int[] { -12, 112, -2342, -2342, 123, -23, -1, 1, 3, 5, 6, 8, 99};
+        sorts.RadixSort(ref array2);
 
         foreach (var val in array2)
         {

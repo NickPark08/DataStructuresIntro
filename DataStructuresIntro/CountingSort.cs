@@ -23,6 +23,78 @@ namespace DataStructures
 
     class NonComparativeSorts
     {
+        public void RadixSort(ref int[] array)
+        {
+            int[] buckets = new int[10];
+            int digit = 1;
+            int[] output = new int[array.Length];
+            int maxVal = array.Max();
+            int minVal = array.Min();
+
+
+
+            while(digit < maxVal)
+            {
+                foreach (var val in array)
+                {
+                    buckets[(val % (digit * 10)) / digit]++;
+                }
+                for (int i = 1; i < buckets.Length; i++)//offset
+                {
+                    buckets[i] += buckets[i - 1];
+                }
+                for (int i = output.Length - 1; i >= 0; i--)
+                {
+                    buckets[((array[i] - minVal) % (digit * 10)) / digit]--;
+                    output[buckets[((array[i] - minVal) % (digit * 10)) / digit]] = array[i];
+                }
+                for(int i = 0; i < output.Length; i++)
+                {
+                    array[i] = output[i] + minVal;
+                }
+                output = new int[array.Length];
+                buckets = new int[10];
+                digit *= 10;
+            }
+
+        }
+        public void KeyedBucketSort<T>(ref T[] array) where T : IKeyable
+        {
+            int minVal = array.Min(m => m.Key);
+            int maxVal = array.Max(m => m.Key);
+            List<int>[] buckets = new List<int>[array.Length];
+            for (int i = 0; i < buckets.Length; i++)
+            {
+                buckets[i] = new List<int>();
+            }
+
+            int compare = (maxVal + (10 - maxVal % 10)) / buckets.Count();
+            for (int i = 0; i < array.Length; i++)
+            {
+                for (int j = 0; j < buckets.Count(); j++)
+                {
+                    if (array[i].Key < compare * (j + 1))
+                    {
+                        buckets[j].Add(array[i].Key);
+                        break;
+                    }
+                }
+            }
+            foreach (var list in buckets)
+            {
+                list.Sort();
+            }
+            int index = 0;
+            foreach (var list in buckets)
+            {
+                foreach (var val in list)
+                {
+                    array[index].Key = val;
+                    index++;
+                }
+            }
+        }
+
         public void BucketSort(ref int[] array)
         {
             int minVal = array.Min();
@@ -33,8 +105,7 @@ namespace DataStructures
                 buckets[i] = new List<int>();
             }
             
-            //check why 83 not being added to a bucket
-            int compare = maxVal / buckets.Count();
+            int compare = (maxVal + (10 - maxVal % 10)) / buckets.Count();
             for(int i = 0; i < array.Length; i++)
             {
                 for(int j = 0; j < buckets.Count(); j++)
