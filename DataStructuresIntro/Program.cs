@@ -20,11 +20,13 @@ class Program
         IKeyableInt[] array = new IKeyableInt[10];
         for (int i = array.Length - 1; i >= 0; i--)
         {
-            array[i] = new IKeyableInt(gen.Next(-100, 100));
+            array[i] = new IKeyableInt(gen.Next(-1000, 1000));
         }
 
-        int[] array2 = new int[] { -12, 112, -2342, -2342, 123, -23, -1, 1, 3, 5, 6, 8, 99};
-        sorts.RadixSort(ref array2);
+        string[] array2 = new string[] { "001", "010", "100", "0110", "110"};
+        //int[] arary3 = new int[] { 0, 1, 2, 3, 4, 5 };
+        sorts.BitwiseRadixSort(ref array2);
+
 
         foreach (var val in array2)
         {

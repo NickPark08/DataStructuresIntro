@@ -23,6 +23,118 @@ namespace DataStructures
 
     class NonComparativeSorts
     {
+        public void BitwiseRadixSort(ref string[] array)
+        {
+            int[] buckets = new int[2];
+            int index = 1;
+            string[] output = new string[array.Length];
+            int max = array.Max(m => m.Length);
+
+            while (index <= max)
+            {
+                foreach (var str in array)
+                {
+                    //int temp = str[str.Length - index] - 97;
+                    int temp = str[str.Length - index] - 48;
+                    buckets[temp]++;
+                }
+                for (int i = 1; i < buckets.Length; i++)//offset
+                {
+                    buckets[i] += buckets[i - 1];
+                }
+                for (int i = output.Length - 1; i >= 0; i--)
+                {
+                    int temp = 0;
+                    if (array[i].Length >= index)
+                    {
+                        temp = array[i][array[i].Length - index] - 48;
+                    }
+                    buckets[temp]--;
+                    output[buckets[temp]] = array[i];
+                }
+                for (int i = 0; i < output.Length; i++)
+                {
+                    array[i] = output[i];
+                }
+                output = new string[array.Length];
+                buckets = new int[2];
+                index++;
+            }
+        }
+        public void PostmanSort(ref string[] array)
+        {
+            for(int i = 0; i < array.Length; i++)
+            {
+                array[i].ToLower();
+            }
+
+            int[] buckets = new int[26];
+            int index = 1;
+            string[] output = new string[array.Length];
+            int max = array.Max(m => m.Length);
+
+            while (index <= max) // change later
+            {
+                foreach (var str in array)
+                {
+                    int temp = str[str.Length - index] - 97;
+                    buckets[temp]++;
+                }
+                for (int i = 1; i < buckets.Length; i++)//offset
+                {
+                    buckets[i] += buckets[i - 1];
+                }
+                for (int i = output.Length - 1; i >= 0; i--)
+                {
+                    int temp = 0;
+                    if (array[i].Length >= index)
+                    {
+                        temp = array[i][array[i].Length - index] - 97;
+                    }
+                    buckets[temp]--;
+                    output[buckets[temp]] = array[i];
+                }
+                for (int i = 0; i < output.Length; i++)
+                {
+                    array[i] = output[i];
+                }
+                output = new string[array.Length];
+                buckets = new int[26];
+                index++;
+            }
+        }
+        public void KeyedRadixSort<T>(ref T[] array) where T : IKeyable
+        {
+            int[] buckets = new int[10];
+            int digit = 1;
+            int[] output = new int[array.Length];
+            int maxVal = array.Max(m => m.Key);
+            int minVal = array.Min(m => m.Key);
+
+            while (digit < maxVal * 10)
+            {
+                foreach (var val in array)
+                {
+                    buckets[(val.Key - minVal) % (digit * 10) / digit]++;
+                }
+                for (int i = 1; i < buckets.Length; i++)//offset
+                {
+                    buckets[i] += buckets[i - 1];
+                }
+                for (int i = output.Length - 1; i >= 0; i--)
+                {
+                    buckets[(array[i].Key - minVal) % (digit * 10) / digit]--;
+                    output[buckets[(array[i].Key - minVal) % (digit * 10) / digit]] = array[i].Key;
+                }
+                for (int i = 0; i < output.Length; i++)
+                {
+                    array[i].Key = output[i];
+                }
+                output = new int[array.Length];
+                buckets = new int[10];
+                digit *= 10;
+            }
+        }
         public void RadixSort(ref int[] array)
         {
             int[] buckets = new int[10];
@@ -31,13 +143,11 @@ namespace DataStructures
             int maxVal = array.Max();
             int minVal = array.Min();
 
-
-
-            while(digit < maxVal)
+            while(digit < maxVal * 10)
             {
                 foreach (var val in array)
                 {
-                    buckets[(val % (digit * 10)) / digit]++;
+                    buckets[(val - minVal) % (digit * 10) / digit]++;
                 }
                 for (int i = 1; i < buckets.Length; i++)//offset
                 {
@@ -45,12 +155,12 @@ namespace DataStructures
                 }
                 for (int i = output.Length - 1; i >= 0; i--)
                 {
-                    buckets[((array[i] - minVal) % (digit * 10)) / digit]--;
-                    output[buckets[((array[i] - minVal) % (digit * 10)) / digit]] = array[i];
+                    buckets[(array[i] - minVal) % (digit * 10) / digit]--;
+                    output[buckets[(array[i] - minVal) % (digit * 10) / digit]] = array[i];
                 }
                 for(int i = 0; i < output.Length; i++)
                 {
-                    array[i] = output[i] + minVal;
+                    array[i] = output[i];
                 }
                 output = new int[array.Length];
                 buckets = new int[10];
