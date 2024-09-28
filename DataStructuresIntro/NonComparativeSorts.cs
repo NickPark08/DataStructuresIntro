@@ -23,19 +23,28 @@ namespace DataStructures
 
     class NonComparativeSorts
     {
-        public void BitwiseRadixSort(ref string[] array)
+        public void MSDRadixSort(int[] array)
         {
-            int[] buckets = new int[2];
-            int index = 1;
-            string[] output = new string[array.Length];
-            int max = array.Max(m => m.Length);
+            // start MSD radix sort
+            // first digit into buckets, then recurse and keep adding to buckets until size <= 1
+        }
 
-            while (index <= max)
+        public void BitwiseRadixSort(ref uint[] array)
+        {
+            // &, |, ^, ~, >>, <<
+
+            int[] buckets = new int[2];
+            uint[] output = new uint[array.Length];
+            uint max = array.Max();
+            uint index = 1;
+            int shift = 0;
+
+            for(int j = 0; j < max; j++)
             {
-                foreach (var str in array)
+                foreach (var val in array)
                 {
-                    //int temp = str[str.Length - index] - 97;
-                    int temp = str[str.Length - index] - 48;
+                    //buckets[(val) % (digit * 10) / digit]++;
+                    uint temp = (val & index) >> shift;
                     buckets[temp]++;
                 }
                 for (int i = 1; i < buckets.Length; i++)//offset
@@ -44,11 +53,9 @@ namespace DataStructures
                 }
                 for (int i = output.Length - 1; i >= 0; i--)
                 {
-                    int temp = 0;
-                    if (array[i].Length >= index)
-                    {
-                        temp = array[i][array[i].Length - index] - 48;
-                    }
+                    //buckets[(array[i] - minVal) % (digit * 10) / digit]--;
+                    //output[buckets[(array[i] - minVal) % (digit * 10) / digit]] = array[i];
+                    uint temp = (array[i] & index) >> shift;
                     buckets[temp]--;
                     output[buckets[temp]] = array[i];
                 }
@@ -56,9 +63,11 @@ namespace DataStructures
                 {
                     array[i] = output[i];
                 }
-                output = new string[array.Length];
+                //output = new uint[array.Length];
                 buckets = new int[2];
-                index++;
+                index*=2;
+                shift++;
+                //if (index > (max / 2) + 1) break;
             }
         }
         public void PostmanSort(ref string[] array)

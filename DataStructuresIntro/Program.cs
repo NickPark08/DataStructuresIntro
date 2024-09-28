@@ -23,8 +23,11 @@ class Program
             array[i] = new IKeyableInt(gen.Next(-1000, 1000));
         }
 
-        string[] array2 = new string[] { "001", "010", "100", "0110", "110"};
-        //int[] arary3 = new int[] { 0, 1, 2, 3, 4, 5 };
+        uint[] array2 = new uint[20];
+        for(int i = 0; i < array2.Length; i++)
+        {
+            array2[i] = (uint)(gen.Next(0, 1000));
+        }
         sorts.BitwiseRadixSort(ref array2);
 
 
