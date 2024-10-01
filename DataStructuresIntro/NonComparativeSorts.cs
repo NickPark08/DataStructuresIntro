@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -23,11 +24,71 @@ namespace DataStructures
 
     class NonComparativeSorts
     {
-        public void MSDRadixSort(int[] array)
+        public void MSDRadixSort(ref int[] array)
         {
             // start MSD radix sort
             // first digit into buckets, then recurse and keep adding to buckets until size <= 1
+            // think bitwise instead of decimal
+
+            int[] buckets = new int[10];
+            int max = array.Max();
+            int digit = 1;
+            while(max >= 10)
+            {
+                max /= 10;
+                digit++;
+            }
+            array = MSDRadixHelper(array, 0, array.Length - 1, 0);
+
         }
+        private int[] MSDRadixHelper(int[] array, int low, int high, int digit)
+        {
+            if (low >= high) return array;
+
+            while(low != high)
+            { 
+                int temp = array[low];
+                int count = 0;
+                while (temp != 0)
+                {
+                    temp >>= 1;
+                    count++;
+                }
+                count -= digit;
+                if ((array[low] & count) == 1)
+                {
+                    var temp2 = array[low];
+                    array[low] = array[high];
+                    array[high] = temp;
+                    high--;
+                }
+                else
+                {
+                    low++;
+                }
+            }
+
+            MSDRadixHelper(array, low, high, digit - 1);
+
+            return array;
+
+            //List<int>[] buckets = new List<int>[10];
+            //for(int i = 0; i < 10; i++)
+            //{
+            //    buckets[i] = new List<int>();
+            //}
+            //foreach (var val in array)
+            //{
+            //    buckets[val / (10 * digit)].Add(val);
+            //}
+            //foreach(var bucket in buckets)
+            //{
+            //    MSDRadixHelper(bucket.ToArray(), digit - 1);
+            //}
+
+        }
+
+
 
         public void BitwiseRadixSort(ref uint[] array)
         {

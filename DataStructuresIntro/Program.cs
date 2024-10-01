@@ -23,12 +23,12 @@ class Program
             array[i] = new IKeyableInt(gen.Next(-1000, 1000));
         }
 
-        uint[] array2 = new uint[20];
-        for(int i = 0; i < array2.Length; i++)
-        {
-            array2[i] = (uint)(gen.Next(0, 1000));
-        }
-        sorts.BitwiseRadixSort(ref array2);
+        int[] array2 = new int[] { 5, 6, 4, 1, 3};
+        //for(int i = 0; i < array2.Length; i++)
+        //{
+        //    array2[i] = (uint)(gen.Next(0, 1000));
+        //}
+        sorts.MSDRadixSort(ref array2);
 
 
         foreach (var val in array2)
