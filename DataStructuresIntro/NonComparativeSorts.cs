@@ -24,71 +24,103 @@ namespace DataStructures
 
     class NonComparativeSorts
     {
-        public void MSDRadixSort(ref int[] array)
-        {
-            // start MSD radix sort
-            // first digit into buckets, then recurse and keep adding to buckets until size <= 1
-            // think bitwise instead of decimal
+        //public void MSDRadixSort(ref int[] array)
+        //{
+        //    // start MSD radix sort
+        //    // first digit into buckets, then recurse and keep adding to buckets until size <= 1
+        //    // think bitwise instead of decimal
 
-            int[] buckets = new int[10];
-            int max = array.Max();
-            int digit = 1;
-            while(max >= 10)
+        //    int[] buckets = new int[10];
+        //    int max = array.Max();
+        //    int digit = 1;
+        //    while(max >= 10)
+        //    {
+        //        max /= 10;
+        //        digit++;
+        //    }
+        //    array = MSDRadixHelper(array, 0, array.Length - 1, 0);
+
+        //}
+        //private int[] MSDRadixHelper(int[] array, int low, int high, int digit)
+        //{
+        //    if (low >= high) return array;
+
+        //    while(low != high)
+        //    { 
+        //        int temp = array[low];
+        //        int count = 0;
+        //        while (temp != 0)
+        //        {
+        //            temp >>= 1;
+        //            count++;
+        //        }
+        //        count -= digit;
+        //        if ((array[low] & count) == 1)
+        //        {
+        //            var temp2 = array[low];
+        //            array[low] = array[high];
+        //            array[high] = temp;
+        //            high--;
+        //        }
+        //        else
+        //        {
+        //            low++;
+        //        }
+        //    }
+
+        //    MSDRadixHelper(array, low, high, digit - 1);
+
+        //    return array;
+        //}
+
+
+        private int GetDigit(int number, int digitPosition)
+        {
+            return (number / (int)Math.Pow(10, digitPosition)) % 10;
+        }
+
+        private int GetMaxDigits(int[] array)
+        {
+            int max = array[0];
+            foreach (int num in array)
             {
-                max /= 10;
-                digit++;
+                if (num > max) max = num;
             }
-            array = MSDRadixHelper(array, 0, array.Length - 1, 0);
-
+            return max.ToString().Length;
         }
-        private int[] MSDRadixHelper(int[] array, int low, int high, int digit)
+        private void MSDRadixSortHelper(int[] array, int left, int right, int digitPosition)
         {
-            if (low >= high) return array;
+            if (left >= right || digitPosition < 0)
+                return;
 
-            while(low != high)
-            { 
-                int temp = array[low];
-                int count = 0;
-                while (temp != 0)
-                {
-                    temp >>= 1;
-                    count++;
-                }
-                count -= digit;
-                if ((array[low] & count) == 1)
-                {
-                    var temp2 = array[low];
-                    array[low] = array[high];
-                    array[high] = temp;
-                    high--;
-                }
-                else
-                {
-                    low++;
-                }
+            List<int>[] buckets = new List<int>[10];
+            for (int i = 0; i < 10; i++)
+                buckets[i] = new List<int>();
+
+            for (int i = left; i <= right; i++)
+            {
+                int digit = GetDigit(array[i], digitPosition);
+                buckets[digit].Add(array[i]);
             }
 
-            MSDRadixHelper(array, low, high, digit - 1);
+            int index = left;
+            for (int i = 0; i < 10; i++)
+            {
+                if (buckets[i].Count > 0)
+                {
+                    foreach (int num in buckets[i])
+                        array[index++] = num;
 
-            return array;
-
-            //List<int>[] buckets = new List<int>[10];
-            //for(int i = 0; i < 10; i++)
-            //{
-            //    buckets[i] = new List<int>();
-            //}
-            //foreach (var val in array)
-            //{
-            //    buckets[val / (10 * digit)].Add(val);
-            //}
-            //foreach(var bucket in buckets)
-            //{
-            //    MSDRadixHelper(bucket.ToArray(), digit - 1);
-            //}
-
+                    MSDRadixSortHelper(array, index - buckets[i].Count, index - 1, digitPosition - 1);
+                }
+            }
         }
 
-
+        public void MSDRadixSort(int[] array)
+        {
+            int maxDigits = GetMaxDigits(array);
+            MSDRadixSortHelper(array, 0, array.Length - 1, maxDigits - 1);
+        }
 
         public void BitwiseRadixSort(ref uint[] array)
         {
