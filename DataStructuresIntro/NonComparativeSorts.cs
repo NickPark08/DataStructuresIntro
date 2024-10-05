@@ -24,56 +24,6 @@ namespace DataStructures
 
     class NonComparativeSorts
     {
-        //public void MSDRadixSort(ref int[] array)
-        //{
-        //    // start MSD radix sort
-        //    // first digit into buckets, then recurse and keep adding to buckets until size <= 1
-        //    // think bitwise instead of decimal
-
-        //    int[] buckets = new int[10];
-        //    int max = array.Max();
-        //    int digit = 1;
-        //    while(max >= 10)
-        //    {
-        //        max /= 10;
-        //        digit++;
-        //    }
-        //    array = MSDRadixHelper(array, 0, array.Length - 1, 0);
-
-        //}
-        //private int[] MSDRadixHelper(int[] array, int low, int high, int digit)
-        //{
-        //    if (low >= high) return array;
-
-        //    while(low != high)
-        //    { 
-        //        int temp = array[low];
-        //        int count = 0;
-        //        while (temp != 0)
-        //        {
-        //            temp >>= 1;
-        //            count++;
-        //        }
-        //        count -= digit;
-        //        if ((array[low] & count) == 1)
-        //        {
-        //            var temp2 = array[low];
-        //            array[low] = array[high];
-        //            array[high] = temp;
-        //            high--;
-        //        }
-        //        else
-        //        {
-        //            low++;
-        //        }
-        //    }
-
-        //    MSDRadixHelper(array, low, high, digit - 1);
-
-        //    return array;
-        //}
-
-
         private int GetDigit(int number, int digitPosition)
         {
             return (number / (int)Math.Pow(10, digitPosition)) % 10;
