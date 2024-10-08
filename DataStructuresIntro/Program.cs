@@ -9,32 +9,35 @@ using System.IO;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.ComponentModel;
+using DataStructures.BurstTrieImplementation;
 
 class Program
 {
     public static void Main()
     {
-        NonComparativeSorts sorts = new NonComparativeSorts();
-        Random gen = new Random();
+        BurstTrie trie = new BurstTrie(5, 'a', 'z');
 
-        IKeyableInt[] array = new IKeyableInt[10];
-        for (int i = array.Length - 1; i >= 0; i--)
-        {
-            array[i] = new IKeyableInt(gen.Next(-1000, 1000));
-        }
+        trie.Insert("test");
+        trie.Insert("tes");
+        trie.Insert("abc");
+        trie.Insert("almond");
+        trie.Insert("bee");
+        trie.Insert("cee");
+        trie.Insert("adam");
+        trie.Insert("america");
+        trie.Insert("awesome");
+        trie.Insert("awe");
+        trie.Insert("a");
+        trie.Insert("zebra");
 
-        int[] array2 = new int[20];
-        for (int i = 0; i < array2.Length; i++)
-        {
-            array2[i] = (gen.Next(0, 1000));
-        }
-        sorts.MSDRadixSort(array2);
 
+        var temp = trie.GetAll();
 
-        foreach (var val in array2)
+        foreach(var val in temp)
         {
             Console.WriteLine(val);
         }
+        ;
 
 
         //string unionFindVertices = File.ReadAllText(@"..\..\..\UnionFindVertices.txt");

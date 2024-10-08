@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataStructuresIntro
 {
-    class BinaryTreeNode<T> where T : IComparable<T>
+    public class BinaryTreeNode<T> where T : IComparable<T>
     {
         public T Value;
         public BinaryTreeNode<T> LeftChild;
@@ -21,7 +21,7 @@ namespace DataStructuresIntro
             Parent = parent;
         }
     }
-    class BinarySearchTree<T> where T : IComparable<T>
+    public class BinarySearchTree<T> where T : IComparable<T>
     {
         BinaryTreeNode<T> Root;
         public int Count { get; private set; }
@@ -248,6 +248,8 @@ namespace DataStructuresIntro
         {
             BinaryTreeNode<T> deletion = Search(value);
             if (deletion == null || Root == null) return false;
+
+            Count--;
 
             //0 children
             if (deletion.LeftChild == null && deletion.RightChild == null)
